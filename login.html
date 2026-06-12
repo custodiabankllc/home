@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login • Custodia Bank</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f4f8ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #0f172a;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.15), transparent 35%),
+                linear-gradient(to bottom right, #f8fbff, #edf5ff);
+            z-index: -2;
+        }
+
+        .floating-glow {
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.12);
+            filter: blur(90px);
+            top: -120px;
+            right: -100px;
+            z-index: -1;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            min-height: 720px;
+            background: #ffffff;
+            border-radius: 36px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            box-shadow:
+                0 10px 40px rgba(15, 23, 42, 0.08),
+                0 2px 10px rgba(15, 23, 42, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* LEFT SIDE */
+
+        .hero-side {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(2, 6, 23, 0.72), rgba(30, 64, 175, 0.65)),
+                url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1400&auto=format&fit=crop') center/cover;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hero-side::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(2, 6, 23, 0.55), transparent 45%);
+        }
+
+        .brand,
+        .hero-content,
+        .hero-stats {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo {
+            height: 80px;
+        }
+
+        .brand h2 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .brand p {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 14px;
+        }
+
+        .hero-content h1 {
+            color: #fff;
+            font-size: 58px;
+            line-height: 1.05;
+            max-width: 520px;
+            margin-bottom: 24px;
+            font-weight: 800;
+        }
+
+        .hero-content p {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 17px;
+            line-height: 1.8;
+            max-width: 520px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 22px;
+            padding: 22px;
+            min-width: 180px;
+        }
+
+        .stat-card h3 {
+            color: #fff;
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .stat-card span {
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 14px;
+        }
+
+        /* RIGHT SIDE */
+
+        .form-side {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .top-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .top-links a {
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .login-title h1 {
+            font-size: 42px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .login-title p {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 36px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            height: 62px;
+            border-radius: 18px;
+            border: 1px solid #dbe5f3;
+            background: #f8fbff;
+            padding: 0 18px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        .password-input {
+            padding-right: 60px !important;
+        }
+
+        .input-wrap input:focus {
+            border-color: #2563eb;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* PASSWORD TOGGLE */
+
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 18px;
+        }
+
+        .password-toggle:hover {
+            color: #2563eb;
+        }
+
+        .form-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 18px 0 26px;
+            gap: 10px;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .checkbox input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .form-options a {
+            text-decoration: none;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 62px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #2563eb, #0ea5e9);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.35s ease;
+            box-shadow: 0 18px 35px rgba(37, 99, 235, 0.24);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 40px rgba(37, 99, 235, 0.3);
+        }
+
+        .error-message {
+            margin-top: 14px;
+            color: #dc2626;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 34px 0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .social-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .social-btn {
+            height: 58px;
+            border-radius: 16px;
+            border: 1px solid #dbe5f3;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #0f172a;
+            transition: 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: #f8fbff;
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            margin-top: 34px;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .footer-note a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:900px) {
+
+            .login-wrapper {
+                grid-template-columns: 1fr;
+                min-height: auto;
+                border-radius: 0px;
+            }
+
+            .hero-side {
+                display: none;
+            }
+
+            .form-side {
+                padding: 35px 24px;
+                position: relative;
+            }
+
+            .form-side::before {
+                content: "";
+                position: absolute;
+                top: -100px;
+                right: -80px;
+                width: 240px;
+                height: 240px;
+                border-radius: 50%;
+                background: rgba(37, 99, 235, 0.12);
+                filter: blur(10px);
+            }
+
+            .top-links {
+                margin-bottom: 26px;
+            }
+
+            .login-title h1 {
+                font-size: 34px;
+            }
+
+            .login-title p {
+                font-size: 15px;
+            }
+
+            .input-wrap input {
+                height: 58px;
+                border-radius: 18px;
+                background: #ffffff;
+            }
+
+            .social-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                background: linear-gradient(to bottom, #eef5ff, #ffffff);
+            }
+
+            .container {
+                padding: 0px;
+            }
+
+        }
+
+        @media(max-width:500px) {
+
+            .login-title h1 {
+                font-size: 30px;
+            }
+
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="floating-glow"></div>
+
+    <div class="container">
+
+        <div class="login-wrapper">
+
+            <!-- LEFT IMAGE SIDE -->
+            <div class="hero-side">
+
+                <div class="brand">
+                    <img src="icon/custodia_logo.png" alt="" class="brand-logo">
+
+                    <div>
+                        <h2>Custodia Bank</h2>
+                        <p>Digital Banking Reimagined</p>
+                    </div>
+                </div>
+
+                <div class="hero-content">
+
+                    <h1>Secure banking designed for the future.</h1>
+
+                    <p>
+                        Experience lightning-fast transfers, intelligent financial insights,
+                        advanced fraud protection, and seamless global banking from one
+                        trusted platform.
+                    </p>
+
+                </div>
+
+                <div class="hero-stats">
+
+                    <div class="stat-card">
+                        <h3>$12B+</h3>
+                        <span>Assets Managed</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>190+</h3>
+                        <span>Countries Supported</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>24/7</h3>
+                        <span>AI Fraud Monitoring</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT FORM SIDE -->
+
+            <div class="form-side">
+
+
+                <div
+                    style="padding: 9px 12px;background: white;border-radius: 5px; width: fit-content;margin: 20px 0px;">
+                    <div class="gtranslate_wrapper"></div>
+                    <script>window.gtranslateSettings = { "default_language": "en", "native_language_names": true, "detect_browser_language": true, "languages": ["en", "fr", "ja", "it", "es"], "wrapper_selector": ".gtranslate_wrapper", "flag_size": 16, "flag_style": "3d", "alt_flags": { "en": "usa" } }</script>
+                    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+                </div>
+
+                <div class="top-links">
+                    <div style="font-weight:800;font-size:22px;">Welcome Back</div>
+                    <a href="signup.html">Create Account</a>
+                </div>
+
+                <div class="login-title">
+
+                    <h1>Sign in</h1>
+
+                    <p>
+                        Access your banking dashboard securely to manage transfers,
+                        cards, savings, investments, and more.
+                    </p>
+
+                </div>
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+
+                        <label>Email Address</label>
+
+                        <div class="input-wrap">
+                            <input type="email" id="email" placeholder="Enter your email address" required>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Password</label>
+
+                        <div class="input-wrap">
+
+                            <input type="password" id="password" class="password-input"
+                                placeholder="Enter your password" required>
+
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-options">
+
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            Remember me
+                        </label>
+
+                        <a href="#">Forgot Password?</a>
+
+                    </div>
+
+                    <button class="login-btn" type="submit">
+                        Sign In Securely
+                    </button>
+
+                    <div class="error-message" id="errorMessage">
+                        Incorrect email or password.
+                    </div>
+
+                </form>
+
+                <div class="divider">or continue with</div>
+
+                <div class="social-buttons">
+
+                    <button class="social-btn">
+                        Google
+                    </button>
+
+                    <button class="social-btn">
+                        Apple ID
+                    </button>
+
+                </div>
+
+                <div class="footer-note">
+                    Protected by enterprise-grade encryption and advanced identity verification.<br>
+                    By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+    const API_URL =
+    "https://script.google.com/macros/s/AKfycbxH5BIk0V2erjgBhXc_7ehVmLBhTCoIjLRBvIwNtGMgl6hLOoVhBCxdDSBon8XMspQf/exec";
+
+    // ELEMENTS
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const errorMessage = document.getElementById("errorMessage");
+    const togglePassword = document.getElementById("togglePassword");
+    const loginBtn = document.querySelector(".login-btn");
+
+    // LOGIN
+    loginForm.addEventListener("submit", async function (e) {
+
+        e.preventDefault();
+
+        errorMessage.style.display = "none";
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!email || !password) {
+
+            errorMessage.textContent =
+                "Please enter your email and password.";
+
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        try {
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML =
+                '<i class="fa fa-spinner fa-spin"></i> Signing In...';
+
+            const response = await fetch(API_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    action: "login",
+                    email: email,
+                    password: password
+
+                })
+
+            });
+
+            const result = await response.json();
+
+            if (result.status) {
+
+                const user = result.user;
+
+                // SAVE SESSION
+
+                localStorage.setItem(
+                    "custodiaUser",
+                    JSON.stringify(user)
+                );
+
+                localStorage.setItem(
+                    "custodiaUID",
+                    user.uid
+                );
+
+                localStorage.setItem(
+                    "custodiaAccountNumber",
+                    user.accountNumber
+                );
+
+                // REDIRECT
+
+                window.location.href =
+                    "accountdashboard.html";
+
+            } else {
+
+                errorMessage.textContent =
+                    result.message ||
+                    "Invalid login credentials.";
+
+                errorMessage.style.display = "block";
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            errorMessage.textContent =
+                "Unable to connect to server.";
+
+            errorMessage.style.display = "block";
+
+        } finally {
+
+            loginBtn.disabled = false;
+            loginBtn.innerHTML =
+                "Sign In Securely";
+        }
+
+    });
+
+    // PASSWORD TOGGLE
+
+    togglePassword.addEventListener("click", function () {
+
+        const icon = this.querySelector("i");
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+
+        } else {
+
+            passwordInput.type = "password";
+
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+
+        }
+
+    });
+
+    // AUTO LOGIN IF SESSION EXISTS
+
+    window.addEventListener("load", () => {
+
+        const user =
+            localStorage.getItem("custodiaUser");
+
+        if (user) {
+
+            window.location.href =
+                "accountdashboard.html";
+        }
+
+    });
+
+
+    </script>
+
+
+
+</body>
+
+</html>

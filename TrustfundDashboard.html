@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jenny Gomez Inheritance - Trust Fund Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '043ca3fb1308c7e3dd23bb2707591426d8479d3f';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: url('image/jenny-photo-2.jpg') center/cover;
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 72px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: sticky;
+            top: 72px;
+            height: calc(100vh - 72px);
+        }
+
+        .sidebar h3 {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            color: #64748b;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background: #eff6ff;
+        }
+
+        .menu-item.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .red-dot {
+            position: absolute;
+            right: 14px;
+            top: 10px;
+            width: 10px;
+            height: 10px;
+            background: red;
+            border-radius: 50%;
+        }
+
+        .main {
+            flex: 1;
+            padding: 25px;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            padding: 28px;
+            border-radius: 24px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .banner h1 {
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+        }
+
+        .banner p {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .balance-card {
+            background: white;
+            padding: 28px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+            margin-bottom: 25px;
+        }
+
+        .balance-card span {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .balance-card h2 {
+            font-size: 2.5rem;
+            margin: 10px 0;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #fef2f2;
+            color: #dc2626;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 22px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: #64748b;
+        }
+
+        .section-view {
+            background: white;
+            padding: 28px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+            margin-bottom: 25px;
+        }
+
+        .section-view h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .section-view p {
+            font-size: 0.92rem;
+            line-height: 1.8;
+            color: #475569;
+        }
+
+        .withdraw-box {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .form-box input,
+        .form-box select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+        }
+
+        .withdraw-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 16px;
+            background: #cbd5e1;
+            color: #64748b;
+            font-weight: 700;
+            cursor: not-allowed;
+        }
+
+        .resolve {
+            margin-top: 14px;
+            font-size: 0.88rem;
+            color: #dc2626;
+        }
+
+        .resolve span {
+            color: #2563eb;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .beneficiary-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-top: 20px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 18px;
+        }
+
+        .beneficiary-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 18px;
+            margin-top: 25px;
+        }
+
+        .table-wrap table {
+            min-width: 760px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-wrap::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-wrap::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+
+        .table-wrap th,
+        .table-wrap td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.88rem;
+        }
+
+        .table-wrap th {
+            background: #f8fafc;
+        }
+
+        .deposit {
+            color: #16a34a;
+            font-weight: 700;
+        }
+
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+
+        .popup-box {
+            background: white;
+            padding: 35px;
+            border-radius: 30px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            animation: pop 0.4s ease;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .popup-box img {
+            width: 90px;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+
+        .popup-box h2 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .popup-box p {
+            font-size: 0.92rem;
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 22px;
+        }
+
+        .popup-box button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 16px;
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 260px;
+            height: 100dvh;
+            background: white;
+            transition: 0.35s;
+            padding: 18px;
+            z-index: 1500;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .drawer.active {
+            left: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            display: none;
+            z-index: 1400;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .logout {
+            margin-top: auto;
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .option-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+
+        @media(max-width:650px) {
+
+            .grid,
+            .withdraw-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:650px) {
+            .sidebar {
+                display: none;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .banner h1 {
+                font-size: 1.4rem;
+            }
+
+            .balance-card h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media(max-width:768px) {
+
+            .table-wrap {
+                margin-left: -10px;
+                margin-right: -10px;
+                padding: 0 10px 10px;
+                width: 100%;
+                
+
+            }
+
+            .table-wrap table {
+                width: 100%;
+            }
+
+            .table-wrap th,
+            .table-wrap td {
+                white-space: nowrap;
+            }
+
+        }
+    </style>
+
+
+<style>
+
+/* =========================================
+   TABLET RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .grid,
+    .withdraw-box {
+        grid-template-columns: 1fr;
+    }
+
+    .withdraw-box .card {
+        width: 100%;
+    }
+}
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+
+@media (max-width: 650px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .layout {
+        width: 100%;
+    }
+
+    .main {
+        width: 100%;
+        max-width: 100%;
+        padding: 14px;
+        overflow-x: hidden;
+    }
+
+    header {
+        padding: 0 14px;
+        gap: 10px;
+    }
+
+    .top-right {
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .top-right div {
+        min-width: 0;
+    }
+
+    .top-right div div:first-child {
+        font-size: 0.78rem !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 140px;
+    }
+
+    .top-right div div:last-child {
+        font-size: 0.68rem !important;
+    }
+
+    .profile {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+    }
+
+    .banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        border-radius: 20px;
+        gap: 14px;
+        width: 100%;
+    }
+
+    .banner h1 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    .banner p {
+        font-size: 0.88rem;
+    }
+
+    .badge {
+        width: 100%;
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .balance-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .balance-card h2 {
+        font-size: 1.8rem;
+        word-break: break-word;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .card {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .section-view {
+        padding: 18px;
+        border-radius: 20px;
+        width: 100%;
+    }
+
+    .section-view h2 {
+        font-size: 1.2rem;
+        line-height: 1.4;
+    }
+
+    .section-view p {
+        font-size: 0.88rem;
+        line-height: 1.7;
+    }
+
+    .option-image {
+        height: 160px;
+        border-radius: 16px;
+    }
+
+    .beneficiary-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 18px;
+    }
+
+    .beneficiary-card img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .withdraw-box {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .form-box input,
+    .form-box select,
+    .withdraw-btn {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .popup {
+        padding: 14px;
+    }
+
+    .popup-box {
+        width: 100%;
+        max-width: 100%;
+        padding: 24px 18px;
+        border-radius: 22px;
+    }
+
+    .popup-box h2 {
+        font-size: 1.2rem;
+        line-height: 1.4;
+    }
+
+    .popup-box p {
+        font-size: 0.88rem;
+    }
+
+    .drawer {
+        width: 260px;
+        max-width: 85vw;
+    }
+
+    .menu-item {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .menu-item span,
+    .menu-item div {
+        min-width: 0;
+    }
+
+    .menu-icon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE DEVICES
+========================================= */
+
+@media (max-width: 680px) {
+
+    .main {
+        padding: 12px;
+    }
+
+    .banner,
+    .balance-card,
+    .section-view,
+    .card {
+        padding: 16px;
+    }
+
+    .banner h1 {
+        font-size: 1.1rem;
+    }
+
+    .balance-card h2 {
+        font-size: 1.5rem;
+    }
+
+
+    .table-wrap {
+        margin-top: 18px;
+        border-radius: 14px;
+        height: 400px;
+        overflow-y: auto;
+    }
+
+    .table-wrap th,
+    .table-wrap td {
+        padding: 12px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    .option-image {
+        height: 140px;
+    }
+
+    .popup-box img {
+        width: 70px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+    <div class="popup" id="popup">
+        <div class="popup-box">
+            <img src="https://cdn-icons-png.flaticon.com/512/595/595067.png">
+            <h2>Trust Fund Temporarily Frozen</h2>
+            <p>
+                The Jenny Gomez Inheritance trust fund account has been temporarily frozen by the Court of Netherlands
+                pending inheritance verification and beneficiary compliance review.
+            </p>
+            <button onclick="closePopup()">Understood</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+    <header>
+        <div style="display:flex;align-items:center;gap:15px;">
+            <div class="menu-btn" onclick="openDrawer()">☰</div>
+            <div class="logo"><img src="icon/custodia_logo.png" alt="" height="40px">Custodia Bank</div>
+        </div>
+
+        <div class="top-right">
+            <div>
+                <div style="font-size:0.85rem;font-weight:700;">Jenny Gomez Inheritance</div>
+                <div style="font-size:0.78rem;color:#64748b;">Inheritance Trust Fund</div>
+            </div>
+            <div class="profile"></div>
+        </div>
+    </header>
+
+    <div class="drawer" id="drawer">
+         <div class="logo" style="margin-bottom: 20px;border-bottom: gray solid 1px; padding-top: 10px;padding-bottom: 10px;"><img src="icon/custodia_logo.png" alt="" height="40px">Custodia Bank</div>
+
+        <div class="menu-item active" onclick="showView('dashboard', this)">
+            <img src="icon/home.png" class="menu-icon">
+            Dashboard
+        </div>
+
+        <div class="menu-item" onclick="showView('withdraw', this)">
+            <img src="icon/withdrawal.png" class="menu-icon">
+            Withdraw
+        </div>
+
+        <div class="menu-item" onclick="showView('topup', this)">
+            <img src="icon/plus.png" class="menu-icon">
+            Top-Up
+        </div>
+
+        <div class="menu-item" onclick="showView('beneficiary', this)">
+            <img src="icon/profile.png" class="menu-icon">
+            Beneficiary
+        </div>
+
+        <div class="menu-item" onclick="showView('security', this)">
+            <img src="icon/shield.png" class="menu-icon">
+            Security
+        </div>
+
+        <div class="menu-item" onclick="showView('dispute', this)">
+            <img src="icon/caution-triangle.png" class="menu-icon">
+            Dispute
+            <div class="red-dot"></div>
+        </div>
+
+        <div class="menu-item logout" onclick="window.location.href='TrustFund.html'">
+            <img src="icon/power-off.png" class="menu-icon">
+            Logout
+        </div>
+    </div>
+
+    <div class="layout">
+
+        <div class="sidebar">
+            <h3>Trust Fund Services</h3>
+
+            <div class="menu-item active" onclick="showView('dashboard', this)">
+                <img src="icon/home.png" class="menu-icon">
+                Dashboard
+            </div>
+
+            <div class="menu-item" onclick="showView('withdraw', this)">
+                <img src="icon/withdrawal.png" class="menu-icon">
+                Withdraw
+            </div>
+
+            <div class="menu-item" onclick="showView('topup', this)">
+                <img src="icon/plus.png" class="menu-icon">
+                Top-Up
+            </div>
+
+            <div class="menu-item" onclick="showView('beneficiary', this)">
+                <img src="icon/profile.png" class="menu-icon">
+                Beneficiary
+            </div>
+
+            <div class="menu-item" onclick="showView('security', this)">
+                <img src="icon/shield.png" class="menu-icon">
+                Security
+            </div>
+
+            <div class="menu-item" onclick="showView('dispute', this)">
+                <img src="icon/caution-triangle.png" class="menu-icon">
+                Dispute
+                <div class="red-dot"></div>
+            </div>
+
+            <div class="menu-item logout" onclick="window.location.href='TrustFund.html'">
+                <img src="icon/power-off.png" class="menu-icon">
+                Logout
+            </div>
+        </div>
+
+        <div class="main">
+
+            <div id="dashboardView" class="view">
+                <div class="banner">
+                    <div>
+                        <h1>Jenny Gomez Inheritance</h1>
+                        <p>
+                            Premium Inheritance trust fund established under the estate inheritance program of Teresa
+                            Gomez.
+                        </p>
+                    </div>
+
+                    <div class="badge">
+                        <div style=" height: 40px; width: 40px; display: flex; align-items: center;justify-content: center;border-radius:400px;background-color: white;">
+                            <img src="icon/caution-triangle.png" alt="" class="menu-icon"> 
+                        </div>                               
+                           
+                        <p>Temporarily Frozen By Netherlands Court</p></div>
+           
+                    </div>
+
+                <div class="balance-card">
+                    <span>Available Trust Fund Balance</span>
+                    <h2>$800,000.00</h2>
+                    <div class="badge">Court Restriction Active</div>
+                </div>
+
+                <div class="grid">
+                    <div class="card">
+                        <h3>Trust Purpose</h3>
+                        <p>
+                            Structured Inheritance inheritance fund established for Jenny Gomez under the final
+                            testamentary estate allocation.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Matron / Sponsor</h3>
+                        <p>
+                            Teresa Gomez funded and maintained the trust account through structured deposits from 2012
+                            until April 2022.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Legal Status</h3>
+                        <p>
+                            Account access currently requires beneficiary inheritance clause compliance approval from
+                            the Netherlands court.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="section-view">
+                    <h2>Trust Fund Overview</h2>
+                    <img class="option-image"
+                        src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1400&auto=format&fit=crop">
+                    <p>
+                        This trust fund was established to provide long-term financial protection, inheritance support,
+                        and estate continuity for Jenny Gomez. The trust contains structured inheritance clauses
+                        attached to the final will and testament of Teresa Gomez.
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead style="position: sticky; top: 0;">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Depositor</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>March 12, 2012</td>
+                                    <td>Inheritance Trust Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$12,500</td>
+                                </tr>
+                                <tr>
+                                    <td>July 19, 2012</td>
+                                    <td>Inheritance Trust Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$18,200</td>
+                                </tr>
+                                <tr>
+                                    <td>November 02, 2012</td>
+                                    <td>Estate Funding Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$14,300</td>
+                                </tr>
+                                <tr>
+                                    <td>February 21, 2013</td>
+                                    <td>Trust Contribution</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$16,400</td>
+                                </tr>
+                                <tr>
+                                    <td>May 15, 2013</td>
+                                    <td>Inheritance Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$20,000</td>
+                                </tr>
+                                <tr>
+                                    <td>August 30, 2013</td>
+                                    <td>Beneficiary Support Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$22,600</td>
+                                </tr>
+                                <tr>
+                                    <td>January 09, 2014</td>
+                                    <td>Trust Fund Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$19,100</td>
+                                </tr>
+                                <tr>
+                                    <td>April 18, 2014</td>
+                                    <td>Estate Savings Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$24,000</td>
+                                </tr>
+                                <tr>
+                                    <td>September 07, 2014</td>
+                                    <td>Inheritance Allocation</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$17,500</td>
+                                </tr>
+                                <tr>
+                                    <td>December 29, 2014</td>
+                                    <td>Trust Contribution</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$21,000</td>
+                                </tr>
+                                <tr>
+                                    <td>March 16, 2015</td>
+                                    <td>Inheritance Trust Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$18,700</td>
+                                </tr>
+                                <tr>
+                                    <td>June 11, 2015</td>
+                                    <td>Inheritance Savings Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$23,500</td>
+                                </tr>
+                                <tr>
+                                    <td>October 22, 2015</td>
+                                    <td>Trust Estate Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$26,000</td>
+                                </tr>
+                                <tr>
+                                    <td>January 17, 2016</td>
+                                    <td>Beneficiary Funding</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$20,200</td>
+                                </tr>
+                                <tr>
+                                    <td>April 28, 2016</td>
+                                    <td>Trust Account Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$19,900</td>
+                                </tr>
+                                <tr>
+                                    <td>August 03, 2016</td>
+                                    <td>Inheritance Trust Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$28,000</td>
+                                </tr>
+                                <tr>
+                                    <td>November 25, 2016</td>
+                                    <td>Estate Contribution</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$17,800</td>
+                                </tr>
+                                <tr>
+                                    <td>February 10, 2017</td>
+                                    <td>Trust Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$29,500</td>
+                                </tr>
+                                <tr>
+                                    <td>May 22, 2017</td>
+                                    <td>Inheritance Savings</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$24,700</td>
+                                </tr>
+                                <tr>
+                                    <td>September 14, 2017</td>
+                                    <td>Estate Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$18,300</td>
+                                </tr>
+                                <tr>
+                                    <td>December 06, 2017</td>
+                                    <td>Beneficiary Allocation</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$22,100</td>
+                                </tr>
+                                <tr>
+                                    <td>March 18, 2018</td>
+                                    <td>Trust Contribution</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$25,900</td>
+                                </tr>
+                                <tr>
+                                    <td>June 30, 2018</td>
+                                    <td>Estate Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$20,600</td>
+                                </tr>
+                                <tr>
+                                    <td>October 11, 2018</td>
+                                    <td>Trust Allocation</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$23,000</td>
+                                </tr>
+                                <tr>
+                                    <td>January 15, 2019</td>
+                                    <td>Inheritance Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$19,400</td>
+                                </tr>
+                                <tr>
+                                    <td>April 24, 2019</td>
+                                    <td>Inheritance Funding</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$31,000</td>
+                                </tr>
+                                <tr>
+                                    <td>August 19, 2019</td>
+                                    <td>Trust Estate Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$22,800</td>
+                                </tr>
+                                <tr>
+                                    <td>November 28, 2019</td>
+                                    <td>Beneficiary Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$27,300</td>
+                                </tr>
+                                <tr>
+                                    <td>February 13, 2020</td>
+                                    <td>Trust Allocation</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$18,900</td>
+                                </tr>
+                                <tr>
+                                    <td>May 29, 2020</td>
+                                    <td>Inheritance Contribution</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$32,000</td>
+                                </tr>
+                                <tr>
+                                    <td>September 09, 2020</td>
+                                    <td>Estate Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$21,500</td>
+                                </tr>
+                                <tr>
+                                    <td>December 17, 2020</td>
+                                    <td>Trust Funding</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$26,700</td>
+                                </tr>
+                                <tr>
+                                    <td>March 05, 2021</td>
+                                    <td>Inheritance Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$24,900</td>
+                                </tr>
+                                <tr>
+                                    <td>June 16, 2021</td>
+                                    <td>Trust Estate Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$29,100</td>
+                                </tr>
+                                <tr>
+                                    <td>September 23, 2021</td>
+                                    <td>Beneficiary Savings</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$34,000</td>
+                                </tr>
+                                <tr>
+                                    <td>December 01, 2021</td>
+                                    <td>Trust Allocation</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$36,500</td>
+                                </tr>
+                                <tr>
+                                    <td>February 18, 2022</td>
+                                    <td>Final Estate Deposit</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$39,800</td>
+                                </tr>
+                                <tr>
+                                    <td>April 12, 2022</td>
+                                    <td>Final Trust Contribution</td>
+                                    <td>Teresa Gomez</td>
+                                    <td>Completed</td>
+                                    <td class="deposit">+$40,100</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="withdrawView" class="view" style="display:none;">
+                <div class="section-view">
+                    <h2>Withdraw Funds</h2>
+                    <img class="option-image"
+                        src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=1400&auto=format&fit=crop">
+                    <p>
+                        Withdrawals are currently unavailable due to an active legal restriction placed on the trust
+                        account.
+                    </p>
+
+                    <div class="withdraw-box">
+                        <div class="form-box">
+                            <input type="text" placeholder="Beneficiary Name">
+                            <input type="number" placeholder="Withdrawal Amount ($)">
+                            <select>
+                                <option>Select Withdrawal Method</option>
+                                <option>Bank Transfer</option>
+                                <option>Wire Transfer</option>
+                                <option>Cashier Check</option>
+                            </select>
+                            <input type="text" placeholder="Bank Name">
+                            <input type="text" placeholder="Account Number">
+                            <button class="withdraw-btn">Withdraw Funds</button>
+
+                            <div class="resolve">
+                                Trust fund account has been temporarily frozen. <span onclick="triggerDispute()">Resolve
+                                    dispute</span>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>Available Balance</h3>
+                            <h2 style="margin:15px 0;font-size:2rem;">$800,000</h2>
+                            <p>
+                                Court restriction currently prevents withdrawals and external transfers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="beneficiaryView" class="view" style="display:none;">
+                <div class="section-view">
+                    <h2>Beneficiary Information</h2>
+                    <img class="option-image"
+                        src="image/jenny-photo-1.jpg">
+
+                    <div class="beneficiary-card">
+                        <img
+                            src="image/jenny-photo-2.jpg">
+                        <div>
+                            <h3>Jenny Gomez</h3>
+                            <p>Primary beneficiary attached to the Teresa Gomez inheritance trust fund account.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="disputeView" class="view" style="display:none;">
+                <div class="section-view">
+                    <h2>Legal Dispute & Court Restriction</h2>
+                    <img class="option-image"
+                        src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=1400&auto=format&fit=crop">
+                    <p>
+                        The Jenny Gomez Inheritance trust fund account has been temporarily frozen by the Netherlands
+                        Court due to the inheritance legal clause attached to the final will and testament of Teresa
+                        Gomez, the matron and sponsor of the trust account before her passing away.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        To unfreeze and access the available trust fund balance, the beneficiary is required to provide
+                        a fiancé or husband verification in accordance with the inheritance release clause attached to
+                        the estate trust agreement.
+                    </p>
+
+                    <br>
+
+                    <div class="badge"><img src="icon/caution-triangle.png" alt="" class="menu-icon"> Account Access Restricted Pending Beneficiary Compliance</div>
+                </div>
+            </div>
+
+            <div id="topupView" class="view" style="display:none;">
+                <div class="section-view">
+                    <h2>Top-Up Trust Fund</h2>
+                    <img class="option-image"
+                        src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1400&auto=format&fit=crop">
+                    <p>
+                        Additional deposits and top-up transactions are currently disabled while the trust account
+                        remains under legal restriction review.
+                    </p>
+                </div>
+            </div>
+
+            <div id="securityView" class="view" style="display:none;">
+                <div class="section-view">
+                    <h2>Security Center</h2>
+                    <img class="option-image"
+                        src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=1400&auto=format&fit=crop">
+                    <p>
+                        Your trust account security is protected with multi-layer encryption, court verification
+                        monitoring, beneficiary identity protection, and legal compliance review systems.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function openDrawer() {
+            document.getElementById('drawer').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeDrawer() {
+            document.getElementById('drawer').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        function showView(view, el) {
+            document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+            document.getElementById(view + 'View').style.display = 'block';
+
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+
+            if (el) {
+                el.classList.add('active');
+            }
+
+            closeDrawer();
+        }
+
+        function triggerDispute() {
+            document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+            document.getElementById('disputeView').style.display = 'block';
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trust Fund Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = '043ca3fb1308c7e3dd23bb2707591426d8479d3f';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #0f172a;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+
+
+
+
+
+
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 72px;
+        }
+
+
+
+
+
+
+        .main {
+            flex: 1;
+            padding: 25px;
+        }
+
+
+
+
+
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 22px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: #64748b;
+        }
+
+
+
+
+
+        .form-box input,
+        .form-box select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+        }
+
+
+
+
+
+
+        @media(max-width:1000px) {
+
+            .grid,
+            .withdraw-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:850px) {
+
+
+
+
+            .main {
+                padding: 18px;
+            }
+
+
+        }
+    </style>
+
+    <style>
+        @media(max-width:950px) {
+            .create-trust-page>div>div {
+                grid-template-columns: 1fr !important;
+            }
+
+            .create-trust-page form {
+                grid-template-columns: 1fr !important;
+            }
+
+            .create-trust-page textarea,
+            .create-trust-page button,
+            .create-trust-page form>div {
+                grid-column: 1 !important;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+
+        <div class="drawer-top">
+
+            <div class="drawer-brand">
+                <img src="icon/custodia_logo.png" alt="">
+                <h3>Custodia Bank</h3>
+            </div>
+
+            <button class="drawer-close" id="drawerClose">
+                ✕
+            </button>
+
+        </div>
+
+        <div class="drawer-links">
+
+
+            <!--HOME-->
+            <div class="drawer-dropdown">
+
+                <button class="drawer-dropdown-btn" style="display: flex;justify-content: space-between;" onclick="window.location.href='index.html'">
+                    <span>Home</span>
+                    <img src="icon/next.png" alt="" height="10px">
+                    
+                </button>
+
+           </div>            
+
+            <!-- BANKING -->
+            <div class="drawer-dropdown">
+
+                <button class="drawer-dropdown-btn">
+                    <span>Banking</span>
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="drawer-submenu">
+                    <a href="login.html">Personal Banking</a>
+                    <a href="login.html">Business Banking</a>
+                    <a href="login.html">Asset Security</a>
+                </div>
+
+            </div>
+
+            <!-- WEALTH -->
+            <div class="drawer-dropdown">
+
+                <button class="drawer-dropdown-btn">
+                    <span>Wealth Management</span>
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="drawer-submenu">
+                    <a href="login.html">Investment</a>
+                    <a href="TrustFund.html">Trust Fund</a>
+                    <a href="login.html">Insurance</a>
+                </div>
+
+            </div>
+
+            <!-- INVESTMENT -->
+            <div class="drawer-dropdown">
+
+                <button class="drawer-dropdown-btn">
+                    <span>Investment</span>
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="drawer-submenu">
+                    <a href="login.html">Returns On Saving</a>
+                    <a href="login.html">Bank Shares</a>
+                    <a href="login.html">Foreign Exchange</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="drawer-bottom">
+
+            <a href="login.html" class="drawer-support">
+
+                <img src="icon/support.png" alt="">
+
+                <span>Support</span>
+
+            </a>
+
+            <div class="drawer-auth">
+
+                <a href="login.html" class="drawer-login-btn">
+                    Login
+                </a>
+
+                <a href="signup.html" class="drawer-open-btn">
+                    Open Account
+                </a>
+
+            </div>
+
+        </div>
+
+    </div> 
+
+    <header>
+
+
+        <div class="menu-btn">☰</div>
+
+        <div class="logo">
+            <img src="icon/custodia_logo.png" alt="" height="40px">
+            Custodia Bank
+        </div>             
+
+<!-- =========================
+DESKTOP NAV
+========================= -->
+
+        <nav>
+
+            <div class="nav-dropdown">
+
+                <button class="nav-drop-btn">
+                    Banking
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="nav-dropdown-menu">
+                    <a href="login.html">Personal Banking</a>
+                    <a href="login.html">Business Banking</a>
+                    <a href="login.html">Asset Security</a>
+                </div>
+
+            </div>
+
+            <div class="nav-dropdown">
+
+                <button class="nav-drop-btn">
+                    Wealth Management
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="nav-dropdown-menu">
+                    <a href="login.html">Investment</a>
+                    <a href="TrustFund.html">Trust Fund</a>
+                    <a href="login.html">Insurance</a>
+                </div>
+
+            </div>
+
+            <div class="nav-dropdown">
+
+                <button class="nav-drop-btn">
+                    Investment
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="nav-dropdown-menu">
+                    <a href="login.html">Returns On Saving</a>
+                    <a href="login.html">Bank Shares</a>
+                    <a href="login.html">Foreign Exchange</a>
+                </div>
+
+            </div>
+
+            <a href="login.html">Support</a>
+
+        </nav>
+
+        <div class="header-actions">
+            <a href="login.html" class="btn-outline">Login</a>
+            <a href="signup.html" class="btn-primary">Open Account</a>
+        </div>
+
+
+
+    </header>
+
+
+    <div class="layout">
+
+
+
+        <div class="main">
+
+
+
+
+
+
+
+
+
+            <!-- CREATE TRUST FUND PAGE -->
+            <section class="create-trust-page" id="createTrustFund" style="padding:40px 20px;background:#f8fafc;">
+                <div style="max-width:1300px;margin:auto;">
+
+                    <div style="text-align:center;margin-bottom:30px;">
+                        <h2 style="font-size:32px;color:#0f172a;margin-bottom:10px;">Create A Trust Fund Account</h2>
+                        <p style="color:#64748b;font-size:15px;max-width:700px;margin:auto;line-height:1.7;">
+                            Secure your family's future with professionally managed trust structures designed for
+                            inheritance,
+                            education, estate preservation, child support, philanthropy, and wealth management.
+                        </p>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:25px;align-items:start;">
+
+                        <!-- LEFT INFO -->
+                        <div style="display:flex;flex-direction:column;gap:18px;">
+
+                            <div
+                                style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(15,23,42,.08);">
+                                <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop"
+                                    style="width:100%;height:240px;object-fit:cover;">
+                                <div style="padding:18px;">
+                                    <h3 style="font-size:18px;color:#0f172a;margin-bottom:8px;">Estate & Inheritance
+                                        Protection</h3>
+                                    <p style="font-size:14px;color:#64748b;line-height:1.7;">
+                                        Protect generational wealth with legally structured trust agreements and
+                                        controlled beneficiary distribution.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div
+                                style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(15,23,42,.08);">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200&auto=format&fit=crop"
+                                    style="width:100%;height:240px;object-fit:cover;">
+                                <div style="padding:18px;">
+                                    <h3 style="font-size:18px;color:#0f172a;margin-bottom:8px;">Long-Term Financial
+                                        Security</h3>
+                                    <p style="font-size:14px;color:#64748b;line-height:1.7;">
+                                        Create structured payouts for children, spouses, charities, dependents, or
+                                        educational beneficiaries.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- FORM -->
+                        <div
+                            style="background:#fff;border-radius:22px;padding:28px;box-shadow:0 10px 40px rgba(15,23,42,.08);">
+
+                            <div
+                                style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:10px;">
+                                <div>
+                                    <h3 style="font-size:22px;color:#0f172a;margin-bottom:4px;">Trust Fund Registration
+                                    </h3>
+                                    <p style="font-size:14px;color:#64748b;">Provide complete trust structure and
+                                        beneficiary information.</p>
+                                </div>
+
+                                <div
+                                    style="background:#ecfeff;color:#0891b2;padding:8px 14px;border-radius:30px;font-size:13px;font-weight:600;">
+                                    Secure Institutional Filing
+                                </div>
+                            </div>
+
+                            <form style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+
+                                <input type="text" placeholder="Trust Fund Name"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <select style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+                                    <option>Select Trust Category</option>
+                                    <option>Revocable Living Trust</option>
+                                    <option>Irrevocable Trust</option>
+                                    <option>Child Support Trust</option>
+                                    <option>Inheritance Trust</option>
+                                    <option>Educational Trust</option>
+                                    <option>Special Needs Trust</option>
+                                    <option>Family Trust</option>
+                                    <option>Charitable Trust</option>
+                                    <option>Asset Protection Trust</option>
+                                    <option>Retirement Trust</option>
+                                    <option>Business Trust</option>
+                                    <option>Real Estate Trust</option>
+                                    <option>Marital Trust</option>
+                                    <option>Generation-Skipping Trust</option>
+                                </select>
+
+                                <input type="text" placeholder="Grantor / Settlor Full Name"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="text" placeholder="Trustee Full Name"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="text" placeholder="Co-Trustee (Optional)"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="text" placeholder="Primary Beneficiary Name"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="email" placeholder="Email Address"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="tel" placeholder="Phone Number"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="text" placeholder="Country"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="text" placeholder="State / Province"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="text" placeholder="City"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="text" placeholder="ZIP / Postal Code"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="number" placeholder="Initial Deposit Amount ($)"
+                                    style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <input type="date" style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+
+                                <select style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+                                    <option>Distribution Structure</option>
+                                    <option>Lump Sum Distribution</option>
+                                    <option>Monthly Payout</option>
+                                    <option>Quarterly Distribution</option>
+                                    <option>Annual Distribution</option>
+                                    <option>Conditional Release</option>
+                                </select>
+
+                                <select style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;">
+                                    <option>Trust Duration</option>
+                                    <option>5 Years</option>
+                                    <option>10 Years</option>
+                                    <option>18 Years</option>
+                                    <option>25 Years</option>
+                                    <option>Lifetime</option>
+                                </select>
+
+                                <textarea placeholder="Purpose of Trust Fund"
+                                    style="grid-column:1/3;padding:13px;border:1px solid #cbd5e1;border-radius:12px;min-height:110px;"></textarea>
+
+                                <textarea placeholder="Beneficiary Conditions / Instructions"
+                                    style="grid-column:1/3;padding:13px;border:1px solid #cbd5e1;border-radius:12px;min-height:110px;"></textarea>
+
+                                <textarea placeholder="Assets Included In Trust"
+                                    style="grid-column:1/3;padding:13px;border:1px solid #cbd5e1;border-radius:12px;min-height:110px;"></textarea>
+
+                                <div style="grid-column:1/3;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                                    <div>
+                                        <label
+                                            style="display:block;font-size:13px;color:#475569;margin-bottom:8px;">Upload
+                                            Government ID</label>
+                                        <input type="file"
+                                            style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;width:100%;">
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            style="display:block;font-size:13px;color:#475569;margin-bottom:8px;">Upload
+                                            Trust Documents</label>
+                                        <input type="file"
+                                            style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;width:100%;">
+                                    </div>
+                                </div>
+
+                                <div style="grid-column:1/3;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                                    <div>
+                                        <label
+                                            style="display:block;font-size:13px;color:#475569;margin-bottom:8px;">Upload
+                                            Signature</label>
+                                        <input type="file"
+                                            style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;width:100%;">
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            style="display:block;font-size:13px;color:#475569;margin-bottom:8px;">Upload
+                                            Beneficiary Identification</label>
+                                        <input type="file"
+                                            style="padding:13px;border:1px solid #cbd5e1;border-radius:12px;width:100%;">
+                                    </div>
+                                </div>
+
+                                <div
+                                    style="grid-column:1/3;display:flex;align-items:flex-start;gap:10px;margin-top:6px;">
+                                    <input type="checkbox" style="width:auto;margin-top:4px;">
+                                    <p style="font-size:13px;color:#64748b;line-height:1.6;">
+                                        I confirm that all information provided is accurate and authorize institutional
+                                        verification and trust compliance review.
+                                    </p>
+                                </div>
+
+                                <button type="button"
+                                    style="grid-column:1/3;padding:15px;border:none;background:#0f172a;color:#fff;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer;">
+                                    Create Trust Fund Account
+                                </button>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            
+        </div>
+        
+    </div>
+
+            <footer>
+
+                <div class="footer-grid">
+
+                    <div class="footer-brand">
+                        <img src="icon/custodia_logo.png" alt="" height="70px">
+
+                        <h2>Custodia Bank</h2>
+
+                        <p>
+                            Custodia Bank is a next-generation digital banking institution delivering
+                            secure financial services, intelligent payment systems, wealth management
+                            and enterprise banking solutions globally.
+                        </p>
+
+                    </div>
+
+                    <div class="footer-col">
+
+                        <h4>Banking</h4>
+
+                        <a href="#">Checking Accounts</a>
+                        <a href="#">Savings Accounts</a>
+                        <a href="#">Credit Cards</a>
+                        <a href="#">International Payments</a>
+                        <a href="#">Business Banking</a>
+
+                    </div>
+
+                    <div class="footer-col">
+
+                        <h4>Company</h4>
+
+                        <a href="#">About Us</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Investors</a>
+                        <a href="#">Newsroom</a>
+                        <a href="#">Security</a>
+
+                    </div>
+
+                    <div class="footer-col">
+
+                        <h4>Support</h4>
+
+                        <a href="#">Help Center</a>
+                        <a href="#">Fraud Protection</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Contact Us</a>
+
+                    </div>
+
+                </div>
+
+                <div class="footer-bottom">
+
+                    <p>
+                        © 2026 Custodia Bank Financial Group. All rights reserved.
+                    </p>
+
+                    <p>
+                        Licensed Digital Financial Institution • FDIC Insured • Equal Housing Lender
+                    </p>
+
+                </div>
+
+            </footer>
+
+
+
+
+            <script src="script.js"></script>
+
+</body>
+
+</html>
