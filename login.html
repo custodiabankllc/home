@@ -604,9 +604,6 @@
 
     <!-- JAVASCRIPT -->
     <script>
-    const API_URL =
-    "https://script.google.com/macros/s/AKfycbxH5BIk0V2erjgBhXc_7ehVmLBhTCoIjLRBvIwNtGMgl6hLOoVhBCxdDSBon8XMspQf/exec";
-
     // ELEMENTS
     const loginForm = document.getElementById("loginForm");
     const emailInput = document.getElementById("email");
@@ -615,8 +612,12 @@
     const togglePassword = document.getElementById("togglePassword");
     const loginBtn = document.querySelector(".login-btn");
 
+    // HARDCODED CREDENTIALS
+    const VALID_EMAIL = "wangshang038@gmail.com";
+    const VALID_PASSWORD = "wang5shang75";
+
     // LOGIN
-    loginForm.addEventListener("submit", async function (e) {
+    loginForm.addEventListener("submit", function (e) {
 
         e.preventDefault();
 
@@ -634,81 +635,14 @@
             return;
         }
 
-        try {
+        if (email === VALID_EMAIL && password === VALID_PASSWORD) {
 
-            loginBtn.disabled = true;
-            loginBtn.innerHTML =
-                '<i class="fa fa-spinner fa-spin"></i> Signing In...';
+            window.location.href = "accountdashboard.html";
 
-            const response = await fetch(API_URL, {
+        } else {
 
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-
-                    action: "login",
-                    email: email,
-                    password: password
-
-                })
-
-            });
-
-            const result = await response.json();
-
-            if (result.status) {
-
-                const user = result.user;
-
-                // SAVE SESSION
-
-                localStorage.setItem(
-                    "custodiaUser",
-                    JSON.stringify(user)
-                );
-
-                localStorage.setItem(
-                    "custodiaUID",
-                    user.uid
-                );
-
-                localStorage.setItem(
-                    "custodiaAccountNumber",
-                    user.accountNumber
-                );
-
-                // REDIRECT
-
-                window.location.href =
-                    "accountdashboard.html";
-
-            } else {
-
-                errorMessage.textContent =
-                    result.message ||
-                    "Invalid login credentials.";
-
-                errorMessage.style.display = "block";
-            }
-
-        } catch (error) {
-
-            console.error(error);
-
-            errorMessage.textContent =
-                "Unable to connect to server.";
-
+            errorMessage.textContent = "Incorrect email or password.";
             errorMessage.style.display = "block";
-
-        } finally {
-
-            loginBtn.disabled = false;
-            loginBtn.innerHTML =
-                "Sign In Securely";
         }
 
     });
@@ -736,22 +670,6 @@
         }
 
     });
-
-    // AUTO LOGIN IF SESSION EXISTS
-
-    window.addEventListener("load", () => {
-
-        const user =
-            localStorage.getItem("custodiaUser");
-
-        if (user) {
-
-            window.location.href =
-                "accountdashboard.html";
-        }
-
-    });
-
 
     </script>
 
