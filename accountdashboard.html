@@ -10666,7 +10666,7 @@ ACCOUNT NOTICE
 
                         <div class="stat">
                             <small>Total Savings</small>
-                            <h2>¥101,643,750.00 </h2>
+                            <h2 id="homeTotalSavings">¥101,643,750.00</h2>
                         </div>
 
                         <div class="stat">
@@ -11128,7 +11128,7 @@ ACCOUNT NOTICE
 
                     <small>Total Financial Assets</small>
 
-                    <h2>¥101,643,750.00  </h2>
+                    <h2 id="financeTotalAssets">¥101,643,750.00</h2>
 
                     <span class="finance-growth">
                         <i class="fa-solid fa-arrow-trend-up"></i>
@@ -11151,7 +11151,7 @@ ACCOUNT NOTICE
 
                     <small>Total Balance</small>
 
-                    <h3>¥0</h3>
+                    <h3 id="financeTotalBalance">¥0</h3>
 
                     <span>
                         Available Banking Funds
@@ -11183,7 +11183,7 @@ ACCOUNT NOTICE
 
                     <small>Savings</small>
 
-                    <h3>¥0.00</h3>
+                    <h3 id="financeSavings">¥0.00</h3>
 
                     <span>
                         Long-Term Deposits
@@ -11681,7 +11681,7 @@ ACCOUNT NOTICE
 
                                 <div class="detail-box">
                                     <small>Daily Transfer Limit</small>
-                                    <h4 id="cardDailyTransferLimit">¥50,000.00</h4>
+                                    <h4 id="cardDailyTransferLimit">¥10,000,000.00</h4>
                                 </div>
 
                                 <div class="detail-box">
@@ -11951,7 +11951,7 @@ ME PAGE / PROFILE PAGE
 
             <small>Total Account Balance</small>
 
-            <h2>¥101,643,750.00 </h2>
+            <h2 id="meBalance">¥101,643,750.00</h2>
 
             <span>
                 Available Banking Assets
@@ -13254,6 +13254,29 @@ WITHDRAW PAGE
 
                     </div>
 -->
+                    <!-- PIN -->
+
+                    <div class="txn-pin-wrap" id="withdrawPinWrap">
+
+                        <label class="txn-pin-label">
+                            <i class="fa-solid fa-lock"></i>
+                            Enter Your 4-Digit PIN to Confirm
+                        </label>
+
+                        <div class="txn-pin-row">
+                            <input class="txn-pin-box" id="wpin1" type="password" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="•">
+                            <input class="txn-pin-box" id="wpin2" type="password" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="•">
+                            <input class="txn-pin-box" id="wpin3" type="password" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="•">
+                            <input class="txn-pin-box" id="wpin4" type="password" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="•">
+                            <button type="button" class="txn-pin-eye" id="withdrawPinEye" title="Show PIN">
+                                <i class="fa-solid fa-eye" id="withdrawPinEyeIcon"></i>
+                            </button>
+                        </div>
+
+                        <p class="txn-pin-error" id="withdrawPinError"></p>
+
+                    </div>
+
                     <!-- BUTTON -->
 
                     <button class="withdraw-btn" type="button" id="submitWithdrawBtn">
@@ -13328,12 +13351,12 @@ WITHDRAW PAGE
 
                     <div class="withdraw-detail">
                         <span>Daily Limit</span>
-                        <strong id="withdrawDailyLimit">¥50,000.00</strong>
+                        <strong id="withdrawDailyLimit">¥10,000,000.00</strong>
                     </div>
 
                     <div class="withdraw-detail">
                         <span>Transfer Fee</span>
-                        <strong>¥45.00</strong>
+                        <strong>¥100,000.00</strong>
                     </div>
 
                     <div class="withdraw-detail">
@@ -13591,6 +13614,29 @@ TRANSFER PAGE
 
                     </div>
 -->
+                    <!-- PIN -->
+
+                    <div class="txn-pin-wrap" id="transferPinWrap">
+
+                        <label class="txn-pin-label">
+                            <i class="fa-solid fa-lock"></i>
+                            Enter Your 4-Digit PIN to Confirm
+                        </label>
+
+                        <div class="txn-pin-row">
+                            <input class="txn-pin-box" id="tpin1" type="password" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="•">
+                            <input class="txn-pin-box" id="tpin2" type="password" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="•">
+                            <input class="txn-pin-box" id="tpin3" type="password" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="•">
+                            <input class="txn-pin-box" id="tpin4" type="password" inputmode="numeric" maxlength="1" autocomplete="off" placeholder="•">
+                            <button type="button" class="txn-pin-eye" id="transferPinEye" title="Show PIN">
+                                <i class="fa-solid fa-eye" id="transferPinEyeIcon"></i>
+                            </button>
+                        </div>
+
+                        <p class="txn-pin-error" id="transferPinError"></p>
+
+                    </div>
+
                     <!-- BUTTON -->
 
                     <button type="button"
@@ -13679,7 +13725,7 @@ TRANSFER PAGE
 
                     <div class="transfer-detail">
                         <span>International Fee</span>
-                        <strong>¥65.00</strong>
+                        <strong>¥100,000.00</strong>
                     </div>
 
                     <div class="transfer-detail">
@@ -14974,7 +15020,7 @@ ACCOUNT STATEMENT PAGE
 
             <small>Total Balance</small>
 
-            <h2>¥101,643,750.00 </h2>
+            <h2 id="statementBalance">¥101,643,750.00</h2>
 
             <span class="green-text">
                 Active Account
@@ -15464,7 +15510,7 @@ ADD FUNDS PAGE
 
             <small>Current Account Balance</small>
 
-            <h2>¥101,643,750.00 </h2>
+            <h2 id="addFundsBalance">¥101,643,750.00</h2>
 
             <span>
                 Premium Banking Account
@@ -18563,6 +18609,27 @@ TRANSFER FORM - SAVE TO CACHE & SHOW PENDING
 
         var withdrawBal = document.getElementById('withdrawAvailableBalance');
         if(withdrawBal) withdrawBal.textContent = formatted;
+
+        var stmtBal = document.getElementById('statementBalance');
+        if(stmtBal) stmtBal.textContent = formatted;
+
+        var meBal = document.getElementById('meBalance');
+        if(meBal) meBal.textContent = formatted;
+
+        var addFundsBal = document.getElementById('addFundsBalance');
+        if(addFundsBal) addFundsBal.textContent = formatted;
+
+        var homeSavings = document.getElementById('homeTotalSavings');
+        if(homeSavings) homeSavings.textContent = formatted;
+
+        var financeAssets = document.getElementById('financeTotalAssets');
+        if(financeAssets) financeAssets.textContent = formatted;
+
+        var financeTotalBal = document.getElementById('financeTotalBalance');
+        if(financeTotalBal) financeTotalBal.textContent = formatted;
+
+        var financeSavings = document.getElementById('financeSavings');
+        if(financeSavings) financeSavings.textContent = formatted;
     }
 
     window.custodiaBalance = {
@@ -18799,7 +18866,7 @@ TRANSFER FORM - SAVE TO CACHE & SHOW PENDING
 
 (function(){
 
-    var CARD_DAILY_LIMIT = 50000; // ¥50,000.00
+    var CARD_DAILY_LIMIT = 10000000; // ¥10,000,000.00
     var CARD_PIN         = '1205';
     var pinVisible       = false;
 
@@ -18879,6 +18946,644 @@ TRANSFER FORM - SAVE TO CACHE & SHOW PENDING
 
     document.addEventListener('DOMContentLoaded', init);
 })();
+</script>
+
+<!-- ═══════════════════════════════════════════════
+     RECEIPT MODAL + PIN VALIDATION
+     Self-contained — touches nothing above.
+     ═══════════════════════════════════════════════ -->
+
+<style>
+/* ── PIN fields ───────────────────────────────── */
+.txn-pin-wrap {
+    margin-bottom: 18px;
+}
+.txn-pin-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 10px;
+}
+.txn-pin-label i { color: #0066ff; }
+.txn-pin-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.txn-pin-box {
+    width: 52px;
+    height: 54px;
+    border-radius: 14px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: #07111f;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.txn-pin-box:focus {
+    border-color: #0066ff;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,102,255,.12);
+}
+.txn-pin-box.pin-err { border-color: #dc2626 !important; background: #fff5f5; }
+.txn-pin-box.pin-ok  { border-color: #16a34a !important; background: #f0fdf4; }
+.txn-pin-eye {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: #f1f5f9;
+    border-radius: 12px;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background .2s;
+}
+.txn-pin-eye:hover { background: #e2e8f0; }
+.txn-pin-error {
+    font-size: 12px;
+    font-weight: 600;
+    color: #dc2626;
+    margin-top: 8px;
+    min-height: 16px;
+}
+
+/* ── Receipt overlay ──────────────────────────── */
+.rcpt-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(7,17,31,.55);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s, visibility .25s;
+}
+.rcpt-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+.rcpt-modal {
+    background: #fff;
+    border-radius: 28px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 88dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 40px 100px rgba(7,17,31,.22);
+    transform: translateY(24px) scale(.97);
+    transition: transform .3s cubic-bezier(.34,1.38,.64,1);
+}
+.rcpt-scroll {
+    overflow-y: auto;
+    flex: 1;
+    border-radius: 0 0 28px 28px;
+}
+.rcpt-overlay.open .rcpt-modal {
+    transform: translateY(0) scale(1);
+}
+.rcpt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 0;
+}
+.rcpt-header h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: #07111f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.rcpt-header h3 i { color: #0066ff; }
+.rcpt-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: #f1f5f9;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+}
+.rcpt-close:hover { background: #e2e8f0; }
+.rcpt-stamp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 28px 24px 20px;
+    text-align: center;
+}
+.rcpt-stamp-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+.rcpt-stamp-icon.s-credit  { background: #dcfce7; color: #16a34a; }
+.rcpt-stamp-icon.s-debit   { background: #dbeafe; color: #2563eb; }
+.rcpt-stamp-icon.s-pending { background: #fef3c7; color: #d97706; }
+.rcpt-amount {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+.rcpt-amount.a-plus  { color: #16a34a; }
+.rcpt-amount.a-minus { color: #dc2626; }
+.rcpt-badge {
+    padding: 4px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+.rcpt-badge.b-done    { background: #dcfce7; color: #15803d; }
+.rcpt-badge.b-pending { background: #fef9c3; color: #854d0e; }
+.rcpt-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 24px;
+}
+.rcpt-divider-line { flex: 1; height: 1px; background: #f1f5f9; }
+.rcpt-divider span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+}
+.rcpt-rows {
+    padding: 16px 24px 20px;
+    display: flex;
+    flex-direction: column;
+}
+.rcpt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f8fafc;
+}
+.rcpt-row:last-child { border-bottom: none; }
+.rcpt-row-lbl { font-size: 13px; color: #94a3b8; font-weight: 500; flex-shrink: 0; }
+.rcpt-row-val { font-size: 13px; color: #07111f; font-weight: 700; text-align: right; word-break: break-all; }
+.rcpt-actions {
+    display: flex;
+    gap: 12px;
+    padding: 0 24px 24px;
+}
+.rcpt-btn-print {
+    flex: 1;
+    height: 46px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #334155;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background .2s;
+}
+.rcpt-btn-print:hover { background: #f8fafc; }
+.rcpt-btn-done {
+    flex: 1;
+    height: 46px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #0066ff, #00b7ff);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity .2s;
+}
+.rcpt-btn-done:hover { opacity: .9; }
+
+/* ── Make table rows + recent cards clickable ── */
+#transactionHistoryTableBody tr { cursor: pointer; transition: background .15s; }
+#transactionHistoryTableBody tr:hover { background: #f8fbff; }
+#recentTransactionsContainer .transaction { cursor: pointer; }
+</style>
+
+<!-- Receipt Modal HTML -->
+<div id="rcptOverlay" class="rcpt-overlay" role="dialog" aria-modal="true">
+    <div class="rcpt-modal">
+
+        <div class="rcpt-header">
+            <h3><i class="fa-solid fa-receipt"></i>Transaction Receipt</h3>
+            <button class="rcpt-close" id="rcptClose"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="rcpt-scroll">
+        <div class="rcpt-stamp">
+            <div class="rcpt-stamp-icon" id="rcptIcon"><i class="fa-solid fa-circle-check" id="rcptIconEl"></i></div>
+            <div class="rcpt-amount" id="rcptAmount"></div>
+            <span class="rcpt-badge" id="rcptBadge"></span>
+        </div>
+
+        <div class="rcpt-divider">
+            <div class="rcpt-divider-line"></div>
+            <span>Details</span>
+            <div class="rcpt-divider-line"></div>
+        </div>
+
+        <div class="rcpt-rows" id="rcptRows"></div>
+
+        <div class="rcpt-actions">
+            <button class="rcpt-btn-print" id="rcptPrint"><i class="fa-solid fa-print"></i> Print</button>
+            <button class="rcpt-btn-done"  id="rcptDone"><i class="fa-solid fa-check"></i> Done</button>
+        </div>
+
+        </div><!-- /.rcpt-scroll -->
+
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ═══════════════════════════════════════════
+       1. SHARED ACCOUNT PIN
+       (matches CARD_PIN = '1205' from card script)
+       ═══════════════════════════════════════════ */
+    var ACCOUNT_PIN = '1205';
+
+    /* ═══════════════════════════════════════════
+       2. PIN FIELD FACTORY
+       ids  — array of 4 input element IDs
+       eyeId, eyeIconId — toggle button IDs
+       errId — error paragraph ID
+       ═══════════════════════════════════════════ */
+    function makePinField(ids, eyeId, eyeIconId, errId) {
+        var boxes   = ids.map(function (id) { return document.getElementById(id); });
+        var eye     = document.getElementById(eyeId);
+        var eyeIcon = document.getElementById(eyeIconId);
+        var errEl   = document.getElementById(errId);
+        var visible = false;
+
+        if (!boxes[0]) return null; // guard — DOM not ready
+
+        /* auto-advance + digit-only filter */
+        boxes.forEach(function (box, i) {
+            box.addEventListener('keydown', function (e) {
+                /* backspace on empty → move back */
+                if (e.key === 'Backspace' && !box.value && i > 0) {
+                    boxes[i - 1].focus();
+                }
+            });
+            box.addEventListener('input', function () {
+                /* strip non-digits */
+                box.value = box.value.replace(/[^0-9]/g, '').slice(0, 1);
+                clearState();
+                if (box.value && i < 3) boxes[i + 1].focus();
+            });
+        });
+
+        /* eye toggle */
+        if (eye) {
+            eye.addEventListener('click', function () {
+                visible = !visible;
+                boxes.forEach(function (b) { b.type = visible ? 'text' : 'password'; });
+                eyeIcon.className = visible ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            });
+        }
+
+        function clearState() {
+            boxes.forEach(function (b) { b.classList.remove('pin-err', 'pin-ok'); });
+            if (errEl) errEl.textContent = '';
+        }
+
+        function getPin() {
+            return boxes.map(function (b) { return b.value; }).join('');
+        }
+
+        /* returns true if valid, false + shows error if not */
+        function validate() {
+            var pin = getPin();
+            if (pin.length < 4) {
+                boxes.forEach(function (b) { b.classList.add('pin-err'); });
+                if (errEl) errEl.textContent = 'Please enter all 4 PIN digits.';
+                /* focus first empty */
+                for (var i = 0; i < boxes.length; i++) {
+                    if (!boxes[i].value) { boxes[i].focus(); break; }
+                }
+                return false;
+            }
+            if (pin !== ACCOUNT_PIN) {
+                boxes.forEach(function (b) { b.classList.add('pin-err'); b.value = ''; });
+                if (errEl) errEl.textContent = 'Incorrect PIN. Please try again.';
+                boxes[0].focus();
+                return false;
+            }
+            boxes.forEach(function (b) { b.classList.add('pin-ok'); });
+            return true;
+        }
+
+        function reset() {
+            boxes.forEach(function (b) {
+                b.value = '';
+                b.type = 'password';
+                b.classList.remove('pin-err', 'pin-ok');
+            });
+            visible = false;
+            if (eyeIcon) eyeIcon.className = 'fa-solid fa-eye';
+            if (errEl) errEl.textContent = '';
+        }
+
+        return { validate: validate, reset: reset };
+    }
+
+    /* ═══════════════════════════════════════════
+       3. RECEIPT MODAL
+       ═══════════════════════════════════════════ */
+    var overlay = document.getElementById('rcptOverlay');
+    var rcptClose = document.getElementById('rcptClose');
+    var rcptDone  = document.getElementById('rcptDone');
+    var rcptPrint = document.getElementById('rcptPrint');
+
+    function openReceipt(tx) {
+        /* icon + colour */
+        var isCredit  = (tx.type || '') === 'Credit';
+        var isPending = (tx.status || '').toLowerCase() === 'pending';
+
+        var icon    = document.getElementById('rcptIcon');
+        var iconEl  = document.getElementById('rcptIconEl');
+        var amtEl   = document.getElementById('rcptAmount');
+        var badgeEl = document.getElementById('rcptBadge');
+        var rowsEl  = document.getElementById('rcptRows');
+
+        icon.className  = 'rcpt-stamp-icon ' + (isPending ? 's-pending' : isCredit ? 's-credit' : 's-debit');
+        iconEl.className = 'fa-solid ' + (isPending ? 'fa-clock' : isCredit ? 'fa-circle-check' : 'fa-paper-plane');
+
+        amtEl.textContent = (isCredit ? '+' : '-') + (tx.amount || '');
+        amtEl.className   = 'rcpt-amount ' + (isCredit ? 'a-plus' : 'a-minus');
+
+        badgeEl.textContent = tx.status || 'Completed';
+        badgeEl.className   = 'rcpt-badge ' + (isPending ? 'b-pending' : 'b-done');
+
+        /* detail rows — only show fields that have a value */
+        var fields = [
+            { lbl: 'Reference',     val: tx.reference },
+            { lbl: 'Description',   val: tx.description },
+            { lbl: 'Date',          val: tx.date },
+            { lbl: 'Type',          val: tx.type },
+            { lbl: 'Transfer Type', val: tx.transferType },
+            { lbl: 'Bank',          val: tx.bank },
+            { lbl: 'Account No.',   val: tx.account },
+            { lbl: 'Routing/SWIFT', val: tx.routing },
+            { lbl: 'Note',          val: tx.note },
+            { lbl: 'Status',        val: tx.status },
+        ];
+
+        rowsEl.innerHTML = fields
+            .filter(function (f) { return f.val && f.val.trim() && f.val !== '—'; })
+            .map(function (f) {
+                return '<div class="rcpt-row">' +
+                    '<span class="rcpt-row-lbl">' + f.lbl + '</span>' +
+                    '<span class="rcpt-row-val">'  + f.val + '</span>' +
+                    '</div>';
+            }).join('');
+
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    /* expose so transfer/withdraw handlers can call it */
+    window._openReceipt = openReceipt;
+
+    function closeReceipt() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    rcptClose && rcptClose.addEventListener('click', closeReceipt);
+    rcptDone  && rcptDone.addEventListener('click',  closeReceipt);
+    rcptPrint && rcptPrint.addEventListener('click',  function () { window.print(); });
+    overlay   && overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeReceipt();
+    });
+
+    /* ═══════════════════════════════════════════
+       4. CLICK-TO-RECEIPT ON TRANSACTION HISTORY TABLE
+       Uses event delegation on the tbody
+       ═══════════════════════════════════════════ */
+    var histTbody = document.getElementById('transactionHistoryTableBody');
+    if (histTbody) {
+        histTbody.addEventListener('click', function (e) {
+            var row = e.target.closest('tr');
+            if (!row) return;
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 6) return;
+
+            openReceipt({
+                date:        cells[0].textContent.trim(),
+                reference:   cells[1].textContent.trim(),
+                description: cells[2].textContent.trim(),
+                type:        cells[3].textContent.trim(),
+                amount:      cells[4].textContent.trim(),
+                status:      cells[5].textContent.trim(),
+            });
+        });
+    }
+
+    /* ═══════════════════════════════════════════
+       5. CLICK-TO-RECEIPT ON RECENT TRANSACTIONS (HOME)
+       Enriches data from statementData & localStorage cache
+       ═══════════════════════════════════════════ */
+    var recentCont = document.getElementById('recentTransactionsContainer');
+    if (recentCont) {
+        recentCont.addEventListener('click', function (e) {
+            var card = e.target.closest('.transaction');
+            if (!card) return;
+
+            var h4  = card.querySelector('h4');
+            var p   = card.querySelector('p');
+            var amt = card.querySelector('.amount');
+
+            var desc     = h4  ? h4.textContent.trim()  : '';
+            var metaRaw  = p   ? p.textContent.trim()   : '';
+            var amtTxt   = amt ? amt.textContent.replace(/^[+-]/, '').trim() : '';
+            var isCredit = amt ? amt.classList.contains('plus') : false;
+
+            /* parse "Apr 15, 2026 • TXN-XXXXXXXX  Pending" */
+            var bullet = metaRaw.indexOf('•');
+            var date   = bullet > -1 ? metaRaw.slice(0, bullet).trim() : metaRaw;
+            var refRaw = bullet > -1 ? metaRaw.slice(bullet + 1).trim() : '';
+            var ref    = refRaw.replace(/Pending/gi, '').trim();
+
+            /* try statementData first */
+            var tx = null;
+            if (typeof statementData !== 'undefined') {
+                for (var i = 0; i < statementData.length; i++) {
+                    var s = statementData[i];
+                    if (s.reference === ref || s.description.trim() === desc) {
+                        tx = { date: s.date, reference: s.reference, description: s.description,
+                               type: s.type, amount: s.amount, status: s.status };
+                        break;
+                    }
+                }
+            }
+
+            /* fallback: pending cache */
+            if (!tx) {
+                try {
+                    var cache = JSON.parse(localStorage.getItem('custodia_pending_transfers') || '[]');
+                    for (var j = 0; j < cache.length; j++) {
+                        var c = cache[j];
+                        if (c.reference === ref) {
+                            tx = {
+                                date: c.date, reference: c.reference,
+                                description: desc, type: 'Debit',
+                                amount: '\u00a5' + Number(c.amount).toLocaleString('en-US', { minimumFractionDigits: 2 }),
+                                status: 'Pending', bank: c.bank, account: c.account,
+                                routing: c.routing, transferType: c.type, note: c.note
+                            };
+                            break;
+                        }
+                    }
+                } catch (e) { /* ignore */ }
+            }
+
+            /* last resort: build from what the card shows */
+            if (!tx) {
+                tx = { date: date, reference: ref, description: desc,
+                       type: isCredit ? 'Credit' : 'Debit', amount: amtTxt, status: 'Completed' };
+            }
+
+            openReceipt(tx);
+        });
+    }
+
+    /* ═══════════════════════════════════════════
+       6. HOOK PIN VALIDATION INTO EXISTING SUBMIT HANDLERS
+       We intercept clicks on both buttons BEFORE the existing
+       listener fires by wrapping at capture phase.
+       ═══════════════════════════════════════════ */
+
+    /* Wait until DOM is fully settled so makePinField can find inputs */
+    window.addEventListener('load', function () {
+
+        var transferPin = makePinField(
+            ['tpin1', 'tpin2', 'tpin3', 'tpin4'],
+            'transferPinEye', 'transferPinEyeIcon', 'transferPinError'
+        );
+
+        var withdrawPin = makePinField(
+            ['wpin1', 'wpin2', 'wpin3', 'wpin4'],
+            'withdrawPinEye', 'withdrawPinEyeIcon', 'withdrawPinError'
+        );
+
+        /* ── Transfer submit intercept ── */
+        var tBtn = document.getElementById('submitTransferBtn');
+        if (tBtn && transferPin) {
+            tBtn.addEventListener('click', function (e) {
+                /* stop the existing listener from firing until PIN passes */
+                if (!transferPin.validate()) {
+                    e.stopImmediatePropagation();
+                    return;
+                }
+                /* PIN OK — existing handler will fire; after it runs, show receipt */
+                setTimeout(function () {
+                    var recipient = (document.getElementById('transferRecipient') || {}).value || '';
+                    var bank      = (document.getElementById('transferBankName')   || {}).value || '';
+                    var account   = (document.getElementById('transferAccountNumber') || {}).value || '';
+                    var routing   = (document.getElementById('transferRouting')    || {}).value || '';
+                    var amount    = (document.getElementById('transferAmount')     || {}).value || '';
+                    var type      = (document.getElementById('transferTypeSelect') || {}).value || '';
+                    var note      = (document.getElementById('transferNote')       || {}).value || '';
+
+                    /* only open receipt if form was actually reset (meaning submission succeeded) */
+                    if (!recipient && !amount) {
+                        /* form was reset → submission was successful; grab ref from pending cache */
+                        try {
+                            var cache = JSON.parse(localStorage.getItem('custodia_pending_transfers') || '[]');
+                            if (cache.length) {
+                                var last = cache[0];
+                                window._openReceipt({
+                                    date: last.date, reference: last.reference,
+                                    description: 'Transfer to ' + last.recipient,
+                                    type: 'Debit',
+                                    amount: '\u00a5' + Number(last.amount).toLocaleString('en-US', { minimumFractionDigits: 2 }),
+                                    status: 'Pending', bank: last.bank, account: last.account,
+                                    routing: last.routing, transferType: last.type, note: last.note
+                                });
+                            }
+                        } catch (err) { /* ignore */ }
+                        transferPin.reset();
+                    }
+                }, 50);
+            }, true); /* capture = true so we run before existing listener */
+        }
+
+        /* ── Withdraw submit intercept ── */
+        var wBtn = document.getElementById('submitWithdrawBtn');
+        if (wBtn && withdrawPin) {
+            wBtn.addEventListener('click', function (e) {
+                if (!withdrawPin.validate()) {
+                    e.stopImmediatePropagation();
+                    return;
+                }
+                setTimeout(function () {
+                    var amtEl = document.getElementById('withdrawAmount');
+                    /* if amount field is empty, the submission succeeded */
+                    if (!amtEl || !amtEl.value) {
+                        try {
+                            var cache = JSON.parse(localStorage.getItem('custodia_pending_transfers') || '[]');
+                            if (cache.length) {
+                                var last = cache[0];
+                                window._openReceipt({
+                                    date: last.date, reference: last.reference,
+                                    description: 'Withdrawal to ' + last.bank,
+                                    type: 'Debit',
+                                    amount: '\u00a5' + Number(last.amount).toLocaleString('en-US', { minimumFractionDigits: 2 }),
+                                    status: 'Pending', bank: last.bank, account: last.account,
+                                    routing: last.routing, transferType: last.type, note: ''
+                                });
+                            }
+                        } catch (err) { /* ignore */ }
+                        withdrawPin.reset();
+                    }
+                }, 50);
+            }, true);
+        }
+
+    });
+
+}());
 </script>
 
 </body>
