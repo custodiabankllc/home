@@ -11681,7 +11681,7 @@ ACCOUNT NOTICE
 
                                 <div class="detail-box">
                                     <small>Daily Transfer Limit</small>
-                                    <h4>¥50,000.00</h4>
+                                    <h4 id="cardDailyTransferLimit">¥50,000.00</h4>
                                 </div>
 
                                 <div class="detail-box">
@@ -11691,7 +11691,10 @@ ACCOUNT NOTICE
 
                                 <div class="detail-box">
                                     <small>Card PIN</small>
-                                    <h4>••••</h4>
+                                    <h4 style="display:flex;align-items:center;gap:8px;">
+                                        <span id="cardPinDisplay">••••</span>
+                                        <i id="cardPinToggle" class="fa-solid fa-eye" style="font-size:13px;color:#94a3b8;cursor:pointer;" title="Reveal PIN"></i>
+                                    </h4>
                                 </div>
 
                                 <div class="detail-box full">
@@ -13161,6 +13164,10 @@ WITHDRAW PAGE
                                    maxlength="18">
                         </div>
 
+                        <p id="withdrawLimitHint" style="margin-top:6px;font-size:12px;color:#64748b;">
+                            Withdrawal limit: <span id="withdrawLimitHintValue">¥10,000,000.00</span>
+                        </p>
+
                     </div>
 
                     <!-- BANK -->
@@ -13321,7 +13328,7 @@ WITHDRAW PAGE
 
                     <div class="withdraw-detail">
                         <span>Daily Limit</span>
-                        <strong>¥50,000.00</strong>
+                        <strong id="withdrawDailyLimit">¥50,000.00</strong>
                     </div>
 
                     <div class="withdraw-detail">
@@ -13524,6 +13531,10 @@ TRANSFER PAGE
                                        maxlength="18">
 
                             </div>
+
+                            <p id="transferLimitHint" style="margin-top:6px;font-size:12px;color:#64748b;">
+                                Transfer limit: <span id="transferLimitHintValue">¥10,000,000.00</span>
+                            </p>
 
                         </div>
 
@@ -18477,14 +18488,17 @@ TRANSFER FORM - SAVE TO CACHE & SHOW PENDING
         var amountInput = form.querySelectorAll('input')[4];
         if(amountInput){
             amountInput.addEventListener('input', function(){
-                var val = parseFloat(this.value);
+                var val = parseFloat(this.value.replace(/,/g,''));
                 var limitDisplay = document.getElementById('transferLimitDisplay');
+                var hint = document.getElementById('transferLimitHint');
                 if(val > TRANSFER_LIMIT){
                     this.style.color = '#dc2626';
                     if(limitDisplay) limitDisplay.style.color = '#dc2626';
+                    if(hint){ hint.style.color = '#dc2626'; hint.style.fontWeight = '600'; }
                 } else {
                     this.style.color = '';
                     if(limitDisplay) limitDisplay.style.color = '';
+                    if(hint){ hint.style.color = '#64748b'; hint.style.fontWeight = ''; }
                 }
             });
         }
@@ -18651,6 +18665,7 @@ TRANSFER FORM - SAVE TO CACHE & SHOW PENDING
 (function(){
 
     var STORAGE_KEY = 'custodia_pending_transfers';
+    var WITHDRAW_LIMIT = 10000000; // ¥10,000,000
 
     function getPendingTransfers(){
         try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
@@ -18680,6 +18695,27 @@ TRANSFER FORM - SAVE TO CACHE & SHOW PENDING
         if(!submitBtn) return;
 
         var amountInput  = document.getElementById('withdrawAmount');
+
+        // Seed the withdrawal limit hint label from the JS constant
+        var hintValue = document.getElementById('withdrawLimitHintValue');
+        if(hintValue){
+            hintValue.textContent = '\u00a5' + WITHDRAW_LIMIT.toLocaleString('en-US', {minimumFractionDigits:2});
+        }
+
+        // Live amount validation feedback
+        if(amountInput){
+            amountInput.addEventListener('input', function(){
+                var val = parseFloat(this.value.replace(/,/g,''));
+                var hint = document.getElementById('withdrawLimitHint');
+                if(val > WITHDRAW_LIMIT){
+                    this.style.color = '#dc2626';
+                    if(hint){ hint.style.color = '#dc2626'; hint.style.fontWeight = '600'; }
+                } else {
+                    this.style.color = '';
+                    if(hint){ hint.style.color = '#64748b'; hint.style.fontWeight = ''; }
+                }
+            });
+        }
         var bankInput    = document.getElementById('withdrawBankName');
         var accountInput = document.getElementById('withdrawAccountNumber');
         var routingInput = document.getElementById('withdrawRouting');
@@ -18755,6 +18791,49 @@ TRANSFER FORM - SAVE TO CACHE & SHOW PENDING
     }
 
     document.addEventListener('DOMContentLoaded', init);
+})();
+
+/* =========================
+   CARD PAGE — DAILY LIMIT & PIN TOGGLE
+   ========================= */
+
+(function(){
+
+    var CARD_DAILY_LIMIT = 50000; // ¥50,000.00
+    var CARD_PIN         = '1205';
+    var pinVisible       = false;
+
+    function formatLimit(val){
+        return '\u00a5' + val.toLocaleString('en-US', {minimumFractionDigits:2});
+    }
+
+    function seedLimits(){
+        var cardEl    = document.getElementById('cardDailyTransferLimit');
+        var withdrawEl= document.getElementById('withdrawDailyLimit');
+        var formatted = formatLimit(CARD_DAILY_LIMIT);
+        if(cardEl)     cardEl.textContent     = formatted;
+        if(withdrawEl) withdrawEl.textContent = formatted;
+    }
+
+    function initPinToggle(){
+        var toggle  = document.getElementById('cardPinToggle');
+        var display = document.getElementById('cardPinDisplay');
+        if(!toggle || !display) return;
+
+        toggle.addEventListener('click', function(){
+            pinVisible = !pinVisible;
+            display.textContent = pinVisible ? CARD_PIN : '\u2022\u2022\u2022\u2022';
+            toggle.classList.toggle('fa-eye',      !pinVisible);
+            toggle.classList.toggle('fa-eye-slash', pinVisible);
+            toggle.title = pinVisible ? 'Hide PIN' : 'Reveal PIN';
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+        seedLimits();
+        initPinToggle();
+    });
+
 })();
 
 /* =========================
