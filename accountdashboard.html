@@ -2085,8 +2085,9 @@ FORM
     font-weight:700;
 }
 
-.withdraw-input input, select{
+.withdraw-input input, .withdraw-input select{
     width:100%;
+    height:100%;
 
     border:none;
     outline:none;
@@ -2096,6 +2097,12 @@ FORM
     font-weight:600;
 
     color:#0f172a;
+
+    -webkit-appearance:auto;
+    -moz-appearance:auto;
+    appearance:auto;
+
+    cursor:pointer;
 }
 
 /* =========================
@@ -2132,12 +2139,13 @@ BUTTON
 ========================= */
 
 .withdraw-btn{
+    width:100%;
     height:62px;
 
     border:none;
     border-radius:20px;
 
-    background:linear-gradient(135deg,#94a3b8,#64748b);
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
 
     color:#fff;
 
@@ -2150,7 +2158,14 @@ BUTTON
     gap:10px;
 
     cursor: pointer;
+    transition:.25s;
+    margin-top:8px;
 
+}
+
+.withdraw-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(37,99,235,.35);
 }
 
 /* =========================
@@ -2540,6 +2555,7 @@ FORM
 .transfer-input input,
 .transfer-input select{
     width:100%;
+    height:100%;
 
     border:none;
     outline:none;
@@ -2549,6 +2565,12 @@ FORM
     font-weight:600;
 
     color:#0f172a;
+
+    -webkit-appearance:auto;
+    -moz-appearance:auto;
+    appearance:auto;
+
+    cursor:pointer;
 }
 
 .transfer-textarea{
@@ -2610,24 +2632,151 @@ BUTTON
 
 .transfer-btn-disabled{
     height:62px;
-
     border:none;
     border-radius:20px;
-
     background:linear-gradient(135deg,#94a3b8,#64748b);
-
     color:#fff;
-
     font-size:15px;
     font-weight:800;
-
     display:flex;
     align-items:center;
     justify-content:center;
     gap:10px;
-
     cursor:not-allowed;
 }
+
+.transfer-btn-active{
+    width:100%;
+    height:62px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;
+    font-size:15px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    cursor:pointer;
+    transition:.25s;
+    margin-top:8px;
+}
+
+.transfer-btn-active:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(37,99,235,.35);
+}
+
+.transfer-toast{
+    margin-top:18px;
+    background:#dcfce7;
+    border:1px solid #86efac;
+    border-radius:16px;
+    padding:16px 20px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:14px;
+    font-weight:600;
+    color:#15803d;
+    animation:fadeInToast .4s ease;
+}
+
+.transfer-toast i{
+    font-size:20px;
+    flex-shrink:0;
+}
+
+@keyframes fadeInToast{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+}
+/* =========================
+GLOBAL TOAST
+========================= */
+
+.global-toast {
+    position: fixed;
+    bottom: 110px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    min-width: 300px;
+    max-width: 480px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 20px 50px rgba(15,23,42,.18);
+    border: 1px solid #e2e8f0;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, transform .3s ease, visibility .3s;
+    pointer-events: none;
+}
+
+.global-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.global-toast-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.global-toast-icon.success { background: #dcfce7; color: #16a34a; }
+.global-toast-icon.error   { background: #fee2e2; color: #dc2626; }
+.global-toast-icon.warning { background: #fef3c7; color: #d97706; }
+.global-toast-icon.info    { background: #dbeafe; color: #2563eb; }
+
+.global-toast-body {
+    flex: 1;
+}
+
+.global-toast-body p {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.global-toast-close {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #f1f5f9;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.global-toast-close:hover { background: #e2e8f0; }
+
+@media(max-width:600px){
+    .global-toast {
+        min-width: calc(100vw - 32px);
+        bottom: 100px;
+    }
+}
+
 
 /* =========================
 RIGHT SIDE
@@ -10077,6 +10226,31 @@ RESPONSIVE
 </style>
 
 
+<style>
+/* =========================
+   DARK MODE
+   ========================= */
+
+html.dark-mode {
+    filter: invert(1) hue-rotate(180deg);
+    background: #fff;
+}
+
+html.dark-mode img,
+html.dark-mode video,
+html.dark-mode iframe,
+html.dark-mode .fa-solid,
+html.dark-mode .fa-regular,
+html.dark-mode .fa-brands,
+html.dark-mode i[class*="fa-"] {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+html.dark-mode {
+    transition: background-color .3s ease;
+}
+</style>
+
 </head>
 
 <body>
@@ -12959,7 +13133,7 @@ WITHDRAW PAGE
 
                     <div>
                         <small>Available Balance</small>
-                        <h2>¥0.00</h2>
+                        <h2 id="withdrawAvailableBalance">¥0.00</h2>
                     </div>
 <!--
                     <div class="withdraw-status">
@@ -12981,7 +13155,10 @@ WITHDRAW PAGE
                         <div class="withdraw-input">
                             <span>¥</span>
                             <input type="text"
-                                   placeholder="Enter amount">
+                                   id="withdrawAmount"
+                                   placeholder="Enter amount"
+                                   inputmode="decimal"
+                                   maxlength="18">
                         </div>
 
                     </div>
@@ -12994,7 +13171,9 @@ WITHDRAW PAGE
 
                         <div class="withdraw-input">
                             <input type="text"
+                                   id="withdrawBankName"
                                    placeholder="Enter bank name"
+                                   maxlength="50"
                                    >
                         </div>
 
@@ -13008,7 +13187,10 @@ WITHDRAW PAGE
 
                         <div class="withdraw-input">
                             <input type="text"
-                                   placeholder="Enter account number">
+                                   id="withdrawAccountNumber"
+                                   placeholder="Enter account number"
+                                   inputmode="numeric"
+                                   maxlength="34">
                         </div>
 
                     </div>
@@ -13023,7 +13205,9 @@ WITHDRAW PAGE
 
                             <div class="withdraw-input">
                                 <input type="text"
-                                       placeholder="Enter routing number">
+                                       id="withdrawRouting"
+                                       placeholder="Enter routing number"
+                                       maxlength="11">
                             </div>
 
                         </div>
@@ -13033,13 +13217,13 @@ WITHDRAW PAGE
                             <label>Transfer Type</label>
 
                             <div class="withdraw-input">
-                                <select>
+                                <select id="withdrawTypeSelect">
 
-                                <option>Select transfer type</option>
-                                <option>Wire Transfer</option>
-                                <option>International Transfer</option>
-                                <option>ACH Transfer</option>
-                                <option>Business Transfer</option>
+                                <option value="">Select transfer type</option>
+                                <option value="Wire Transfer">Wire Transfer</option>
+                                <option value="International Transfer">International Transfer</option>
+                                <option value="ACH Transfer">ACH Transfer</option>
+                                <option value="Business Transfer">Business Transfer</option>
 
                             </select>
                             </div>
@@ -13065,7 +13249,7 @@ WITHDRAW PAGE
 -->
                     <!-- BUTTON -->
 
-                    <button class="withdraw-btn">
+                    <button class="withdraw-btn" type="button" id="submitWithdrawBtn">
 
                         Withdraw
 
@@ -13232,7 +13416,7 @@ TRANSFER PAGE
 
                     <div>
                         <small>Available Balance</small>
-                        <h2>¥0.00</h2>
+                        <h2 id="transferAvailableBalance">¥0.00</h2>
                     </div>
 <!--                 
 
@@ -13257,7 +13441,9 @@ TRANSFER PAGE
                             <i class="fa-solid fa-user"></i>
 
                             <input type="text"
-                                   placeholder="Enter beneficiary name">
+                                   id="transferRecipient"
+                                   placeholder="Enter beneficiary name"
+                                   maxlength="50">
 
                         </div>
 
@@ -13274,7 +13460,9 @@ TRANSFER PAGE
                             <i class="fa-solid fa-building-columns"></i>
 
                             <input type="text"
-                                   placeholder="Enter destination bank">
+                                   id="transferBankName"
+                                   placeholder="Enter destination bank"
+                                   maxlength="50">
 
                         </div>
 
@@ -13291,7 +13479,10 @@ TRANSFER PAGE
                             <i class="fa-solid fa-wallet"></i>
 
                             <input type="text"
-                                   placeholder="Enter account number">
+                                   id="transferAccountNumber"
+                                   placeholder="Enter account number"
+                                   inputmode="numeric"
+                                   maxlength="34">
 
                         </div>
 
@@ -13310,7 +13501,9 @@ TRANSFER PAGE
                                 <i class="fa-solid fa-code"></i>
 
                                 <input type="text"
-                                       placeholder="Enter routing code">
+                                       id="transferRouting"
+                                       placeholder="Enter routing code"
+                                       maxlength="11">
 
                             </div>
 
@@ -13325,7 +13518,10 @@ TRANSFER PAGE
                                 <i class="fa-solid fa-yen-sign"></i>
 
                                 <input type="text"
-                                       placeholder="0.00">
+                                       id="transferAmount"
+                                       placeholder="0.00"
+                                       inputmode="decimal"
+                                       maxlength="18">
 
                             </div>
 
@@ -13343,13 +13539,13 @@ TRANSFER PAGE
 
                             <i class="fa-solid fa-money-bill-transfer"></i>
 
-                            <select>
+                            <select id="transferTypeSelect">
 
-                                <option>Select transfer type</option>
-                                <option>Wire Transfer</option>
-                                <option>International Transfer</option>
-                                <option>ACH Transfer</option>
-                                <option>Business Transfer</option>
+                                <option value="">Select transfer type</option>
+                                <option value="Wire Transfer">Wire Transfer</option>
+                                <option value="International Transfer">International Transfer</option>
+                                <option value="ACH Transfer">ACH Transfer</option>
+                                <option value="Business Transfer">Business Transfer</option>
 
                             </select>
 
@@ -13365,7 +13561,7 @@ TRANSFER PAGE
 
                         <div class="transfer-textarea">
 
-                            <textarea placeholder="Add payment note or reference"></textarea>
+                            <textarea id="transferNote" placeholder="Add payment note or reference" maxlength="200"></textarea>
 
                         </div>
 
@@ -13387,15 +13583,22 @@ TRANSFER PAGE
                     <!-- BUTTON -->
 
                     <button type="button"
-                            class="transfer-btn-disabled">
+                            id="submitTransferBtn"
+                            class="transfer-btn-active">
 
-                        <i class="fa-solid fa-lock"></i>
+                        <i class="fa-solid fa-paper-plane"></i>
 
-                        Transfers Temporarily Disabled
+                        Submit Transfer
 
                     </button>
 
                 </form>
+
+                <!-- SUCCESS TOAST -->
+                <div id="transferSuccessToast" class="transfer-toast" style="display:none;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Transfer submitted! View it as <strong>Pending</strong> in Transaction History.</span>
+                </div>
 
             </div>
 
@@ -13459,8 +13662,8 @@ TRANSFER PAGE
                 <div class="transfer-detail-list">
 
                     <div class="transfer-detail">
-                        <span>Daily Transfer Limit</span>
-                        <strong>¥50,000.00</strong>
+                        <span>Transfer Limit</span>
+                        <strong id="transferLimitDisplay">¥10,000,000.00</strong>
                     </div>
 
                     <div class="transfer-detail">
@@ -15776,7 +15979,7 @@ SETTINGS PAGE
 
                         <label class="settings-switch">
 
-                            <input type="checkbox">
+                            <input type="checkbox" id="darkModeToggle">
 
                             <span class="settings-slider"></span>
 
@@ -16759,6 +16962,22 @@ ACCOUNT FROZEN MODAL
 -->
 
 <!-- =========================
+GLOBAL ACTION TOAST
+========================= -->
+
+<div id="globalToast" class="global-toast" role="alert" aria-live="polite">
+    <div class="global-toast-icon" id="globalToastIcon">
+        <i class="fa-solid fa-circle-check" id="globalToastIconEl"></i>
+    </div>
+    <div class="global-toast-body">
+        <p id="globalToastMsg">Action completed.</p>
+    </div>
+    <button class="global-toast-close" id="globalToastClose" aria-label="Dismiss">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+
+<!-- =========================
 LOGOUT MODAL
 ========================= -->
 
@@ -17216,8 +17435,6 @@ logoutModal.addEventListener(
         const toggleBalanceBtn = document.getElementById('toggleBalanceBtn');
         const balanceIcon = document.getElementById('balanceIcon');
 
-        const realBalance = '¥101,643,750.00 ';
-
         let balanceVisible = true;
 
         toggleBalanceBtn.addEventListener('click', () => {
@@ -17226,7 +17443,11 @@ logoutModal.addEventListener(
 
             if (balanceVisible) {
 
-                balanceAmount.innerText = realBalance;
+                if (window.custodiaBalance) {
+                    window.custodiaBalance.refresh();
+                } else {
+                    balanceAmount.innerText = '¥101,643,750.00 ';
+                }
 
                 balanceIcon.classList.remove('fa-eye-slash');
                 balanceIcon.classList.add('fa-eye');
@@ -17945,61 +18166,104 @@ closeNotificationModal.addEventListener(
 
 
 // ===============================
-// SHOW ONLY 4 MOST RECENT
+// RENDER RECENT TRANSACTIONS
+// Dynamically from statementData + pending cache
 // ===============================
 
-const recentTransactions =
-statementData.slice(-4).reverse();
+function renderRecentTransactions() {
 
-// ===============================
-// RENDER TRANSACTIONS
-// ===============================
+    var recentContainer = document.getElementById("recentTransactionsContainer");
+    if (!recentContainer) return;
 
-const recentContainer =
-document.getElementById(
-    "recentTransactionsContainer"
-);
+    // Pull pending transfers from localStorage
+    var pending = [];
+    try {
+        var raw = localStorage.getItem('custodia_pending_transfers');
+        if (raw) pending = JSON.parse(raw);
+    } catch(e) {}
 
-recentTransactions.forEach(transaction => {
+    // Convert pending to display format
+    var pendingItems = pending.map(function(t) {
+        return {
+            date: t.date,
+            reference: t.reference,
+            description: (t.kind === 'withdrawal' ? 'Withdrawal to ' : 'Transfer to ') + t.recipient + ' (' + t.bank + ')',
+            type: 'Debit',
+            kind: t.kind,
+            amount: '\u00a5' + Number(t.amount).toLocaleString('en-US', {minimumFractionDigits: 2}),
+            status: 'Pending'
+        };
+    });
 
-    const transactionHTML = `
+    // Merge: pending first, then statementData (already sorted newest-first after sort above)
+    var allData = pendingItems.concat(statementData);
 
-    <div class="transaction">
+    // Take top 4
+    var recent = allData.slice(0, 4);
 
-        <div class="transaction-left">
+    recentContainer.innerHTML = '';
 
-            <div class="transaction-icon">
-                <i class="fa-solid fa-money-bill-transfer"></i>
-            </div>
+    // Pick an icon/color based on the transaction category
+    function getTransactionIcon(transaction, isCredit) {
+        var desc = (transaction.description || '').toLowerCase();
 
-            <div>
+        if (transaction.kind === 'withdrawal' || desc.indexOf('withdrawal') !== -1) {
+            return { icon: 'fa-money-bill-wave', bg: '#fef3c7', color: '#d97706' };
+        }
+        if (desc.indexOf('salary') !== -1 || desc.indexOf('payroll') !== -1) {
+            return { icon: 'fa-briefcase', bg: '#dcfce7', color: '#16a34a' };
+        }
+        if (desc.indexOf('oil') !== -1 || desc.indexOf('gas') !== -1 || desc.indexOf('shell') !== -1 || desc.indexOf('fuel') !== -1) {
+            return { icon: 'fa-gas-pump', bg: '#ffedd5', color: '#ea580c' };
+        }
+        if (desc.indexOf('logistics') !== -1 || desc.indexOf('freight') !== -1 || desc.indexOf('shipping') !== -1) {
+            return { icon: 'fa-truck', bg: '#ede9fe', color: '#7c3aed' };
+        }
+        if (desc.indexOf('transfer') !== -1) {
+            return isCredit
+                ? { icon: 'fa-arrow-down-left', bg: '#dcfce7', color: '#16a34a' }
+                : { icon: 'fa-paper-plane', bg: '#dbeafe', color: '#2563eb' };
+        }
 
-                <h4>
-                    ${transaction.description}
-                </h4>
+        return isCredit
+            ? { icon: 'fa-arrow-down-left', bg: '#dcfce7', color: '#16a34a' }
+            : { icon: 'fa-arrow-up-right', bg: '#fee2e2', color: '#dc2626' };
+    }
 
-                <p>
-                    ${transaction.date}
-                    •
-                    ${transaction.reference}
-                </p>
+    recent.forEach(function(transaction) {
+        var isCredit = transaction.type === 'Credit';
+        var isPending = transaction.status === 'Pending';
 
-            </div>
+        var amountStr = transaction.amount || '';
+        // Ensure debit shows minus, credit shows plus
+        var amountDisplay = isCredit
+            ? '<span class="amount plus">+' + amountStr + '</span>'
+            : '<span class="amount minus">-' + amountStr + '</span>';
 
-        </div>
+        var statusBadge = isPending
+            ? '<span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:#fef9c3;color:#854d0e;">Pending</span>'
+            : '';
 
-        <div class="amount plus">
-            +${transaction.amount}
-        </div>
+        var iconInfo = getTransactionIcon(transaction, isCredit);
 
-    </div>
+        recentContainer.innerHTML += (
+            '<div class="transaction">' +
+                '<div class="transaction-left">' +
+                    '<div class="transaction-icon" style="background:' + iconInfo.bg + '">' +
+                        '<i class="fa-solid ' + iconInfo.icon + '" style="color:' + iconInfo.color + '"></i>' +
+                    '</div>' +
+                    '<div>' +
+                        '<h4>' + transaction.description + '</h4>' +
+                        '<p>' + transaction.date + ' &bull; ' + transaction.reference + ' ' + statusBadge + '</p>' +
+                    '</div>' +
+                '</div>' +
+                amountDisplay +
+            '</div>'
+        );
+    });
+}
 
-    `;
-
-    recentContainer.innerHTML +=
-    transactionHTML;
-
-});
+renderRecentTransactions();
 
 </script>
 
@@ -18008,6 +18272,535 @@ recentTransactions.forEach(transaction => {
 
 
 
+
+
+<script>
+/* =========================
+GLOBAL TOAST SYSTEM
+========================= */
+
+(function(){
+    var toastEl    = document.getElementById('globalToast');
+    var toastMsg   = document.getElementById('globalToastMsg');
+    var toastIcon  = document.getElementById('globalToastIcon');
+    var toastIconEl= document.getElementById('globalToastIconEl');
+    var toastClose = document.getElementById('globalToastClose');
+    var toastTimer = null;
+
+    var icons = {
+        success: 'fa-circle-check',
+        error:   'fa-circle-xmark',
+        warning: 'fa-triangle-exclamation',
+        info:    'fa-circle-info'
+    };
+
+    window.showToast = function(message, type, duration) {
+        type     = type     || 'success';
+        duration = duration || 4000;
+
+        toastMsg.textContent = message;
+        toastIcon.className  = 'global-toast-icon ' + type;
+        toastIconEl.className= 'fa-solid ' + (icons[type] || icons.success);
+
+        toastEl.classList.add('show');
+
+        if(toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function(){ closeToast(); }, duration);
+    };
+
+    function closeToast(){
+        toastEl.classList.remove('show');
+    }
+
+    if(toastClose) toastClose.addEventListener('click', closeToast);
+})();
+
+/* =========================
+TRANSFER FORM - SAVE TO CACHE & SHOW PENDING
+========================= */
+
+(function(){
+
+    var STORAGE_KEY   = 'custodia_pending_transfers';
+    var TRANSFER_LIMIT = 10000000; // ¥10,000,000
+
+    function getPendingTransfers(){
+        try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+        catch(e){ return []; }
+    }
+
+    function savePendingTransfer(transfer){
+        var list = getPendingTransfers();
+        list.unshift(transfer);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function generateRef(){
+        var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        var ref = 'TXN-';
+        for(var i = 0; i < 8; i++) ref += chars[Math.floor(Math.random()*chars.length)];
+        return ref;
+    }
+
+    function today(){
+        var d = new Date();
+        return d.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'});
+    }
+
+    function renderPendingRows(){
+        var transfers = getPendingTransfers();
+
+        var pendingRowHTML = transfers.map(function(t){
+            return '<tr class="injected-pending">' +
+                '<td>' + t.date + '</td>' +
+                '<td>' + t.reference + '</td>' +
+                '<td>' + (t.kind === 'withdrawal' ? 'Withdrawal to ' : 'Transfer to ') + t.recipient + ' (' + t.bank + ')</td>' +
+                '<td class="debit-text">Debit</td>' +
+                '<td>\u00a5' + Number(t.amount).toLocaleString('en-US',{minimumFractionDigits:2}) + '</td>' +
+                '<td><span class="transaction-status transaction-pending">Pending</span></td>' +
+                '</tr>';
+        }).join('');
+
+        function injectInto(tbodyId){
+            var tbody = document.getElementById(tbodyId);
+            if(!tbody) return;
+            tbody.querySelectorAll('.injected-pending').forEach(function(r){ r.remove(); });
+            if(!pendingRowHTML) return;
+            var temp = document.createElement('tbody');
+            temp.innerHTML = pendingRowHTML;
+            Array.from(temp.querySelectorAll('tr')).forEach(function(row){
+                tbody.insertBefore(row, tbody.firstChild);
+            });
+        }
+
+        injectInto('transactionHistoryTableBody');
+        injectInto('statementTableBody');
+
+        // update count badges
+        var histBody  = document.getElementById('transactionHistoryTableBody');
+        var stmtBody  = document.getElementById('statementTableBody');
+        var histCount = document.getElementById('historyTransactionCount');
+        var stmtCount = document.getElementById('transactionCount');
+        if(histCount && histBody) histCount.innerText = histBody.querySelectorAll('tr').length;
+        if(stmtCount && stmtBody) stmtCount.innerText = stmtBody.querySelectorAll('tr').length;
+
+        // Also refresh recent transactions on home page
+        if(typeof renderRecentTransactions === 'function') renderRecentTransactions();
+    }
+
+    var submitBtn = document.getElementById('submitTransferBtn');
+    var oldToast  = document.getElementById('transferSuccessToast');
+    var form      = submitBtn ? submitBtn.closest('form') : null;
+
+    if(submitBtn && form){
+        submitBtn.addEventListener('click', function(){
+            var inputs   = form.querySelectorAll('input');
+            var textarea = form.querySelector('textarea');
+            var typeSelect = document.getElementById('transferTypeSelect');
+
+            var recipient = (inputs[0] && inputs[0].value.trim()) || '';
+            var bank      = (inputs[1] && inputs[1].value.trim()) || '';
+            var account   = (inputs[2] && inputs[2].value.trim()) || '';
+            var routing   = (inputs[3] && inputs[3].value.trim()) || '';
+            var amount    = parseFloat((inputs[4] && inputs[4].value.trim().replace(/,/g, '')) || '0');
+            var type      = (typeSelect && typeSelect.value) || 'Wire Transfer';
+            var note      = (textarea && textarea.value.trim()) || '';
+
+            // — Validation —
+
+            if(!recipient){
+                window.showToast('Please enter a recipient name.', 'warning');
+                return;
+            }
+            if(!bank){
+                window.showToast('Please enter the destination bank name.', 'warning');
+                return;
+            }
+            if(!account){
+                window.showToast('Please enter the account number or IBAN.', 'warning');
+                return;
+            }
+            if(!amount || amount <= 0){
+                window.showToast('Please enter a valid transfer amount greater than zero.', 'warning');
+                return;
+            }
+            if(amount > TRANSFER_LIMIT){
+                window.showToast(
+                    'Amount exceeds your transfer limit of \u00a5' +
+                    TRANSFER_LIMIT.toLocaleString('en-US', {minimumFractionDigits:2}) +
+                    '. Please enter a lower amount.',
+                    'error',
+                    6000
+                );
+                return;
+            }
+            if(!type || type === ''){
+                window.showToast('Please select a transfer type.', 'warning');
+                return;
+            }
+
+            var currentBalance = window.custodiaBalance.get();
+            if(amount > currentBalance){
+                window.showToast(
+                    'Insufficient funds. Your available balance is \u00a5' +
+                    currentBalance.toLocaleString('en-US', {minimumFractionDigits:2}) +
+                    '.',
+                    'error',
+                    6000
+                );
+                return;
+            }
+
+            savePendingTransfer({
+                date: today(), reference: generateRef(),
+                recipient: recipient, bank: bank, account: account,
+                routing: routing, amount: amount.toString(), type: type, note: note,
+                kind: 'transfer'
+            });
+
+            window.custodiaBalance.set(currentBalance - amount);
+
+            renderPendingRows();
+
+            window.showToast(
+                'Transfer submitted successfully! Your transfer to ' + recipient + ' is now Pending.',
+                'success',
+                6000
+            );
+
+            // hide old inline toast if present
+            if(oldToast) oldToast.style.display = 'none';
+            form.reset();
+        });
+
+        // Live amount validation feedback
+        var amountInput = form.querySelectorAll('input')[4];
+        if(amountInput){
+            amountInput.addEventListener('input', function(){
+                var val = parseFloat(this.value);
+                var limitDisplay = document.getElementById('transferLimitDisplay');
+                if(val > TRANSFER_LIMIT){
+                    this.style.color = '#dc2626';
+                    if(limitDisplay) limitDisplay.style.color = '#dc2626';
+                } else {
+                    this.style.color = '';
+                    if(limitDisplay) limitDisplay.style.color = '';
+                }
+            });
+        }
+    }
+
+    window.addEventListener('load', function(){ setTimeout(renderPendingRows, 200); });
+
+    document.addEventListener('click', function(e){
+        var target = e.target.closest ? e.target.closest('[data-page]') : null;
+        if(target){
+            var dest = target.dataset.page;
+            if(dest === 'transactionHistoryPage' || dest === 'statementPage'){
+                setTimeout(renderPendingRows, 100);
+            }
+            if(dest === 'homePage'){
+                setTimeout(function(){ if(typeof renderRecentTransactions === 'function') renderRecentTransactions(); }, 100);
+            }
+        }
+    });
+
+})();
+</script>
+
+<script>
+/* =========================
+   BALANCE MANAGEMENT (CACHED)
+   ========================= */
+
+(function(){
+    var BALANCE_KEY = 'custodia_balance';
+    var DEFAULT_BALANCE = 101643750.00;
+
+    function formatCurrency(val){
+        return '\u00a5' + Number(val).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+
+    function getBalance(){
+        var stored = localStorage.getItem(BALANCE_KEY);
+        if(stored === null || isNaN(parseFloat(stored))){
+            localStorage.setItem(BALANCE_KEY, DEFAULT_BALANCE.toString());
+            return DEFAULT_BALANCE;
+        }
+        return parseFloat(stored);
+    }
+
+    function setBalance(val){
+        if(val < 0) val = 0;
+        localStorage.setItem(BALANCE_KEY, val.toString());
+        updateBalanceDisplays();
+        return val;
+    }
+
+    function updateBalanceDisplays(){
+        var bal = getBalance();
+        var formatted = formatCurrency(bal);
+
+        var balanceAmount = document.getElementById('balanceAmount');
+        if(balanceAmount) balanceAmount.textContent = formatted + ' ';
+
+        var transferBal = document.getElementById('transferAvailableBalance');
+        if(transferBal) transferBal.textContent = formatted;
+
+        var withdrawBal = document.getElementById('withdrawAvailableBalance');
+        if(withdrawBal) withdrawBal.textContent = formatted;
+    }
+
+    window.custodiaBalance = {
+        get: getBalance,
+        set: setBalance,
+        format: formatCurrency,
+        refresh: updateBalanceDisplays
+    };
+
+    document.addEventListener('DOMContentLoaded', updateBalanceDisplays);
+    window.addEventListener('load', updateBalanceDisplays);
+})();
+
+/* =========================
+   FIELD VALIDATION / INPUT RESTRICTION
+   ========================= */
+
+(function(){
+
+    function restrictToLetters(input){
+        input.addEventListener('input', function(){
+            this.value = this.value.replace(/[^a-zA-Z\s.'-]/g, '');
+        });
+    }
+
+    function restrictToNumeric(input){
+        input.addEventListener('input', function(){
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    }
+
+    function restrictToAlphanumeric(input){
+        input.addEventListener('input', function(){
+            this.value = this.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+        });
+    }
+
+    function restrictToDecimal(input){
+        input.addEventListener('input', function(){
+            var val = this.value.replace(/[^0-9.]/g, '');
+
+            var parts = val.split('.');
+            if(parts.length > 2){
+                val = parts[0] + '.' + parts.slice(1).join('');
+            }
+
+            parts = val.split('.');
+
+            var intPart = parts[0].replace(/^0+(?=\d)/, '');
+            var decPart = parts[1];
+
+            if(decPart && decPart.length > 2){
+                decPart = decPart.slice(0, 2);
+            }
+
+            // add thousands separators to integer part
+            intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            if(parts.length > 1){
+                this.value = intPart + '.' + (decPart || '');
+            } else {
+                this.value = intPart;
+            }
+        });
+    }
+
+    function init(){
+        // TRANSFER FORM
+        var tRecipient = document.getElementById('transferRecipient');
+        var tBank      = document.getElementById('transferBankName');
+        var tAccount   = document.getElementById('transferAccountNumber');
+        var tRouting   = document.getElementById('transferRouting');
+        var tAmount    = document.getElementById('transferAmount');
+
+        if(tRecipient) restrictToLetters(tRecipient);
+        if(tBank)      restrictToLetters(tBank);
+        if(tAccount)   restrictToNumeric(tAccount);
+        if(tRouting)   restrictToAlphanumeric(tRouting);
+        if(tAmount)    restrictToDecimal(tAmount);
+
+        // WITHDRAW FORM
+        var wAmount  = document.getElementById('withdrawAmount');
+        var wBank    = document.getElementById('withdrawBankName');
+        var wAccount = document.getElementById('withdrawAccountNumber');
+        var wRouting = document.getElementById('withdrawRouting');
+
+        if(wAmount)  restrictToDecimal(wAmount);
+        if(wBank)    restrictToLetters(wBank);
+        if(wAccount) restrictToNumeric(wAccount);
+        if(wRouting) restrictToAlphanumeric(wRouting);
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+})();
+
+/* =========================
+   WITHDRAW FORM - SAVE TO CACHE & DEDUCT BALANCE
+   ========================= */
+
+(function(){
+
+    var STORAGE_KEY = 'custodia_pending_transfers';
+
+    function getPendingTransfers(){
+        try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+        catch(e){ return []; }
+    }
+
+    function savePendingTransfer(transfer){
+        var list = getPendingTransfers();
+        list.unshift(transfer);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function generateRef(){
+        var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        var ref = 'WTH-';
+        for(var i = 0; i < 8; i++) ref += chars[Math.floor(Math.random()*chars.length)];
+        return ref;
+    }
+
+    function today(){
+        var d = new Date();
+        return d.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'});
+    }
+
+    function init(){
+        var submitBtn = document.getElementById('submitWithdrawBtn');
+        if(!submitBtn) return;
+
+        var amountInput  = document.getElementById('withdrawAmount');
+        var bankInput    = document.getElementById('withdrawBankName');
+        var accountInput = document.getElementById('withdrawAccountNumber');
+        var routingInput = document.getElementById('withdrawRouting');
+        var typeSelect   = document.getElementById('withdrawTypeSelect');
+
+        submitBtn.addEventListener('click', function(){
+
+            var amount  = parseFloat((amountInput && amountInput.value.trim().replace(/,/g, '')) || '0');
+            var bank    = (bankInput && bankInput.value.trim()) || '';
+            var account = (accountInput && accountInput.value.trim()) || '';
+            var routing = (routingInput && routingInput.value.trim()) || '';
+            var type    = (typeSelect && typeSelect.value) || '';
+
+            // — Validation —
+
+            if(!amount || amount <= 0){
+                window.showToast('Please enter a valid withdrawal amount greater than zero.', 'warning');
+                return;
+            }
+
+            if(!bank){
+                window.showToast('Please enter the destination bank name.', 'warning');
+                return;
+            }
+
+            if(!account){
+                window.showToast('Please enter the beneficiary account number.', 'warning');
+                return;
+            }
+
+            if(!type){
+                window.showToast('Please select a transfer type.', 'warning');
+                return;
+            }
+
+            var currentBalance = window.custodiaBalance.get();
+
+            if(amount > currentBalance){
+                window.showToast(
+                    'Insufficient funds. Your available balance is \u00a5' +
+                    currentBalance.toLocaleString('en-US', {minimumFractionDigits:2}) +
+                    '.',
+                    'error',
+                    6000
+                );
+                return;
+            }
+
+            savePendingTransfer({
+                date: today(), reference: generateRef(),
+                recipient: 'Self', bank: bank, account: account,
+                routing: routing, amount: amount.toString(), type: type, note: '',
+                kind: 'withdrawal'
+            });
+
+            window.custodiaBalance.set(currentBalance - amount);
+
+            if(typeof renderPendingRows === 'function') renderPendingRows();
+
+            window.showToast(
+                'Withdrawal request submitted successfully! Your withdrawal is now Pending.',
+                'success',
+                6000
+            );
+
+            // reset fields
+            if(amountInput)  amountInput.value = '';
+            if(bankInput)    bankInput.value = '';
+            if(accountInput) accountInput.value = '';
+            if(routingInput) routingInput.value = '';
+            if(typeSelect)   typeSelect.value = '';
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+})();
+
+/* =========================
+   DARK / LIGHT THEME TOGGLE
+   ========================= */
+
+(function(){
+
+    var THEME_KEY = 'custodia_theme';
+
+    function applyTheme(theme){
+        if(theme === 'dark'){
+            document.documentElement.classList.add('dark-mode');
+        } else {
+            document.documentElement.classList.remove('dark-mode');
+        }
+    }
+
+    function init(){
+        var toggle = document.getElementById('darkModeToggle');
+        var savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+
+        applyTheme(savedTheme);
+
+        if(toggle){
+            toggle.checked = (savedTheme === 'dark');
+
+            toggle.addEventListener('change', function(){
+                var theme = this.checked ? 'dark' : 'light';
+                localStorage.setItem(THEME_KEY, theme);
+                applyTheme(theme);
+
+                if(typeof window.showToast === 'function'){
+                    window.showToast(
+                        theme === 'dark' ? 'Dark mode enabled.' : 'Light mode enabled.',
+                        'success',
+                        2500
+                    );
+                }
+            });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
 
 </body>
 
