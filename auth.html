@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Custodia Bank — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+
+body{
+  background:#f4f8ff;min-height:100vh;overflow-x:hidden;color:#0f172a;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background:radial-gradient(circle at top left,rgba(37,99,235,.18),transparent 30%),
+             radial-gradient(circle at bottom right,rgba(14,165,233,.15),transparent 35%),
+             linear-gradient(to bottom right,#f8fbff,#edf5ff);
+  z-index:-2;
+}
+.floating-glow{
+  position:fixed;width:450px;height:450px;border-radius:50%;
+  background:rgba(59,130,246,.12);filter:blur(90px);
+  top:-120px;right:-100px;z-index:-1;
+}
+
+/* ── WRAPPER ── */
+.container{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+.auth-wrapper{
+  width:100%;max-width:1200px;min-height:720px;background:#fff;
+  border-radius:36px;overflow:hidden;display:grid;
+  grid-template-columns:1.1fr 1fr;
+  box-shadow:0 10px 40px rgba(15,23,42,.08),0 2px 10px rgba(15,23,42,.04);
+  border:1px solid rgba(255,255,255,.8);
+}
+
+/* ── LEFT ── */
+.hero-side{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(2,6,23,.72),rgba(30,64,175,.65)),
+    url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1400&auto=format&fit=crop') center/cover;
+  padding:60px;display:flex;flex-direction:column;justify-content:space-between;
+}
+.hero-side::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(2,6,23,.55),transparent 45%);
+}
+.brand,.hero-content,.hero-stats{position:relative;z-index:2;}
+.brand{display:flex;align-items:center;gap:14px;}
+.brand-logo{height:80px;}
+.brand h2{color:#fff;font-size:24px;font-weight:800;}
+.brand p{color:rgba(255,255,255,.75);font-size:14px;}
+.hero-content h1{color:#fff;font-size:52px;line-height:1.05;max-width:520px;margin-bottom:24px;font-weight:800;}
+.hero-content p{color:rgba(255,255,255,.82);font-size:17px;line-height:1.8;max-width:520px;}
+.hero-stats{display:flex;gap:18px;flex-wrap:wrap;}
+.stat-card{
+  background:rgba(255,255,255,.12);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:22px;min-width:160px;
+}
+.stat-card h3{color:#fff;font-size:26px;margin-bottom:6px;}
+.stat-card span{color:rgba(255,255,255,.78);font-size:14px;}
+
+/* ── RIGHT ── */
+.form-side{padding:52px 56px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;}
+
+/* tabs */
+.auth-tabs{display:flex;gap:6px;background:#f1f5f9;border-radius:16px;padding:5px;margin-bottom:36px;}
+.auth-tab{
+  flex:1;height:46px;border:none;border-radius:12px;background:transparent;
+  font-size:15px;font-weight:600;color:#64748b;cursor:pointer;transition:.25s;
+}
+.auth-tab.active{background:#fff;color:#0f172a;box-shadow:0 2px 8px rgba(15,23,42,.08);}
+
+/* panels */
+.auth-panel{display:none;}
+.auth-panel.active{display:block;}
+
+.panel-title h1{font-size:34px;color:#0f172a;margin-bottom:8px;}
+.panel-title p{color:#64748b;line-height:1.7;margin-bottom:28px;font-size:15px;}
+
+/* form */
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;margin-bottom:8px;font-size:13px;font-weight:600;color:#1e293b;}
+.input-wrap{position:relative;}
+.input-wrap input,.input-wrap select{
+  width:100%;height:58px;border-radius:16px;border:1px solid #dbe5f3;
+  background:#f8fbff;padding:0 18px;font-size:15px;outline:none;transition:.3s;
+  appearance:none;
+}
+.input-wrap input:focus,.input-wrap select:focus{
+  border-color:#2563eb;background:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.1);
+}
+.input-with-icon input{padding-right:52px;}
+.eye-btn{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;color:#64748b;font-size:16px;
+}
+.eye-btn:hover{color:#2563eb;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+.submit-btn{
+  width:100%;height:58px;border:none;border-radius:16px;
+  background:linear-gradient(135deg,#2563eb,#0ea5e9);
+  color:#fff;font-size:16px;font-weight:700;cursor:pointer;
+  transition:.3s;box-shadow:0 16px 32px rgba(37,99,235,.22);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:4px;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 20px 38px rgba(37,99,235,.3);}
+.submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+.form-options{display:flex;align-items:center;justify-content:space-between;margin:14px 0 20px;gap:10px;}
+.checkbox-label{display:flex;align-items:center;gap:8px;color:#475569;font-size:14px;cursor:pointer;}
+.checkbox-label input{width:16px;height:16px;accent-color:#2563eb;}
+.forgot-link{color:#2563eb;text-decoration:none;font-size:14px;font-weight:600;}
+
+.error-box{
+  margin-top:12px;padding:12px 16px;border-radius:12px;
+  background:#fef2f2;border:1px solid #fecaca;
+  color:#dc2626;font-size:14px;font-weight:600;display:none;
+}
+.success-box{
+  margin-top:12px;padding:12px 16px;border-radius:12px;
+  background:#f0fdf4;border:1px solid #bbf7d0;
+  color:#16a34a;font-size:14px;font-weight:600;display:none;
+}
+
+.footer-note{margin-top:24px;text-align:center;color:#64748b;font-size:13px;line-height:1.8;}
+.footer-note a{color:#2563eb;text-decoration:none;font-weight:600;}
+
+/* ── SPINNER ── */
+.spinner{
+  width:20px;height:20px;border:2px solid rgba(255,255,255,.4);
+  border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  .auth-wrapper{grid-template-columns:1fr;min-height:auto;border-radius:0;}
+  .hero-side{display:none;}
+  .form-side{padding:30px 22px;}
+  .panel-title h1{font-size:28px;}
+  .container{padding:0;}
+  body{background:linear-gradient(to bottom,#eef5ff,#fff);}
+  .form-row{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .panel-title h1{font-size:24px;}
+  .form-options{flex-direction:column;align-items:flex-start;}
+}
+/* ── WIZARD STEPS ── */
+.wizard-step{display:none;}
+.wizard-step.active{display:block;}
+
+/* progress bar */
+.step-progress{margin-bottom:28px;}
+.step-track{
+  height:4px;background:#e2e8f0;border-radius:99px;margin-bottom:18px;overflow:hidden;
+}
+.step-fill{
+  height:100%;background:linear-gradient(90deg,#2563eb,#0ea5e9);
+  border-radius:99px;transition:width .4s ease;width:0%;
+}
+.step-dots{display:flex;justify-content:space-between;position:relative;}
+.step-dot{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  flex:1;cursor:default;
+}
+.step-dot span{
+  width:32px;height:32px;border-radius:50%;background:#e2e8f0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#94a3b8;transition:.3s;
+}
+.step-dot label{font-size:11px;color:#94a3b8;font-weight:600;transition:.3s;text-align:center;}
+.step-dot.active span,.step-dot.done span{background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;}
+.step-dot.active label,.step-dot.done label{color:#2563eb;}
+.step-dot.done span::before{content:"✓";}
+.step-dot.done span{font-size:0;}
+.step-dot.done span::before{font-size:14px;}
+
+/* nav buttons */
+.wizard-nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px;}
+.nav-btn{
+  height:48px;padding:0 24px;border-radius:14px;border:none;
+  font-size:14px;font-weight:700;cursor:pointer;transition:.25s;
+  display:flex;align-items:center;gap:8px;
+}
+.next-btn{
+  background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;
+  box-shadow:0 8px 20px rgba(37,99,235,.2);
+}
+.next-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 12px 24px rgba(37,99,235,.3);}
+.next-btn:disabled{
+  background:linear-gradient(135deg,#94a3b8,#cbd5e1);
+  box-shadow:none;cursor:not-allowed;opacity:1;
+}
+.back-btn{background:#f1f5f9;color:#475569;}
+.back-btn:hover{background:#e2e8f0;}
+
+/* field-level errors */
+.field-error{
+  font-size:12px;color:#dc2626;font-weight:500;
+  margin-top:5px;display:none;align-items:center;gap:5px;
+}
+.field-error.show{display:flex;}
+.field-error i{font-size:11px;}
+.input-wrap.has-error input,
+.input-wrap.has-error select{
+  border-color:#fca5a5;background:#fff5f5;
+}
+.input-wrap.has-error input:focus,
+.input-wrap.has-error select:focus{
+  border-color:#ef4444;box-shadow:0 0 0 4px rgba(239,68,68,.1);
+}
+.input-wrap.is-valid input,
+.input-wrap.is-valid select{
+  border-color:#86efac;
+}
+.pin-inputs.has-error .pin-digit{border-color:#fca5a5;background:#fff5f5;}
+.pin-error{font-size:12px;color:#dc2626;font-weight:500;margin-top:8px;display:none;align-items:center;gap:5px;}
+.pin-error.show{display:flex;}
+
+/* PIN inputs */
+.pin-inputs{display:flex;gap:12px;margin-top:4px;}
+.pin-digit{
+  width:58px;height:58px;border-radius:14px;border:1.5px solid #dbe5f3;
+  background:#f8fbff;text-align:center;font-size:20px;font-weight:700;
+  outline:none;transition:.3s;
+}
+.pin-digit:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.1);}
+
+/* password strength */
+.pwd-strength{height:4px;background:#e2e8f0;border-radius:99px;margin-top:8px;overflow:hidden;}
+.pwd-bar{height:100%;border-radius:99px;width:0%;transition:width .4s,background .4s;}
+.field-hint{font-size:12px;color:#94a3b8;margin-top:5px;}
+.label-hint{font-size:11px;color:#94a3b8;font-weight:400;margin-left:4px;}
+
+/* review card */
+.review-card{
+  background:#f8fbff;border:1px solid #e2e8f0;border-radius:18px;padding:20px;
+}
+.review-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-bottom:1px solid #f1f5f9;gap:12px;
+}
+.review-row:last-child{border-bottom:none;}
+.review-label{font-size:12px;font-weight:600;color:#64748b;min-width:110px;}
+.review-value{font-size:14px;font-weight:600;color:#0f172a;text-align:right;word-break:break-all;}
+.review-edit{
+  background:none;border:none;color:#2563eb;font-size:11px;font-weight:700;
+  cursor:pointer;padding:2px 6px;border-radius:6px;white-space:nowrap;
+}
+.review-edit:hover{background:#eff6ff;}
+</style>
+</head>
+<body>
+
+<div class="floating-glow"></div>
+
+<div class="container">
+<div class="auth-wrapper">
+
+  <!-- LEFT -->
+  <div class="hero-side">
+    <div class="brand">
+      <img src="icon/custodia_logo.png" alt="Custodia" class="brand-logo">
+      <div>
+        <h2>Custodia Bank</h2>
+        <p>Digital Banking Reimagined</p>
+      </div>
+    </div>
+    <div class="hero-content">
+      <h1>Secure banking designed for the future.</h1>
+      <p>Experience lightning-fast transfers, intelligent financial insights, advanced fraud protection, and seamless global banking from one trusted platform.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><h3>$12B+</h3><span>Assets Managed</span></div>
+      <div class="stat-card"><h3>190+</h3><span>Countries Supported</span></div>
+      <div class="stat-card"><h3>24/7</h3><span>AI Fraud Monitoring</span></div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="form-side">
+
+    <!-- TABS -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab" id="signupTab" onclick="switchTab('signup')">Create Account</button>
+    </div>
+
+    <!-- LOGIN PANEL -->
+    <div class="auth-panel active" id="loginPanel">
+      <div class="panel-title">
+        <h1>Welcome back</h1>
+        <p>Sign in to access your banking dashboard securely.</p>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <div class="input-wrap">
+          <input type="email" id="loginEmail" placeholder="Enter your email address">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap input-with-icon">
+          <input type="password" id="loginPassword" placeholder="Enter your password">
+          <button class="eye-btn" onclick="togglePwd('loginPassword',this)"><i class="fa fa-eye"></i></button>
+        </div>
+      </div>
+
+      <div class="form-options">
+        <label class="checkbox-label">
+          <input type="checkbox" id="rememberMe"> Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot Password?</a>
+      </div>
+
+      <button class="submit-btn" id="loginBtn" onclick="doLogin()">
+        Sign In Securely
+      </button>
+
+      <div class="error-box" id="loginError"></div>
+      <div class="success-box" id="loginSuccess"></div>
+
+      <p class="footer-note">
+        Protected by enterprise-grade encryption.<br>
+        By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+      </p>
+    </div>
+
+    <!-- SIGNUP PANEL -->
+    <div class="auth-panel" id="signupPanel">
+
+      <!-- Step progress -->
+      <div class="step-progress">
+        <div class="step-track"><div class="step-fill" id="stepFill"></div></div>
+        <div class="step-dots">
+          <div class="step-dot active" id="dot1"><span>1</span><label>Personal</label></div>
+          <div class="step-dot" id="dot2"><span>2</span><label>Contact</label></div>
+          <div class="step-dot" id="dot3"><span>3</span><label>Security</label></div>
+          <div class="step-dot" id="dot4"><span>4</span><label>Review</label></div>
+        </div>
+      </div>
+
+      <!-- ── STEP 1: Personal Details ── -->
+      <div class="wizard-step active" id="step1">
+        <div class="panel-title">
+          <h1>Personal details</h1>
+          <p>Start with the basics — your name and where you're based.</p>
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <div class="input-wrap" id="wrap-signupName">
+            <input type="text" id="signupName" placeholder="Your full legal name"
+              oninput="liveCheck1()">
+          </div>
+          <p class="field-error" id="err-signupName"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="form-group">
+          <label>Country of Residence</label>
+          <div class="input-wrap" id="wrap-signupCountry">
+            <select id="signupCountry" onchange="liveCheck1()">
+              <option value="">Select your country</option>
+              <optgroup label="Africa">
+                <option>Nigeria</option><option>South Africa</option><option>Ghana</option>
+                <option>Kenya</option><option>Egypt</option><option>Ethiopia</option>
+                <option>Tanzania</option><option>Uganda</option><option>Morocco</option><option>Cameroon</option>
+              </optgroup>
+              <optgroup label="Americas">
+                <option>United States</option><option>Canada</option><option>Brazil</option>
+                <option>Mexico</option><option>Argentina</option><option>Colombia</option><option>Chile</option>
+              </optgroup>
+              <optgroup label="Europe">
+                <option>United Kingdom</option><option>Germany</option><option>France</option>
+                <option>Italy</option><option>Spain</option><option>Netherlands</option>
+                <option>Portugal</option><option>Belgium</option><option>Switzerland</option>
+                <option>Sweden</option><option>Norway</option><option>Denmark</option>
+                <option>Poland</option><option>Russia</option><option>Turkey</option>
+              </optgroup>
+              <optgroup label="Asia &amp; Pacific">
+                <option>China</option><option>Japan</option><option>India</option>
+                <option>South Korea</option><option>Australia</option><option>New Zealand</option>
+                <option>Singapore</option><option>Hong Kong</option><option>Taiwan</option>
+                <option>Thailand</option><option>Indonesia</option><option>Malaysia</option>
+                <option>Philippines</option><option>Vietnam</option><option>Pakistan</option>
+                <option>Bangladesh</option><option>Sri Lanka</option><option>Nepal</option>
+              </optgroup>
+              <optgroup label="Middle East">
+                <option>UAE</option><option>Saudi Arabia</option><option>Qatar</option>
+                <option>Kuwait</option><option>Israel</option>
+              </optgroup>
+            </select>
+          </div>
+          <p class="field-error" id="err-signupCountry"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="wizard-nav">
+          <div></div>
+          <button class="nav-btn next-btn" id="next1" onclick="goStep(2)" disabled>Continue <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: Contact ── -->
+      <div class="wizard-step" id="step2">
+        <div class="panel-title">
+          <h1>Contact information</h1>
+          <p>How we reach you and where to send correspondence.</p>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-wrap" id="wrap-signupEmail">
+            <input type="email" id="signupEmail" placeholder="your@email.com"
+              oninput="liveCheck2()">
+          </div>
+          <p class="field-error" id="err-signupEmail"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="input-wrap" id="wrap-signupPhone">
+            <input type="tel" id="signupPhone" placeholder="+1 555 000 0000"
+              oninput="liveCheck2()">
+          </div>
+          <p class="field-error" id="err-signupPhone"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="form-group">
+          <label>Residential Address</label>
+          <div class="input-wrap" id="wrap-signupAddress">
+            <input type="text" id="signupAddress" placeholder="Street, City, State / Province"
+              oninput="liveCheck2()">
+          </div>
+          <p class="field-error" id="err-signupAddress"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="wizard-nav">
+          <button class="nav-btn back-btn" onclick="goStep(1)"><i class="fa fa-arrow-left"></i> Back</button>
+          <button class="nav-btn next-btn" id="next2" onclick="goStep(3)" disabled>Continue <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: Security ── -->
+      <div class="wizard-step" id="step3">
+        <div class="panel-title">
+          <h1>Account security</h1>
+          <p>Create a strong password and a 4-digit transaction PIN.</p>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrap input-with-icon" id="wrap-signupPassword">
+            <input type="password" id="signupPassword" placeholder="At least 6 characters"
+              oninput="updatePwdStrength(this.value);liveCheck3()">
+            <button class="eye-btn" onclick="togglePwd('signupPassword',this)"><i class="fa fa-eye"></i></button>
+          </div>
+          <div class="pwd-strength"><div class="pwd-bar" id="pwdBar"></div></div>
+          <p class="field-hint" id="pwdLabel"></p>
+          <p class="field-error" id="err-signupPassword"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="input-wrap input-with-icon" id="wrap-signupConfirm">
+            <input type="password" id="signupConfirm" placeholder="Re-enter your password"
+              oninput="liveCheck3()">
+            <button class="eye-btn" onclick="togglePwd('signupConfirm',this)"><i class="fa fa-eye"></i></button>
+          </div>
+          <p class="field-error" id="err-signupConfirm"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="form-group">
+          <label>Transaction PIN <span class="label-hint">(4 digits — used to authorise payments)</span></label>
+          <div class="pin-inputs" id="pin-inputs-wrap">
+            <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" id="pin0" oninput="pinNav(this,0);liveCheck3()" onkeydown="pinBack(event,0)">
+            <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" id="pin1" oninput="pinNav(this,1);liveCheck3()" onkeydown="pinBack(event,1)">
+            <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" id="pin2" oninput="pinNav(this,2);liveCheck3()" onkeydown="pinBack(event,2)">
+            <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" id="pin3" oninput="pinNav(this,3);liveCheck3()" onkeydown="pinBack(event,3)">
+          </div>
+          <p class="pin-error" id="err-pin"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="wizard-nav">
+          <button class="nav-btn back-btn" onclick="goStep(2)"><i class="fa fa-arrow-left"></i> Back</button>
+          <button class="nav-btn next-btn" id="next3" onclick="goStep(4)" disabled>Review <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- ── STEP 4: Review & Submit ── -->
+      <div class="wizard-step" id="step4">
+        <div class="panel-title">
+          <h1>Review &amp; confirm</h1>
+          <p>Double-check your details before creating your account.</p>
+        </div>
+        <div class="review-card" id="reviewCard"></div>
+        <div class="form-group" style="margin-top:16px;">
+          <label>Additional Notes <span class="label-hint">(optional)</span></label>
+          <div class="input-wrap">
+            <input type="text" id="signupNotes" placeholder="Referral code, promo, or anything else…">
+          </div>
+        </div>
+        <div class="form-options" style="margin-top:8px;margin-bottom:16px;">
+          <label class="checkbox-label">
+            <input type="checkbox" id="signupTerms">
+            I agree to the <a href="#" class="forgot-link">Terms of Service</a> &amp; <a href="#" class="forgot-link">Privacy Policy</a>
+          </label>
+        </div>
+        <button class="submit-btn" id="signupBtn" onclick="doSignup()">
+          <i class="fa fa-shield-halved"></i> Create My Account
+        </button>
+        <div class="error-box" id="signupError"></div>
+        <div class="success-box" id="signupSuccess"></div>
+        <div class="wizard-nav" style="margin-top:14px;">
+          <button class="nav-btn back-btn" onclick="goStep(3)"><i class="fa fa-arrow-left"></i> Back</button>
+          <div></div>
+        </div>
+      </div>
+
+    </div><!-- /signupPanel -->
+
+  </div><!-- /form-side -->
+</div><!-- /auth-wrapper -->
+</div><!-- /container -->
+
+<script>
+/* ── CONFIG ── */
+const API_URL = "https://script.google.com/macros/s/AKfycbxH5BIk0V2erjgBhXc_7ehVmLBhTCoIjLRBvIwNtGMgl6hLOoVhBCxdDSBon8XMspQf/exec"; // e.g. https://script.google.com/macros/s/xxx/exec
+const DASHBOARD = "accountdashboard.html"; // your dashboard filename
+
+/* ── TAB SWITCH ── */
+function switchTab(tab) {
+  document.getElementById('loginPanel').classList.toggle('active', tab === 'login');
+  document.getElementById('signupPanel').classList.toggle('active', tab === 'signup');
+  document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+  document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
+  if (tab === 'signup' && currentStep !== 1) {
+    // reset all field error states
+    ['signupName','signupCountry','signupEmail','signupPhone','signupAddress','signupPassword','signupConfirm'].forEach(id => clearFieldError(id));
+    setPinError('');
+    goStep(1);
+  }
+  clearMessages();
+}
+
+function clearMessages() {
+  ['loginError','loginSuccess','signupError','signupSuccess'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.display = 'none'; el.textContent = ''; }
+  });
+}
+
+/* ── PASSWORD TOGGLE ── */
+function togglePwd(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const icon  = btn.querySelector('i');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.replace('fa-eye','fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.replace('fa-eye-slash','fa-eye');
+  }
+}
+
+/* ── API CALL ── */
+async function api(payload) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+  return res.json();
+}
+
+/* ── SET LOADING STATE ── */
+function setLoading(btnId, loading, defaultText) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.innerHTML = loading
+    ? '<div class="spinner"></div> Please wait…'
+    : defaultText;
+}
+
+/* ── SHOW MESSAGE ── */
+function showMsg(id, text) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.style.display = 'block';
+}
+
+/* ── LOGIN ── */
+async function doLogin() {
+  clearMessages();
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const remember = document.getElementById('rememberMe').checked;
+
+  if (!email || !password) {
+    showMsg('loginError', 'Please enter your email and password.');
+    return;
+  }
+
+  setLoading('loginBtn', true, 'Sign In Securely');
+
+  try {
+    const data = await api({ action: 'login', email, password });
+
+    if (data.status) {
+      const storage = remember ? localStorage : sessionStorage;
+      storage.setItem('custodia_uid',  data.user.uid);
+      storage.setItem('custodia_name', data.user.name);
+      showMsg('loginSuccess', 'Login successful! Redirecting…');
+      setTimeout(() => { window.location.href = DASHBOARD; }, 800);
+    } else {
+      showMsg('loginError', data.message || 'Invalid email or password.');
+    }
+  } catch(e) {
+    showMsg('loginError', 'Connection error. Please try again.');
+  }
+
+  setLoading('loginBtn', false, 'Sign In Securely');
+}
+
+/* ── WIZARD ── */
+let currentStep = 1;
+const TOTAL_STEPS = 4;
+
+/* ── Field error helpers ── */
+function setFieldError(fieldId, msg) {
+  const wrap = document.getElementById('wrap-' + fieldId);
+  const errEl = document.getElementById('err-' + fieldId);
+  if (!wrap || !errEl) return;
+  if (msg) {
+    wrap.classList.add('has-error');
+    wrap.classList.remove('is-valid');
+    errEl.querySelector('span').textContent = msg;
+    errEl.classList.add('show');
+  } else {
+    wrap.classList.remove('has-error');
+    wrap.classList.add('is-valid');
+    errEl.classList.remove('show');
+  }
+}
+function clearFieldError(fieldId) {
+  const wrap = document.getElementById('wrap-' + fieldId);
+  const errEl = document.getElementById('err-' + fieldId);
+  if (wrap) { wrap.classList.remove('has-error','is-valid'); }
+  if (errEl) { errEl.classList.remove('show'); }
+}
+function setPinError(msg) {
+  const wrap = document.getElementById('pin-inputs-wrap');
+  const errEl = document.getElementById('err-pin');
+  if (msg) {
+    wrap.classList.add('has-error');
+    errEl.querySelector('span').textContent = msg;
+    errEl.classList.add('show');
+  } else {
+    wrap.classList.remove('has-error');
+    errEl.classList.remove('show');
+  }
+}
+
+/* ── Live check: Step 1 ── */
+function liveCheck1() {
+  const name    = document.getElementById('signupName').value.trim();
+  const country = document.getElementById('signupCountry').value;
+  let ok = true;
+
+  if (name.length > 0 && name.length < 2) {
+    setFieldError('signupName', 'Name must be at least 2 characters.'); ok = false;
+  } else if (name.length === 0) {
+    clearFieldError('signupName'); ok = false;
+  } else {
+    setFieldError('signupName', '');
+  }
+
+  if (!country) {
+    clearFieldError('signupCountry'); ok = false;
+  } else {
+    setFieldError('signupCountry', '');
+  }
+
+  document.getElementById('next1').disabled = !ok;
+}
+
+/* ── Live check: Step 2 ── */
+function liveCheck2() {
+  const email = document.getElementById('signupEmail').value.trim();
+  const phone = document.getElementById('signupPhone').value.trim();
+  const addr  = document.getElementById('signupAddress').value.trim();
+  let ok = true;
+
+  // email
+  if (email.length === 0) {
+    clearFieldError('signupEmail'); ok = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setFieldError('signupEmail', 'Enter a valid email address.'); ok = false;
+  } else {
+    setFieldError('signupEmail', '');
+  }
+
+  // phone — allow digits, spaces, +, -, (), min 7 chars
+  if (phone.length === 0) {
+    clearFieldError('signupPhone'); ok = false;
+  } else if (!/^[\d\s\+\-\(\)]{7,}$/.test(phone)) {
+    setFieldError('signupPhone', 'Enter a valid phone number.'); ok = false;
+  } else {
+    setFieldError('signupPhone', '');
+  }
+
+  // address
+  if (addr.length === 0) {
+    clearFieldError('signupAddress'); ok = false;
+  } else if (addr.length < 5) {
+    setFieldError('signupAddress', 'Enter your full address.'); ok = false;
+  } else {
+    setFieldError('signupAddress', '');
+  }
+
+  document.getElementById('next2').disabled = !ok;
+}
+
+/* ── Live check: Step 3 ── */
+function liveCheck3() {
+  const pwd  = document.getElementById('signupPassword').value;
+  const conf = document.getElementById('signupConfirm').value;
+  const pin  = getPinValue();
+  let ok = true;
+
+  // password
+  if (pwd.length === 0) {
+    clearFieldError('signupPassword'); ok = false;
+  } else if (pwd.length < 6) {
+    setFieldError('signupPassword', 'Password must be at least 6 characters.'); ok = false;
+  } else {
+    setFieldError('signupPassword', '');
+  }
+
+  // confirm
+  if (conf.length === 0) {
+    clearFieldError('signupConfirm'); ok = false;
+  } else if (conf !== pwd) {
+    setFieldError('signupConfirm', 'Passwords do not match.'); ok = false;
+  } else {
+    setFieldError('signupConfirm', '');
+  }
+
+  // pin
+  if (pin.length === 0) {
+    setPinError(''); ok = false;
+  } else if (pin.length < 4) {
+    setPinError(''); ok = false; // just keep it silent until all 4 filled
+  } else if (!/^\d{4}$/.test(pin)) {
+    setPinError('PIN must be 4 numeric digits.'); ok = false;
+  } else {
+    setPinError('');
+  }
+
+  document.getElementById('next3').disabled = !ok;
+}
+
+function goStep(n) {
+  // show field errors on current step if trying to advance but button was somehow clicked
+  if (n > currentStep) {
+    if (!runValidation(currentStep)) return;
+  }
+
+  if (n === 4) buildReviewCard();
+
+  document.getElementById('step' + currentStep).classList.remove('active');
+  document.getElementById('step' + n).classList.add('active');
+
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.classList.remove('active','done');
+    if (i < n) dot.classList.add('done');
+    else if (i === n) dot.classList.add('active');
+  }
+
+  document.getElementById('stepFill').style.width = ((n - 1) / (TOTAL_STEPS - 1) * 100) + '%';
+  currentStep = n;
+  clearMessages();
+  document.querySelector('.form-side').scrollTop = 0;
+}
+
+/* Hard validation (called on goStep, shows errors explicitly for any missed fields) */
+function runValidation(step) {
+  if (step === 1) {
+    const name    = document.getElementById('signupName').value.trim();
+    const country = document.getElementById('signupCountry').value;
+    let ok = true;
+    if (!name) { setFieldError('signupName', 'Full name is required.'); ok = false; }
+    if (!country) { setFieldError('signupCountry', 'Please select your country.'); ok = false; }
+    return ok;
+  }
+  if (step === 2) {
+    const email = document.getElementById('signupEmail').value.trim();
+    const phone = document.getElementById('signupPhone').value.trim();
+    const addr  = document.getElementById('signupAddress').value.trim();
+    let ok = true;
+    if (!email) { setFieldError('signupEmail', 'Email address is required.'); ok = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setFieldError('signupEmail', 'Enter a valid email address.'); ok = false; }
+    if (!phone) { setFieldError('signupPhone', 'Phone number is required.'); ok = false; }
+    else if (!/^[\d\s\+\-\(\)]{7,}$/.test(phone)) { setFieldError('signupPhone', 'Enter a valid phone number.'); ok = false; }
+    if (!addr)  { setFieldError('signupAddress', 'Residential address is required.'); ok = false; }
+    else if (addr.length < 5) { setFieldError('signupAddress', 'Enter your full address.'); ok = false; }
+    return ok;
+  }
+  if (step === 3) {
+    const pwd  = document.getElementById('signupPassword').value;
+    const conf = document.getElementById('signupConfirm').value;
+    const pin  = getPinValue();
+    let ok = true;
+    if (!pwd)           { setFieldError('signupPassword', 'Password is required.'); ok = false; }
+    else if (pwd.length < 6) { setFieldError('signupPassword', 'Password must be at least 6 characters.'); ok = false; }
+    if (!conf)          { setFieldError('signupConfirm', 'Please confirm your password.'); ok = false; }
+    else if (conf !== pwd) { setFieldError('signupConfirm', 'Passwords do not match.'); ok = false; }
+    if (pin.length < 4) { setPinError('Enter all 4 digits of your PIN.'); ok = false; }
+    else if (!/^\d{4}$/.test(pin)) { setPinError('PIN must be 4 numeric digits.'); ok = false; }
+    return ok;
+  }
+  return true;
+}
+
+function validateStep(step) { return runValidation(step); }
+
+function getPinValue() {
+  return ['pin0','pin1','pin2','pin3'].map(id => document.getElementById(id).value).join('');
+}
+
+function buildReviewCard() {
+  const rows = [
+    ['Full Name',    document.getElementById('signupName').value.trim(),    1],
+    ['Country',      document.getElementById('signupCountry').value,         1],
+    ['Email',        document.getElementById('signupEmail').value.trim(),    2],
+    ['Phone',        document.getElementById('signupPhone').value.trim(),    2],
+    ['Address',      document.getElementById('signupAddress').value.trim(),  2],
+    ['Password',     '••••••••',                                             3],
+    ['PIN',          '••••',                                                  3],
+  ];
+  document.getElementById('reviewCard').innerHTML = rows.map(([label, val, step]) => `
+    <div class="review-row">
+      <span class="review-label">${label}</span>
+      <span class="review-value">${val || '<em style="color:#94a3b8">—</em>'}</span>
+      <button class="review-edit" onclick="goStep(${step})">Edit</button>
+    </div>
+  `).join('');
+}
+
+function updatePwdStrength(val) {
+  const bar   = document.getElementById('pwdBar');
+  const label = document.getElementById('pwdLabel');
+  let score = 0;
+  if (val.length >= 6)  score++;
+  if (val.length >= 10) score++;
+  if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+  if (/\d/.test(val))   score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    { w:'0%',   bg:'transparent', text:'' },
+    { w:'25%',  bg:'#ef4444',     text:'Weak' },
+    { w:'50%',  bg:'#f97316',     text:'Fair' },
+    { w:'75%',  bg:'#eab308',     text:'Good' },
+    { w:'100%', bg:'#22c55e',     text:'Strong' },
+  ];
+  const lvl = levels[Math.min(score, 4)];
+  bar.style.width      = lvl.w;
+  bar.style.background = lvl.bg;
+  label.textContent    = lvl.text;
+  label.style.color    = lvl.bg;
+}
+
+function pinNav(input, idx) {
+  input.value = input.value.replace(/[^0-9]/g, '').slice(-1);
+  if (input.value && idx < 3) document.getElementById('pin' + (idx + 1)).focus();
+}
+function pinBack(e, idx) {
+  if (e.key === 'Backspace' && !document.getElementById('pin' + idx).value && idx > 0) {
+    document.getElementById('pin' + (idx - 1)).focus();
+  }
+}
+
+/* ── SIGNUP ── */
+async function doSignup() {
+  clearMessages();
+  if (!document.getElementById('signupTerms').checked) {
+    showMsg('signupError', 'Please agree to the Terms of Service and Privacy Policy.');
+    return;
+  }
+
+  const name     = document.getElementById('signupName').value.trim();
+  const country  = document.getElementById('signupCountry').value;
+  const email    = document.getElementById('signupEmail').value.trim();
+  const phone    = document.getElementById('signupPhone').value.trim();
+  const address  = document.getElementById('signupAddress').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const pin      = getPinValue();
+  const notes    = document.getElementById('signupNotes').value.trim();
+
+  setLoading('signupBtn', true, '<i class="fa fa-shield-halved"></i> Create My Account');
+
+  try {
+    const data = await api({ action: 'register', name, email, password, country, phone, address, pin, notes });
+
+    if (data.status) {
+      showMsg('signupSuccess', 'Account created! Signing you in…');
+      setTimeout(async () => {
+        const login = await api({ action: 'login', email, password });
+        if (login.status) {
+          sessionStorage.setItem('custodia_uid',  login.user.uid);
+          sessionStorage.setItem('custodia_name', login.user.name);
+          window.location.href = DASHBOARD;
+        } else {
+          switchTab('login');
+          document.getElementById('loginEmail').value = email;
+        }
+      }, 1200);
+    } else {
+      showMsg('signupError', data.message || 'Registration failed. Please try again.');
+    }
+  } catch(e) {
+    showMsg('signupError', 'Connection error. Please try again.');
+  }
+
+  setLoading('signupBtn', false, '<i class="fa fa-shield-halved"></i> Create My Account');
+}
+
+/* ── ENTER KEY ── */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('loginPanel').classList.contains('active')) doLogin();
+  else if (currentStep === 4) doSignup();
+});
+
+/* ── REDIRECT IF ALREADY LOGGED IN ── */
+(function() {
+  const uid = sessionStorage.getItem('custodia_uid') || localStorage.getItem('custodia_uid');
+  if (uid) window.location.href = DASHBOARD;
+})();
+</script>
+
+<!-- Smartsupp -->
+<script type="text/javascript">
+var _smartsupp=_smartsupp||{};_smartsupp.key='af17074865248633fbfbaae93d897b9e981a06d4';
+window.smartsupp||(function(d){var s,c,o=smartsupp=function(){o._.push(arguments)};o._=[];
+s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+c.type='text/javascript';c.charset='utf-8';c.async=true;
+c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);})(document);
+</script>
+</body>
+</html>
