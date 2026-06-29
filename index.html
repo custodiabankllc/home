@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custodia Bank — Modern Digital Banking</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = 'af17074865248633fbfbaae93d897b9e981a06d4';
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+  c.type='text/javascript';c.charset='utf-8';c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f6fbff;
+            color: #07111f;
+            overflow-x: hidden;
+        }
+
+
+
+
+
+
+
+        /* =========================
+HERO
+========================= */
+
+        .hero {
+            padding-top: 120px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding-left: 6%;
+            padding-right: 6%;
+            gap: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #b6ecff 0%, transparent 70%);
+            right: -250px;
+            top: -100px;
+            opacity: 0.5;
+        }
+
+        .hero-left {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            background: white;
+            border-radius: 999px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0066ff;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            line-height: 1.05;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+
+        .slide-text {
+            position: relative;
+            height: 90px;
+            overflow: hidden;
+        }
+
+        .slide-text span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            opacity: 0;
+            animation: slideWords 12s infinite;
+            font-size: 72px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0066ff, #00b7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-text span:nth-child(2) {
+            animation-delay: 4s;
+        }
+
+        .slide-text span:nth-child(3) {
+            animation-delay: 8s;
+        }
+
+        @keyframes slideWords {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            8% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            30% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            38% {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #64748b;
+            max-width: 620px;
+            margin-bottom: 35px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 45px;
+            margin-top: 55px;
+            flex-wrap: wrap;
+        }
+
+        .stat h3 {
+            font-size: 34px;
+            margin-bottom: 5px;
+        }
+
+        .stat p {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        /* =========================
+RIGHT HERO
+========================= */
+
+        .hero-right {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .phone {
+            width: 360px;
+            height: 650px;
+            background: #07111f;
+            border-radius: 45px;
+            padding: 16px;
+            box-shadow:
+                0 60px 120px rgba(0, 0, 0, 0.15),
+                0 20px 40px rgba(0, 102, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone::before {
+            content: "";
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+            height: 28px;
+            background: black;
+            border-radius: 20px;
+            z-index: 5;
+        }
+
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #f7fbff, #eaf4ff);
+            border-radius: 35px;
+            padding: 28px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .app-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066ff, #00b7ff);
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #0066ff, #00b7ff);
+            padding: 28px;
+            border-radius: 28px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 5s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        @keyframes cardFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .balance-card::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            right: -80px;
+            top: -80px;
+        }
+
+        .balance-card small {
+            opacity: 0.8;
+        }
+
+        .balance {
+            font-size: 42px;
+            font-weight: 800;
+            margin: 12px 0;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .action {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .transactions {
+            margin-top: 25px;
+        }
+
+        .transactions h4 {
+            margin-bottom: 18px;
+        }
+
+        .transaction {
+            background: white;
+            padding: 16px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+        }
+
+        .t-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .t-icon {
+            height: 45px;
+            width: 45px;
+            border-radius: 15px;
+            background: #eef6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #0066ff;
+        }
+
+        .amount {
+            font-weight: 700;
+        }
+
+        /* =========================
+FEATURES
+========================= */
+
+        .features {
+            padding: 110px 6%;
+        }
+
+        .section-head {
+            text-align: center;
+            max-width: 850px;
+            margin: auto;
+            margin-bottom: 70px;
+        }
+
+        .section-head h2 {
+            font-size: 56px;
+            margin-bottom: 18px;
+        }
+
+        .section-head p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #64748b;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 35px;
+            border-radius: 28px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+            transition: 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .feature-icon {
+            height: 200px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .feature-card p {
+            line-height: 1.8;
+            color: #64748b;
+        }
+
+        /* =========================
+SHOWCASE
+========================= */
+
+        .showcase {
+            padding: 100px 6%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .showcase-image {
+            background: white;
+            padding: 30px;
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+        }
+
+        .mock-dashboard {
+            height: 500px;
+            border-radius: 28px;
+            background: linear-gradient(180deg, #f8fbff, #edf6ff);
+            padding: 25px;
+        }
+
+        .chart {
+            height: 220px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #0066ff, #00b7ff);
+            margin-top: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart::before {
+            content: "";
+            position: absolute;
+            width: 130%;
+            height: 180px;
+            background: white;
+            opacity: 0.2;
+            left: -10%;
+            bottom: -120px;
+            border-radius: 50%;
+        }
+
+        .showcase-text h2 {
+            font-size: 58px;
+            margin-bottom: 25px;
+            line-height: 1.1;
+        }
+
+        .showcase-text p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .showcase-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .showcase-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .check {
+            min-width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #dcfce7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #16a34a;
+        }
+
+        /* =========================
+TRUST
+========================= */
+
+        .trust {
+            padding: 110px 6%;
+        }
+
+        .trust-box {
+            background: linear-gradient(135deg, #0066ff, #00b7ff);
+            border-radius: 40px;
+            padding: 70px;
+            color: white;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-box::before {
+            content: "";
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            right: -250px;
+            top: -150px;
+        }
+
+        .trust h2 {
+            font-size: 56px;
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .trust p {
+            font-size: 18px;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .trust-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .trust-card {
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 28px;
+        }
+
+        .trust-card h3 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+
+
+/* =========================
+RESPONSIVE
+========================= */
+
+
+@media(max-width:1200px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-bottom: 80px;
+    }
+
+    .hero p {
+        margin: auto;
+        margin-bottom: 35px;
+    }
+
+    .hero-actions,
+    .hero-stats {
+        justify-content: center;
+    }
+
+    .slide-text {
+        height: 75px;
+    }
+
+    .slide-text span,
+    .hero h1 {
+        font-size: 58px;
+    }
+
+    .showcase,
+    .trust-box {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+/* =========================
+TABLETS + LARGE PHONES
+========================= */
+
+@media(max-width:768px) {
+
+    * {
+        min-width: 0;
+    }
+
+
+
+
+
+
+    .hero {
+        padding-top: 110px;
+        padding-left: 16px;
+        padding-right: 16px;
+        gap: 40px;
+    }
+
+    .hero h1,
+    .slide-text span {
+        font-size: 42px;
+        line-height: 1.1;
+    }
+
+    .slide-text {
+        height: 55px;
+    }
+
+    .hero p {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .hero-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero-actions button {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .hero-stats {
+        gap: 25px;
+        justify-content: center;
+    }
+
+    .stat h3 {
+        font-size: 28px;
+    }
+
+    .phone {
+        width: 100%;
+        max-width: 340px;
+        height: 450px;
+        min-height: 650px;
+        padding: 12px;
+    }
+
+    .phone-screen {
+        padding: 20px;
+    }
+
+    .balance {
+        font-size: 34px;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .transactions {
+        margin-top: 20px;
+    }
+
+    .transaction {
+        padding: 14px;
+    }
+
+    .features,
+    .showcase,
+    .trust,
+    footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-head h2,
+    .showcase-text h2,
+    .trust h2 {
+        font-size: 34px;
+        line-height: 1.15;
+    }
+
+    .section-head p,
+    .showcase-text p,
+    .trust p {
+        font-size: 16px;
+    }
+
+    .feature-card {
+        padding: 24px;
+    }
+
+    .feature-icon {
+        height: auto;
+        max-height: 180px;
+    }
+
+    .mock-dashboard {
+        height: auto;
+        min-height: 400px;
+    }
+
+    .trust-box {
+        padding: 35px 22px;
+        border-radius: 28px;
+    }
+
+    .trust-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .trust-card h3 {
+        font-size: 34px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .footer-brand h2 {
+        font-size: 30px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+}
+
+/* =========================
+SMALL ANDROID PHONES
+========================= */
+
+@media(max-width:480px) {
+
+    .hero h1,
+    .slide-text span {
+        font-size: 34px;
+    }
+
+    .slide-text {
+        height: 48px;
+    }
+
+    .hero-tag {
+        font-size: 12px;
+        padding: 8px 14px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .phone {
+        max-width: 100%;
+        min-height: 620px;
+        border-radius: 32px;
+    }
+
+    .phone-screen {
+        border-radius: 24px;
+        padding: 18px;
+    }
+
+    .balance {
+        font-size: 28px;
+    }
+
+    .quick-actions {
+        gap: 10px;
+    }
+
+    .action {
+        padding: 12px 8px;
+        font-size: 12px;
+    }
+
+    .transaction {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .t-left {
+        gap: 10px;
+    }
+
+    .t-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .section-head h2,
+    .showcase-text h2,
+    .trust h2 {
+        font-size: 28px;
+    }
+
+    .btn-primary,
+    .btn-outline {
+        width: 100%;
+    }
+
+}
+    </style>
+
+    <style>
+        .phone-action-icon{
+            height: 30px;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+
+
+
+    <header>
+
+
+        <div class="menu-btn">☰</div>
+
+        <div class="logo">
+            <img src="icon/custodia_logo.png" alt="" height="40px">
+            Custodia Bank
+        </div>             
+
+<!-- =========================
+DESKTOP NAV
+========================= -->
+
+        <nav>
+
+            <div class="nav-dropdown">
+
+                <button class="nav-drop-btn">
+                    Banking
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="nav-dropdown-menu">
+                    <a href="auth.html">Personal Banking</a>
+                    <a href="auth.html">Business Banking</a>
+                    <a href="auth.html">Asset Security</a>
+                </div>
+
+            </div>
+
+            <div class="nav-dropdown">
+
+                <button class="nav-drop-btn">
+                    Wealth Management
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="nav-dropdown-menu">
+                    <a href="auth.html">Investment</a>
+                    <a href="TrustFund.html">Trust Fund</a>
+                    <a href="auth.html">Insurance</a>
+                </div>
+
+            </div>
+
+            <div class="nav-dropdown">
+
+                <button class="nav-drop-btn">
+                    Investment
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="nav-dropdown-menu">
+                    <a href="auth.html">Returns On Saving</a>
+                    <a href="auth.html">Bank Shares</a>
+                    <a href="auth.html">Foreign Exchange</a>
+                </div>
+
+            </div>
+
+            <a href="auth.html">Support</a>
+
+        </nav>
+
+        <div class="header-actions">
+            <a href="auth.html" class="btn-outline">Login</a>
+            <a href="signup.html" class="btn-primary">Open Account</a>
+        </div>
+    </header>
+
+
+
+    <section class="hero">
+
+<div class="hero-left">
+
+<div style="padding: 9px 12px;background: white;border-radius: 5px; width: fit-content;margin: 20px 0px;">
+    <div class="gtranslate_wrapper"></div>
+    <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"languages":["en","fr","zh-CN","it","es"],"wrapper_selector":".gtranslate_wrapper","flag_size":16,"flag_style":"3d","alt_flags":{"en":"usa"}}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+</div>
+
+            <div class="hero-tag">
+                <img src="icon/ligting_bolt_3d.png" class="phone-action-icon"> Trusted by 12M+ Customers Worldwide
+            </div>
+
+            <h1>
+                Banking For The
+            </h1>
+
+            <div class="slide-text">
+                <span>Future.</span>
+                <span>Modern World.</span>
+                <span>Digital Generation.</span>
+            </div>
+
+            <p>
+                Experience intelligent banking built for speed, security and global access.
+                Custodia Bank combines world-class financial infrastructure with next-generation
+                mobile experiences for individuals and businesses.
+            </p>
+
+            <div class="hero-actions">
+            <a href="auth.html" class="btn-outline">Login</a>
+            <a href="signup.html" class="btn-primary">Get Started</a>
+            </div>
+
+            <div class="hero-stats">
+
+                <div class="stat">
+                    <h3>$94B+</h3>
+                    <p>Assets Managed</p>
+                </div>
+
+                <div class="stat">
+                    <h3>12M+</h3>
+                    <p>Global Users</p>
+                </div>
+
+                <div class="stat">
+                    <h3>190+</h3>
+                    <p>Countries Supported</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="hero-right">
+
+            <div class="phone">
+
+                <div class="phone-screen">
+
+                    <div class="app-top">
+                        <div>
+                            <small>Welcome Back</small>
+                            <h3>Alex Morgan</h3>
+                        </div>
+
+                        <div class="avatar"><img src="icon/user.png" alt="" class="phone-action-icon"></div>
+                    </div>
+
+                    <div class="balance-card">
+                        <small>Total Balance</small>
+                        <div class="balance">$82,450</div>
+                        <small>•••• 4839</small>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <div class="action">
+                            <img src="icon/send.png" alt="" class="phone-action-icon" >
+                            Send
+                        </div>
+
+                        <div class="action">
+                            <img src="icon/building.png" alt="" class="phone-action-icon" >
+                            Deposit
+                        </div>
+
+                        <div class="action">
+                            <img src="icon/investment.png" alt="" class="phone-action-icon" >
+                            Invest
+                        </div>
+
+                        <div class="action">
+                            <img src="icon/document.png" alt="" class="phone-action-icon" >
+                            Bills
+                        </div>
+
+                    </div>
+
+                    <div class="transactions">
+
+                        <h4>Recent Transactions</h4>
+
+                        <div class="transaction">
+                            <div class="t-left">
+                                <div class="t-icon">A</div>
+                                <div>
+                                    <strong>Amazon</strong>
+                                    <br>
+                                    <small>Shopping</small>
+                                </div>
+                            </div>
+
+                            <div class="amount">-$280</div>
+                        </div>
+
+                        <div class="transaction">
+                            <div class="t-left">
+                                <div class="t-icon">S</div>
+                                <div>
+                                    <strong>Salary</strong>
+                                    <br>
+                                    <small>Incoming</small>
+                                </div>
+                            </div>
+
+                            <div class="amount">+$8,400</div>
+                        </div>
+
+                        <div class="transaction">
+                            <div class="t-left">
+                                <div class="t-icon">N</div>
+                                <div>
+                                    <strong>Netflix</strong>
+                                    <br>
+                                    <small>Subscription</small>
+                                </div>
+                            </div>
+
+                            <div class="amount">-$18</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="features">
+
+        <div class="section-head">
+
+            <h2>Designed For Modern Banking</h2>
+
+            <p>
+                Built with enterprise-grade infrastructure, AI-powered financial systems,
+                real-time payments and next-level mobile experiences trusted by millions globally.
+            </p>
+
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <div style="width: 100%;display: flex;justify-content: center;">
+                <img src="image/transaction_illustration.png" alt="" class="feature-icon">                    
+                </div>
+
+ 
+                <h3>Instant Transfers</h3>
+
+                <p>
+                    Move money globally in seconds with ultra-fast banking rails and
+                    real-time transaction notifications.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div style="width: 100%;display: flex;justify-content: center;">
+                <img src="image/security_illustration.png" alt="" class="feature-icon">                    
+                </div>
+                <h3>Advanced Security</h3>
+
+                <p>
+                    Biometric protection, AI fraud detection, multi-layer encryption
+                    and secure device authentication.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div style="width: 100%;display: flex;justify-content: center;">
+                <img src="image/investment_illustration.png" alt="" class="feature-icon">                    
+                </div>
+                <h3>Smart Investing</h3>
+
+                <p>
+                    Grow wealth intelligently with automated portfolios,
+                    savings insights and real-time financial analytics.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="showcase">
+
+        <div class="showcase-image">
+
+            <div class="mock-dashboard">
+
+                <h3>Financial Analytics</h3>
+
+                <div class="chart"></div>
+
+            </div>
+
+        </div>
+
+        <div class="showcase-text">
+
+            <h2>
+                Powerful Financial
+                Insights In Real Time
+            </h2>
+
+            <p>
+                Track spending, monitor investments, automate savings and
+                manage multiple accounts from one intelligent ecosystem.
+            </p>
+
+            <div class="showcase-list">
+
+                <div class="showcase-item">
+                    <div class="check">✓</div>
+                    <div>
+                        <strong>AI Spending Analysis</strong>
+                        <br>
+                        Get automated financial insights and personalized recommendations.
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="check">✓</div>
+                    <div>
+                        <strong>Global Payments</strong>
+                        <br>
+                        Seamlessly transfer funds across borders with low fees.
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="check">✓</div>
+                    <div>
+                        <strong>Multi-Device Experience</strong>
+                        <br>
+                        Optimized for desktop banking and advanced mobile experiences.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="trust">
+
+        <div class="trust-box">
+
+            <div>
+
+                <h2>
+                    Trusted By Millions Around The World
+                </h2>
+
+                <p>
+                    Custodia Bank delivers institutional-grade banking infrastructure,
+                    trusted security systems and a premium digital experience for
+                    modern consumers and enterprises.
+                </p>
+
+            </div>
+
+            <div class="trust-stats">
+
+                <div class="trust-card">
+                    <h3>99.99%</h3>
+                    <p>Platform Uptime</p>
+                </div>
+
+                <div class="trust-card">
+                    <h3>24/7</h3>
+                    <p>Fraud Monitoring</p>
+                </div>
+
+                <div class="trust-card">
+                    <h3>4.9★</h3>
+                    <p>Mobile App Rating</p>
+                </div>
+
+                <div class="trust-card">
+                    <h3>256-bit</h3>
+                    <p>Encryption Security</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+                <img src="icon/custodia_logo.png" alt="" height="70px">
+
+                <h2>Custodia Bank</h2>
+
+                <p>
+                    Custodia Bank is a next-generation digital banking institution delivering
+                    secure financial services, intelligent payment systems, wealth management
+                    and enterprise banking solutions globally.
+                </p>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>Banking</h4>
+
+                <a href="auth.html">Checking Accounts</a>
+                <a href="auth.html">Savings Accounts</a>
+                <a href="auth.html">Credit Cards</a>
+                <a href="auth.html">International Payments</a>
+                <a href="auth.html">Business Banking</a>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>Company</h4>
+
+                <a href="auth.html">About Us</a>
+                <a href="auth.html">Careers</a>
+                <a href="auth.html">Investors</a>
+                <a href="auth.html">Newsroom</a>
+                <a href="auth.html">Security</a>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>Support</h4>
+
+                <a href="auth.html">Help Center</a>
+                <a href="auth.html">Fraud Protection</a>
+                <a href="auth.html">Privacy Policy</a>
+                <a href="auth.html">Terms of Service</a>
+                <a href="auth.html">Contact Us</a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Custodia Bank Financial Group. All rights reserved.
+            </p>
+
+            <p>
+                Licensed Digital Financial Institution • FDIC Insured • Equal Housing Lender
+            </p>
+
+        </div>
+
+    </footer>
+
+
+<!-- =========================
+MOBILE DRAWER
+========================= -->
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <div class="mobile-drawer" id="mobileDrawer">
+
+        <div class="drawer-top">
+
+            <div class="drawer-brand">
+                <img src="icon/custodia_logo.png" alt="">
+                <h3>Custodia Bank</h3>
+            </div>
+
+            <button class="drawer-close" id="drawerClose">
+                ✕
+            </button>
+
+        </div>
+
+        <div class="drawer-links">
+
+
+            <!--HOME-->
+            <div class="drawer-dropdown">
+
+                <button class="drawer-dropdown-btn" style="display: flex;justify-content: space-between;" onclick="window.location.href='index.html'">
+                    <span>Home</span>
+                    <img src="icon/next.png" alt="" height="10px">
+                    
+                </button>
+
+           </div>            
+
+            <!-- BANKING -->
+            <div class="drawer-dropdown">
+
+                <button class="drawer-dropdown-btn">
+                    <span>Banking</span>
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="drawer-submenu">
+                    <a href="auth.html">Personal Banking</a>
+                    <a href="auth.html">Business Banking</a>
+                    <a href="auth.html">Asset Security</a>
+                </div>
+
+            </div>
+
+            <!-- WEALTH -->
+            <div class="drawer-dropdown">
+
+                <button class="drawer-dropdown-btn">
+                    <span>Wealth Management</span>
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="drawer-submenu">
+                    <a href="auth.html">Investment</a>
+                    <a href="TrustFund.html">Trust Fund</a>
+                    <a href="auth.html">Insurance</a>
+                </div>
+
+            </div>
+
+            <!-- INVESTMENT -->
+            <div class="drawer-dropdown">
+
+                <button class="drawer-dropdown-btn">
+                    <span>Investment</span>
+                    <img src="icon/drop-down.png" alt="" class="drawer-arrow">
+                </button>
+
+                <div class="drawer-submenu">
+                    <a href="auth.html">Returns On Saving</a>
+                    <a href="auth.html">Bank Shares</a>
+                    <a href="auth.html">Foreign Exchange</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="drawer-bottom">
+
+            <a href="auth.html" class="drawer-support">
+
+                <img src="icon/support.png" alt="">
+
+                <span>Support</span>
+
+            </a>
+
+            <div class="drawer-auth">
+
+                <a href="auth.html" class="drawer-login-btn">
+                    Login
+                </a>
+
+                <a href="signup.html" class="drawer-open-btn">
+                    Open Account
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>  
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
