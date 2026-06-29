@@ -282,23 +282,26 @@ window.smartsupp||(function(d) {
         .topbar-avatar .avatar-icon { width:36px; height:36px; font-size:17px; }
         /* me-page hero size */
         .me-avatar-wrap .avatar-img,
-        .me-avatar-wrap .avatar-icon { width:90px; height:90px; font-size:40px; }
+        .me-avatar-wrap .avatar-icon { width:90px; height:90px; font-size:40px; border-radius:24px; }
+        /* clip only the image/icon, not the button */
+        .me-avatar-wrap .avatar-img { overflow:hidden; }
         /* upload overlay on me-page */
         .avatar-upload-btn {
             position: absolute;
-            bottom: 2px; right: 2px;
-            width: 26px; height: 26px;
+            bottom: -8px; right: -8px;
+            width: 30px; height: 30px;
             border-radius: 50%;
             background: #2563eb;
             color: #fff;
-            border: 2px solid #fff;
+            border: 2.5px solid #0f172a;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            font-size: 11px;
-            box-shadow: 0 2px 8px rgba(37,99,235,.4);
+            font-size: 12px;
+            box-shadow: 0 2px 10px rgba(37,99,235,.5);
             transition: .2s;
+            z-index: 10;
         }
-        .avatar-upload-btn:hover { background:#1d4ed8; transform:scale(1.08); }
+        .avatar-upload-btn:hover { background:#1d4ed8; transform:scale(1.1); }
 
         /* ── Photo Upload Modal ── */
         .photo-modal-overlay {
@@ -742,6 +745,11 @@ window.smartsupp||(function(d) {
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
+        }
+
+        .profile-circle i {
+            font-size: 18px;
+            color: #fff;
         }
 
         .nav-item.tap {
@@ -7102,7 +7110,7 @@ ME PAGE
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .me-avatar img{
@@ -10071,277 +10079,389 @@ RESPONSIVE
 NOTIFICATION MODAL
 ========================= */
 
-.notification-modal{
-    position:fixed;
+/* ═══════════════════════════════════════════════════
+   NOTIFICATION MODAL — Gmail-Notification style
+═══════════════════════════════════════════════════ */
 
-    top:0;
-    left:0;
-
-    width:100%;
-    height:100dvh;
-
-    background:#f8fafc;
-
-    z-index:999999;
-
-    overflow-y:auto;
-
-    padding:0px 30px 30px 30px;
-
-    display:none;
+.notification-modal {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    background: #f1f5f9;
+    z-index: 999999;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.notification-modal.active{
-    display:block;
+.notification-modal.active {
+    display: flex;
 }
 
-/* =========================
-HEADER
-========================= */
-
-.notification-header{
-    display:flex;
-    align-items:center;
-    background:#f8fafc;
-    gap:20px;
-    position: sticky;
-    top: 0;
-    margin-bottom:28px;
-    padding: 20px 0px;
+/* ── Topbar ── */
+.nm-topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    position: relative;
 }
 
-.notification-header h2{
-    font-size:38px;
-    font-weight:800;
+.nm-back-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #374151;
+    transition: background .2s;
+    flex-shrink: 0;
+}
+.nm-back-btn:hover { background: #f1f5f9; }
 
-    color:#0f172a;
-
-    margin-bottom:6px;
+.nm-topbar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    flex: 1;
 }
 
-.notification-header p{
-    color:#64748b;
-
-    font-size:14px;
+.nm-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.notification-close-btn{
-    width:56px;
-    height:56px;
+.nm-icon-btn {
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #374151;
+    transition: background .2s;
+}
+.nm-icon-btn:hover { background: #f1f5f9; }
 
-    border:none;
-    border-radius:20px;
-
-    background:#fff;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    cursor:pointer;
-
-    transition:.25s;
+/* ── Two-panel layout ── */
+.nm-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 }
 
-
-
-.notification-close-btn i{
-    font-size:22px;
-
-    color:#0f172a;
+/* ── LEFT: Notification list ── */
+.nm-list-panel {
+    width: 380px;
+    min-width: 320px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    background: #fff;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
 }
 
-/* =========================
-STATS
-========================= */
+.nm-filter-bar {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    overflow-x: auto;
+    flex-shrink: 0;
+}
+.nm-filter-bar::-webkit-scrollbar { display: none; }
 
-.notification-stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-
-    gap:20px;
-
-    margin-bottom:28px;
+.nm-filter-chip {
+    border: none;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    background: #f1f5f9;
+    color: #64748b;
+    transition: .2s;
+    flex-shrink: 0;
+}
+.nm-filter-chip.active {
+    background: #2563eb;
+    color: #fff;
+}
+.nm-filter-chip:hover:not(.active) {
+    background: #e2e8f0;
 }
 
-.notification-stat-card{
-    background:#fff;
-
-    border-radius:28px;
-
-    padding:26px;
-
-    border:1px solid #e2e8f0;
-
-    box-shadow:0 10px 30px rgba(15,23,42,.04);
+.nm-Notification-list {
+    flex: 1;
+    overflow-y: auto;
 }
 
-.notification-stat-card small{
-    color:#64748b;
+/* ── Individual row (Gmail-style) ── */
+.nm-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: background .15s;
+    position: relative;
+}
+.nm-row:hover { background: #f8fafc; }
+.nm-row.selected { background: #eff6ff; }
+.nm-row.unread { background: #fff; }
+.nm-row.read { background: #fafafa; }
 
-    font-size:13px;
+.nm-row-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #2563eb;
+    flex-shrink: 0;
+    margin-top: 6px;
+    transition: opacity .2s;
+}
+.nm-row.read .nm-row-dot { opacity: 0; }
+
+.nm-row-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
 }
 
-.notification-stat-card h3{
-    margin-top:12px;
-
-    font-size:32px;
-    font-weight:800;
-
-    color:#0f172a;
+.nm-row-content {
+    flex: 1;
+    min-width: 0;
 }
 
-/* =========================
-LIST
-========================= */
-
-.notification-list{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+.nm-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 2px;
 }
 
-/* =========================
-ITEM
-========================= */
+.nm-row-sender {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.nm-row.read .nm-row-sender { font-weight: 500; color: #374151; }
 
-.notification-item{
-    background:#fff;
+.nm-row-time {
+    font-size: 11px;
+    color: #94a3b8;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.nm-row.unread .nm-row-time { color: #2563eb; font-weight: 600; }
 
-    border-radius:28px;
+.nm-row-subject {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+.nm-row.read .nm-row-subject { font-weight: 400; color: #64748b; }
 
-    padding:24px;
-
-    border:1px solid #e2e8f0;
-
-    box-shadow:0 10px 30px rgba(15,23,42,.04);
-
-    display:flex;
-    gap:20px;
-
-    transition:.25s;
+.nm-row-preview {
+    font-size: 12px;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.notification-item:hover{
-    transform:translateY(-3px);
+.nm-row-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    flex-shrink: 0;
 }
 
-.notification-icon{
-    width:64px;
-    height:64px;
-
-    min-width:64px;
-
-    border-radius:22px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
+/* ── RIGHT: message detail ── */
+.nm-detail-panel {
+    flex: 1;
+    overflow-y: auto;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
 }
 
-.notification-icon i{
-    font-size:24px;
+.nm-detail-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    gap: 14px;
+    padding: 40px;
+    text-align: center;
+}
+.nm-detail-empty i {
+    font-size: 52px;
+    color: #cbd5e1;
+}
+.nm-detail-empty p {
+    font-size: 15px;
+    font-weight: 500;
 }
 
-.notification-blue{
-    background:#dbeafe;
+.nm-detail-content {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    padding: 28px 32px;
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+}
+.nm-detail-content.visible { display: flex; }
+
+.nm-detail-subject {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 18px;
+    line-height: 1.3;
 }
 
-.notification-blue i{
-    color:#2563eb;
+.nm-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
 }
 
-.notification-green{
-    background:#dcfce7;
+.nm-detail-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
-.notification-green i{
-    color:#16a34a;
+.nm-detail-from {
+    flex: 1;
+}
+.nm-detail-from strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+.nm-detail-from span {
+    font-size: 12px;
+    color: #64748b;
 }
 
-.notification-red{
-    background:#fee2e2;
+.nm-detail-date {
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: right;
 }
 
-.notification-red i{
-    color:#dc2626;
+.nm-detail-body {
+    font-size: 15px;
+    color: #334155;
+    line-height: 1.85;
+    white-space: pre-wrap;
+    flex: 1;
 }
 
-.notification-gold{
-    background:#fef3c7;
+.nm-detail-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 28px;
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    width: fit-content;
 }
 
-.notification-gold i{
-    color:#d97706;
+/* ── Empty state ── */
+.nm-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+    gap: 12px;
+    text-align: center;
 }
+.nm-empty i { font-size: 40px; color: #cbd5e1; }
+.nm-empty p { font-size: 14px; font-weight: 500; }
 
-.notification-content{
-    flex:1;
-}
-
-.notification-top{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-
-    margin-bottom:12px;
-}
-
-.notification-top h3{
-    font-size:18px;
-    font-weight:800;
-
-    color:#0f172a;
-}
-
-.notification-date{
-    color:#64748b;
-
-    font-size:13px;
-
-    white-space:nowrap;
-}
-
-.notification-content p{
-    color:#64748b;
-
-    line-height:1.8;
-
-    font-size:14px;
-}
-
-/* =========================
-RESPONSIVE
-========================= */
-
-@media(max-width:700px){
-
-    .notification-stats{
-        grid-template-columns:1fr;
+/* ── Mobile: hide detail, show on select ── */
+@media (max-width: 700px) {
+    .nm-list-panel {
+        width: 100%;
+        min-width: 0;
+        border-right: none;
     }
-
-    .notification-item{
-        flex-direction:column;
+    .nm-detail-panel {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999999;
+        background: #fff;
     }
-
-    .notification-top{
-        flex-direction:column;
-        gap:8px;
+    .nm-detail-panel.mobile-visible {
+        display: flex;
     }
-
-}
-
-@media(max-width:520px){
-
-    .notification-modal{
-        padding:20px;
-        padding-top: 0px;
+    .nm-body.detail-open .nm-list-panel {
+        display: none;
     }
-
-    .notification-header h2{
-        font-size:30px;
+    .nm-detail-content {
+        padding: 20px 16px;
     }
-
+    .nm-mobile-back {
+        display: flex !important;
+    }
 }
 </style>
 
@@ -10482,9 +10602,63 @@ html.dark-mode {
 }
 </style>
 
+<style>
+/* ═══════════════════════════════════════════════════════════
+   SKELETON / SHIMMER LOADERS
+   Applied while user data is being fetched from the backend.
+   Remove class .sk-loading from <body> once data is ready.
+═══════════════════════════════════════════════════════════ */
+
+@keyframes skShimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.sk {
+  display: inline-block;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 600px 100%;
+  animation: skShimmer 1.4s infinite linear;
+  color: transparent !important;
+  pointer-events: none;
+  user-select: none;
+  min-width: 60px;
+}
+
+/* Make text inside skeleton elements invisible but keep layout */
+.sk * { visibility: hidden !important; }
+
+/* Specific skeleton shapes */
+.sk-name       { width: 140px; height: 16px; border-radius: 6px; }
+.sk-greeting   { width: 200px; height: 20px; border-radius: 6px; }
+.sk-balance    { width: 220px; height: 36px; border-radius: 10px; }
+.sk-card-last4 { width: 40px;  height: 16px; border-radius: 5px; }
+.sk-avatar     { border-radius: 50%; }
+
+/* Only apply skeletons while body has .sk-loading */
+body:not(.sk-loading) .sk {
+  background: none;
+  animation: none;
+  color: inherit !important;
+  pointer-events: auto;
+  user-select: auto;
+  min-width: unset;
+  border-radius: unset;
+}
+body:not(.sk-loading) .sk * { visibility: visible !important; }
+
+/* Avatar pulse while loading */
+body.sk-loading .avatar-icon {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%) !important;
+  background-size: 600px 100% !important;
+  animation: skShimmer 1.4s infinite linear !important;
+}
+body.sk-loading .avatar-icon i { visibility: hidden; }
+</style>
 </head>
 
-<body>
+<body class="sk-loading">
 
     <!-- OVERLAY -->
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
@@ -10601,7 +10775,7 @@ html.dark-mode {
                     </div>
 
                     <div class="profile-text">
-                        <h4 data-user-name>—</h4>
+                        <h4 data-user-name class="sk sk-name">&nbsp;</h4>
                         <p>Premium Banking Client</p>
                     </div>
 
@@ -10627,7 +10801,7 @@ html.dark-mode {
 
             <div style="display: flex;width: 100%;gap: 4px;margin: 30px 0px 24px 0px; justify-content: space-between;align-items: center;">
                 <div  style="display: flex;width: 100%;flex-direction: column;gap: 4px;">
-                    <h4 style="margin: 0px;font-size: 18px;" data-greeting>Welcome back</h4>
+                    <h4 style="margin: 0px;font-size: 18px;" data-greeting class="sk sk-greeting">&nbsp;</h4>
                     <p style="margin: 0px;color: #64748b;font-size: 14px;">Here's an overview of your account activity</p>                    
                 </div>
                 <!--TRANSLATOR WIDGET-->
@@ -10653,14 +10827,14 @@ html.dark-mode {
                     </div>
 
                     <div style="display: flex; align-items: center;gap: 20px;">
-                        <h2 id="balanceAmount">0.00</h2>   
+                        <h2 id="balanceAmount" class="sk sk-balance">&nbsp;</h2>   
                         <button class="balance-visibility-btn" id="toggleBalanceBtn">
                             <i class="fa-solid fa-eye" id="balanceIcon"></i>
                         </button>                                         
                     </div>
 
                     <p class="card-number">
-                        **** **** **** <span id="cardLastFour">——</span>
+                        **** **** **** <span id="cardLastFour" class="sk sk-card-last4">&nbsp;</span>
                     </p>
 
                     <div style="margin-top:18px;display:flex;justify-content:space-between;font-size:13px;opacity:.9;">
@@ -17116,10 +17290,10 @@ TRANSACTION HISTORY PAGE
 
         <button class="nav-item" data-page="mePage">
 
-            <div class="nav-circle profile-circle">
+            <div class="nav-circle profile-circle" id="bottomNavAvatar">
 
-                <img
-                    src="image/profile-picture.jpg">
+                <i class="fa-solid fa-user" id="bottomNavIcon"></i>
+                <img id="bottomNavPhoto" src="" alt="" style="display:none;">
 
             </div>
 
@@ -17248,63 +17422,64 @@ LOGOUT MODAL
 NOTIFICATION MODAL PAGE
 ========================= -->
 
-<div id="notificationModal"
-     class="notification-modal">
+<div id="notificationModal" class="notification-modal">
 
-    <!-- HEADER -->
-
-    <div class="notification-header">
-        <button id="closeNotificationModal" class="addfunds-back-btn">
+    <!-- TOP BAR -->
+    <div class="nm-topbar">
+        <button id="closeNotificationModal" class="nm-back-btn" title="Back">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
+        <span class="nm-topbar-title">Notification <span id="notificationCount" style="font-size:13px;font-weight:600;color:#64748b;margin-left:4px;"></span></span>
+        <div class="nm-topbar-actions">
+            <button class="nm-icon-btn" title="Mark all read" onclick="markAllRead()">
+                <i class="fa-solid fa-envelope-open"></i>
+            </button>
+            <button class="nm-icon-btn" title="Refresh" onclick="loadNotifications()">
+                <i class="fa-solid fa-rotate-right"></i>
+            </button>
+        </div>
+    </div>
 
-        <div>
+    <!-- BODY: list + detail -->
+    <div class="nm-body" id="nmBody">
 
-            <h2>
-                Notifications
-            </h2>
+        <!-- LEFT PANEL: Notification list -->
+        <div class="nm-list-panel">
+            <!-- Filter chips -->
+            <div class="nm-filter-bar" id="nmFilterBar">
+                <button class="nm-filter-chip active" data-filter="all">All</button>
+                <button class="nm-filter-chip" data-filter="unread">Unread</button>
+                <button class="nm-filter-chip" data-filter="alert">Alerts</button>
+                <button class="nm-filter-chip" data-filter="transaction">Transactions</button>
+                <button class="nm-filter-chip" data-filter="security">Security</button>
+                <button class="nm-filter-chip" data-filter="update">Updates</button>
+            </div>
 
-            <p>
-                Banking alerts, account activity, and compliance updates
-            </p>
+            <!-- Message rows -->
+            <div class="nm-Notification-list" id="notificationList"></div>
+        </div>
 
+        <!-- RIGHT PANEL: message detail -->
+        <div class="nm-detail-panel" id="nmDetailPanel">
+            <!-- Mobile back button (hidden on desktop) -->
+            <div style="display:none;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #e2e8f0;background:#fff;flex-shrink:0;" id="nmMobileBackBar">
+                <button class="nm-back-btn" onclick="closeDetail()" style="background:#f1f5f9;">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <span style="font-weight:600;font-size:14px;color:#0f172a;">Back to Notification</span>
+            </div>
+
+            <!-- Empty state -->
+            <div class="nm-detail-empty" id="nmDetailEmpty">
+                <i class="fa-regular fa-envelope"></i>
+                <p>Select a message to read it</p>
+            </div>
+
+            <!-- Detail content -->
+            <div class="nm-detail-content" id="nmDetailContent"></div>
         </div>
 
     </div>
-
-    <!-- STATS -->
-
-    <div class="notification-stats">
-
-        <div class="notification-stat-card">
-
-            <small>Total Notifications</small>
-
-            <h3 id="notificationCount">
-                0
-            </h3>
-
-        </div>
-
-        <div class="notification-stat-card">
-
-            <small>Account Timeline</small>
-
-            <h3>
-                Feb, 2026
-            </h3>
-
-        </div>
-
-    </div>
-
-    <!-- NOTIFICATION LIST -->
-
-    <div id="notificationList"
-         class="notification-list">
-
-    </div>
-
 </div>
 
 
@@ -17320,7 +17495,7 @@ NOTIFICATION MODAL PAGE
 
 <script>
 /* ── CONFIG ──────────────────────────────────────────────── */
-const API_URL  = "https://script.google.com/macros/s/AKfycbxH5BIk0V2erjgBhXc_7ehVmLBhTCoIjLRBvIwNtGMgl6hLOoVhBCxdDSBon8XMspQf/exec"; // replace with your GAS /exec URL
+const API_URL  = "https://script.google.com/macros/s/AKfycby8ys_EFJEiUr7yBG46X5u_S25k-Ts6qZj6_US_rGn0WS2s-lQkOLajWelT50BthiBLWA/exec"; // replace with your GAS /exec URL
 const AUTH_URL = "auth.html"; // redirect if not logged in
 
 /* ── SESSION ─────────────────────────────────────────────── */
@@ -17842,18 +18017,22 @@ function applyUserToDOM() {
   q('#invCurrency') && (q('#invCurrency').textContent = code + ' / USD');
 
   /* ══════════════════════════════════════════════════════════
-     GLOBAL status pill (home page card)
+     SKELETON REMOVAL — clear shimmer now that data is ready
   ══════════════════════════════════════════════════════════ */
-  // Only update pills NOT inside mePage (to avoid double-running)
-  qAll('.status-pill:not(#mePage .status-pill)').forEach(pill => {
-    if (pill.classList.contains('verified') || pill.classList.contains('unverified')) {
-      pill.className = 'status-pill ' + (u.verified ? 'verified' : 'unverified');
-      pill.innerHTML = u.verified
-        ? '<i class="fa-solid fa-circle-check"></i> Verified Client'
-        : '<i class="fa-solid fa-clock"></i> Verification Pending';
-    }
+  // Strip the .sk classes from every element we skeletonised
+  [
+    '[data-user-name]', '[data-greeting]',
+    '#balanceAmount', '#cardLastFour'
+  ].forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.classList.remove('sk', 'sk-name', 'sk-greeting', 'sk-balance', 'sk-card-last4', 'sk-avatar');
+    });
   });
+  // Lift the global skeleton flag — all remaining .sk elements (if any) stop shimming
+  document.body.classList.remove('sk-loading');
 }
+
+
 
 /* ═══════════════════════════════════════════════════════════
    TRANSACTIONS
@@ -18028,53 +18207,170 @@ async function loadNotifications() {
   updateNotifBadge();
 }
 
+/* ── Notification type config ── */
+const NOTIF_TYPE_CFG = {
+  alert:       { label:'Alert',       bg:'#fee2e2', color:'#dc2626', icon:'fa-triangle-exclamation', avatarBg:'#fee2e2', avatarColor:'#dc2626' },
+  transaction: { label:'Transaction', bg:'#dcfce7', color:'#16a34a', icon:'fa-arrow-right-arrow-left', avatarBg:'#dcfce7', avatarColor:'#16a34a' },
+  security:    { label:'Security',    bg:'#fef3c7', color:'#d97706', icon:'fa-shield-halved', avatarBg:'#fef3c7', avatarColor:'#d97706' },
+  update:      { label:'Update',      bg:'#dbeafe', color:'#2563eb', icon:'fa-circle-info', avatarBg:'#dbeafe', avatarColor:'#2563eb' },
+  default:     { label:'Notice',      bg:'#f1f5f9', color:'#64748b', icon:'fa-bell', avatarBg:'#f1f5f9', avatarColor:'#64748b' },
+};
+
+function detectType(n) {
+  const txt = ((n.title || '') + ' ' + (n.message || '')).toLowerCase();
+  if (txt.includes('secur') || txt.includes('login') || txt.includes('password') || txt.includes('otp') || txt.includes('verif')) return 'security';
+  if (txt.includes('deposit') || txt.includes('withdraw') || txt.includes('transfer') || txt.includes('credit') || txt.includes('debit') || txt.includes('payment') || txt.includes('fund')) return 'transaction';
+  if (txt.includes('alert') || txt.includes('warn') || txt.includes('block') || txt.includes('suspend') || txt.includes('fail')) return 'alert';
+  if (txt.includes('updat') || txt.includes('new feature') || txt.includes('announc') || txt.includes('mainten')) return 'update';
+  return n.type || 'default';
+}
+
+let _activeFilter = 'all';
+let _selectedNotifId = null;
+
 function renderNotifications() {
   const list = q('#notificationList');
-  const count = q('#notificationCount');
+  const countEl = q('#notificationCount');
   if (!list) return;
 
-  if (!allNotifications.length) {
-    list.innerHTML = '<p style="text-align:center;color:#64748b;padding:30px;">No notifications yet.</p>';
-    if (count) count.textContent = '0';
+  const filtered = _activeFilter === 'all'
+    ? allNotifications
+    : _activeFilter === 'unread'
+      ? allNotifications.filter(n => !n.read)
+      : allNotifications.filter(n => detectType(n) === _activeFilter);
+
+  const unreadCount = allNotifications.filter(n => !n.read).length;
+  if (countEl) countEl.textContent = unreadCount > 0 ? `(${unreadCount} unread)` : `(${allNotifications.length})`;
+
+  if (!filtered.length) {
+    list.innerHTML = `
+      <div class="nm-empty">
+        <i class="fa-regular fa-envelope"></i>
+        <p>${_activeFilter === 'unread' ? 'No unread messages' : 'No notifications here yet'}</p>
+      </div>`;
     return;
   }
 
-  if (count) count.textContent = allNotifications.length;
+  list.innerHTML = filtered.map(n => {
+    const type = detectType(n);
+    const cfg = NOTIF_TYPE_CFG[type] || NOTIF_TYPE_CFG.default;
+    const isRead = n.read;
+    const isSelected = n.id === _selectedNotifId;
+    const preview = (n.message || '').replace(/\n/g, ' ').slice(0, 80) + ((n.message || '').length > 80 ? '…' : '');
 
-  list.innerHTML = allNotifications.map(n => {
-    const iconColor = n.read ? 'notification-blue' : 'notification-green';
-    const icon      = n.read ? 'fa-bell' : 'fa-bell-ring';
-    const unreadDot = !n.read ? '<span style="width:8px;height:8px;border-radius:50%;background:#2563eb;display:inline-block;margin-left:8px;flex-shrink:0;"></span>' : '';
     return `
-      <div class="notification-item ${n.read ? '' : 'unread'}" data-id="${n.id}"
-           style="cursor:pointer;${!n.read ? 'background:#eff6ff;border-radius:14px;' : ''}">
-        <div class="notification-icon ${iconColor}">
-          <i class="fa-solid ${icon}"></i>
+      <div class="nm-row ${isRead ? 'read' : 'unread'} ${isSelected ? 'selected' : ''}" data-id="${n.id}" onclick="openNotif('${n.id}')">
+        <div class="nm-row-dot"></div>
+        <div class="nm-row-avatar" style="background:${cfg.avatarBg};">
+          <i class="fa-solid ${cfg.icon}" style="color:${cfg.color};font-size:15px;"></i>
         </div>
-        <div class="notification-content" style="flex:1;">
-          <div class="notification-top">
-            <h3 style="display:flex;align-items:center;">${n.title}${unreadDot}</h3>
-            <span class="notification-date">${n.date}</span>
+        <div class="nm-row-content">
+          <div class="nm-row-top">
+            <span class="nm-row-sender">Custodia Bank</span>
+            <span class="nm-row-time">${n.date || ''}</span>
           </div>
-          <p>${n.message}</p>
+          <div class="nm-row-subject">${n.title || 'Notification'}</div>
+          <div class="nm-row-preview">${preview}</div>
         </div>
+        <span class="nm-row-tag" style="background:${cfg.bg};color:${cfg.color};">
+          ${cfg.label}
+        </span>
       </div>`;
   }).join('');
-
-  // mark read on click
-  list.querySelectorAll('.notification-item').forEach(item => {
-    item.addEventListener('click', async () => {
-      const id = item.dataset.id;
-      const notif = allNotifications.find(n => n.id === id);
-      if (notif && !notif.read) {
-        await api({ action: 'markNotifRead', uid: _uid, id });
-        notif.read = true;
-        renderNotifications();
-        updateNotifBadge();
-      }
-    });
-  });
 }
+
+function openNotif(id) {
+  _selectedNotifId = id;
+  const notif = allNotifications.find(n => n.id === id);
+  if (!notif) return;
+
+  // Mark read
+  if (!notif.read) {
+    api({ action: 'markNotifRead', uid: _uid, id });
+    notif.read = true;
+    updateNotifBadge();
+  }
+
+  // Re-render rows to update read state + selected highlight
+  renderNotifications();
+
+  const type = detectType(notif);
+  const cfg  = NOTIF_TYPE_CFG[type] || NOTIF_TYPE_CFG.default;
+
+  const detailContent = q('#nmDetailContent');
+  const detailEmpty   = q('#nmDetailEmpty');
+
+  detailEmpty.style.display = 'none';
+  detailContent.classList.add('visible');
+
+  detailContent.innerHTML = `
+    <div class="nm-detail-subject">${notif.title || 'Notification'}</div>
+
+    <div class="nm-detail-meta">
+      <div class="nm-detail-avatar" style="background:${cfg.avatarBg};">
+        <i class="fa-solid ${cfg.icon}" style="color:${cfg.color};"></i>
+      </div>
+      <div class="nm-detail-from">
+        <strong>Custodia Bank</strong>
+        <span>noreply@custodiabank.com</span>
+      </div>
+      <div class="nm-detail-date">${notif.date || ''}</div>
+    </div>
+
+    <div class="nm-detail-body">${(notif.message || '').replace(/\n/g, '\n')}</div>
+
+    <div class="nm-detail-badge" style="background:${cfg.bg};color:${cfg.color};">
+      <i class="fa-solid ${cfg.icon}"></i>
+      ${cfg.label}
+    </div>
+  `;
+
+  // Mobile: show detail panel
+  const body = q('#nmBody');
+  const detailPanel = q('#nmDetailPanel');
+  const mobileBackBar = q('#nmMobileBackBar');
+  if (window.innerWidth <= 700) {
+    detailPanel.classList.add('mobile-visible');
+    body.classList.add('detail-open');
+    if (mobileBackBar) mobileBackBar.style.display = 'flex';
+  }
+}
+
+function closeDetail() {
+  const body = q('#nmBody');
+  const detailPanel = q('#nmDetailPanel');
+  const mobileBackBar = q('#nmMobileBackBar');
+  detailPanel.classList.remove('mobile-visible');
+  body.classList.remove('detail-open');
+  if (mobileBackBar) mobileBackBar.style.display = 'none';
+  _selectedNotifId = null;
+}
+
+function markAllRead() {
+  allNotifications.forEach(n => {
+    if (!n.read) {
+      api({ action: 'markNotifRead', uid: _uid, id: n.id });
+      n.read = true;
+    }
+  });
+  renderNotifications();
+  updateNotifBadge();
+}
+
+/* Wire up filter chips */
+document.addEventListener('DOMContentLoaded', () => {
+  const filterBar = q('#nmFilterBar');
+  if (filterBar) {
+    filterBar.addEventListener('click', e => {
+      const chip = e.target.closest('.nm-filter-chip');
+      if (!chip) return;
+      filterBar.querySelectorAll('.nm-filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      _activeFilter = chip.dataset.filter;
+      renderNotifications();
+    });
+  }
+});
 
 function updateNotifBadge() {
   const unread = allNotifications.filter(n => !n.read).length;
@@ -18742,7 +19038,6 @@ function applyPhoto(url) {
     const wrap = document.getElementById(id);
     if (!wrap) return;
     if (url) {
-      // Remove icon, show img
       const icon = wrap.querySelector('.avatar-icon');
       if (icon) icon.style.display = 'none';
       let img = wrap.querySelector('img.avatar-img');
@@ -18755,13 +19050,26 @@ function applyPhoto(url) {
       img.src = url;
       img.style.display = 'block';
     } else {
-      // Show icon, hide img
       const icon = wrap.querySelector('.avatar-icon');
       if (icon) icon.style.display = 'flex';
       const img = wrap.querySelector('img.avatar-img');
       if (img) img.style.display = 'none';
     }
   });
+
+  /* Bottom navbar Me button */
+  const bottomIcon  = document.getElementById('bottomNavIcon');
+  const bottomPhoto = document.getElementById('bottomNavPhoto');
+  if (bottomIcon && bottomPhoto) {
+    if (url) {
+      bottomPhoto.src          = url;
+      bottomPhoto.style.display = 'block';
+      bottomIcon.style.display  = 'none';
+    } else {
+      bottomPhoto.style.display = 'none';
+      bottomIcon.style.display  = '';
+    }
+  }
 }
 
 function openPhotoModal() {
