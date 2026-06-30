@@ -288,6 +288,15 @@ body::before{
   <!-- RIGHT -->
   <div class="form-side">
 
+    <!-- LANGUAGE SELECTOR -->
+    <div style="display:flex;justify-content:flex-end;margin-bottom:14px;">
+      <div style="min-width:70px;padding:9px 12px;background:#fff;border-radius:5px;width:fit-content;border:1px solid #ececec;">
+        <div class="gtranslate_wrapper"></div>
+        <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"languages":["en","fr","zh-CN","ja","es"],"wrapper_selector":".gtranslate_wrapper","flag_size":16,"flag_style":"3d","alt_flags":{"en":"usa"}}</script>
+        <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+      </div>
+    </div>
+
     <!-- TABS -->
     <div class="auth-tabs">
       <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Sign In</button>
@@ -346,7 +355,8 @@ body::before{
           <div class="step-dot active" id="dot1"><span>1</span><label>Personal</label></div>
           <div class="step-dot" id="dot2"><span>2</span><label>Contact</label></div>
           <div class="step-dot" id="dot3"><span>3</span><label>Security</label></div>
-          <div class="step-dot" id="dot4"><span>4</span><label>Review</label></div>
+          <div class="step-dot" id="dot4"><span>4</span><label>Photo</label></div>
+          <div class="step-dot" id="dot5"><span>5</span><label>Review</label></div>
         </div>
       </div>
 
@@ -481,12 +491,47 @@ body::before{
         </div>
         <div class="wizard-nav">
           <button class="nav-btn back-btn" onclick="goStep(2)"><i class="fa fa-arrow-left"></i> Back</button>
-          <button class="nav-btn next-btn" id="next3" onclick="goStep(4)" disabled>Review <i class="fa fa-arrow-right"></i></button>
+          <button class="nav-btn next-btn" id="next3" onclick="goStep(4)" disabled>Continue <i class="fa fa-arrow-right"></i></button>
         </div>
       </div>
 
-      <!-- ── STEP 4: Review & Submit ── -->
+      <!-- ── STEP 4: Profile Photo (optional) ── -->
       <div class="wizard-step" id="step4">
+        <div class="panel-title">
+          <h1>Add a profile photo</h1>
+          <p>Help us put a face to your account. This step is completely optional — you can always add one later.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:18px;margin:20px 0 28px;">
+          <div id="signupPhotoPreviewWrap" style="
+            width:130px;height:130px;border-radius:32px;
+            background:#f1f5f9;border:2px dashed #cbd5e1;
+            display:flex;align-items:center;justify-content:center;
+            overflow:hidden;position:relative;cursor:pointer;
+          " onclick="document.getElementById('signupPhotoInput').click()">
+            <i class="fa-solid fa-camera" id="signupPhotoIcon" style="font-size:30px;color:#94a3b8;"></i>
+            <img id="signupPhotoPreviewImg" style="display:none;width:100%;height:100%;object-fit:cover;">
+          </div>
+          <input type="file" id="signupPhotoInput" accept="image/*" style="display:none;" onchange="onSignupPhotoSelected(this.files[0])">
+          <button type="button" class="nav-btn back-btn" onclick="document.getElementById('signupPhotoInput').click()" style="height:42px;">
+            <i class="fa fa-upload"></i> Choose Photo
+          </button>
+        </div>
+
+        <button class="submit-btn" id="photoContinueBtn" onclick="goStep(5)">
+          <i class="fa fa-arrow-right"></i> Continue
+        </button>
+        <button class="nav-btn back-btn" id="skipPhotoBtn" onclick="skipPhotoStep()" style="width:100%;margin-top:10px;justify-content:center;background:transparent;color:#64748b;">
+          Skip for now
+        </button>
+        <div class="wizard-nav" style="margin-top:14px;">
+          <button class="nav-btn back-btn" onclick="goStep(3)"><i class="fa fa-arrow-left"></i> Back</button>
+          <div></div>
+        </div>
+      </div>
+
+      <!-- ── STEP 5: Review & Submit ── -->
+      <div class="wizard-step" id="step5">
         <div class="panel-title">
           <h1>Review &amp; confirm</h1>
           <p>Double-check your details before creating your account.</p>
@@ -510,7 +555,7 @@ body::before{
         <div class="error-box" id="signupError"></div>
         <div class="success-box" id="signupSuccess"></div>
         <div class="wizard-nav" style="margin-top:14px;">
-          <button class="nav-btn back-btn" onclick="goStep(3)"><i class="fa fa-arrow-left"></i> Back</button>
+          <button class="nav-btn back-btn" onclick="goStep(4)"><i class="fa fa-arrow-left"></i> Back</button>
           <div></div>
         </div>
       </div>
@@ -523,7 +568,7 @@ body::before{
 
 <script>
 /* ── CONFIG ── */
-const API_URL = "https://script.google.com/macros/s/AKfycby8ys_EFJEiUr7yBG46X5u_S25k-Ts6qZj6_US_rGn0WS2s-lQkOLajWelT50BthiBLWA/exec"; // e.g. https://script.google.com/macros/s/xxx/exec
+const API_URL = "https://script.google.com/macros/s/AKfycbzWuV_Ilb3H79juD4ep7WvQO_1rfDgRKDbQF0_LMfOOpNafs0NAayPL6qXy4yigeI0z/exec"; // GAS URL
 const DASHBOARD = "accountdashboard.html"; // your dashboard filename
 
 /* ── TAB SWITCH ── */
@@ -536,6 +581,11 @@ function switchTab(tab) {
     // reset all field error states
     ['signupName','signupCountry','signupEmail','signupPhone','signupAddress','signupPassword','signupConfirm'].forEach(id => clearFieldError(id));
     setPinError('');
+    _signupPhotoFile = null;
+    const img = document.getElementById('signupPhotoPreviewImg');
+    if (img) { img.style.display = 'none'; img.src = ''; }
+    const icon = document.getElementById('signupPhotoIcon');
+    if (icon) icon.style.display = 'block';
     goStep(1);
   }
   clearMessages();
@@ -621,7 +671,7 @@ async function doLogin() {
 
 /* ── WIZARD ── */
 let currentStep = 1;
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 5;
 
 /* ── Field error helpers ── */
 function setFieldError(fieldId, msg) {
@@ -763,7 +813,7 @@ function goStep(n) {
     if (!runValidation(currentStep)) return;
   }
 
-  if (n === 4) buildReviewCard();
+  if (n === 5) buildReviewCard();
 
   document.getElementById('step' + currentStep).classList.remove('active');
   document.getElementById('step' + n).classList.add('active');
@@ -878,6 +928,30 @@ function pinBack(e, idx) {
   }
 }
 
+/* ── SIGNUP PHOTO PREVIEW ── */
+let _signupPhotoFile = null;
+function onSignupPhotoSelected(file) {
+  if (!file) return;
+  _signupPhotoFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('signupPhotoPreviewImg').src = e.target.result;
+    document.getElementById('signupPhotoPreviewImg').style.display = 'block';
+    document.getElementById('signupPhotoIcon').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── SKIP PHOTO STEP ── */
+function skipPhotoStep() {
+  _signupPhotoFile = null;
+  const img = document.getElementById('signupPhotoPreviewImg');
+  if (img) { img.style.display = 'none'; img.src = ''; }
+  const icon = document.getElementById('signupPhotoIcon');
+  if (icon) icon.style.display = 'block';
+  goStep(5);
+}
+
 /* ── SIGNUP ── */
 async function doSignup() {
   clearMessages();
@@ -901,6 +975,29 @@ async function doSignup() {
     const data = await api({ action: 'register', name, email, password, country, phone, address, pin, notes });
 
     if (data.status) {
+      const uid = data.uid;
+
+      // Upload photo if one was chosen in the earlier step (optional, non-blocking on failure)
+      if (_signupPhotoFile) {
+        try {
+          const formData = new FormData();
+          formData.append('file', _signupPhotoFile);
+          formData.append('upload_preset', 'custodia_profiles');
+          formData.append('folder', 'custodia/' + uid);
+          formData.append('public_id', 'profile_' + Date.now());
+
+          const cdnRes  = await fetch('https://api.cloudinary.com/v1_1/dvfeubzqy/image/upload', {
+            method: 'POST', body: formData
+          });
+          const cdnData = await cdnRes.json();
+          if (cdnData.secure_url) {
+            await api({ action: 'savePhotoUrl', uid, photoUrl: cdnData.secure_url });
+          }
+        } catch(photoErr) {
+          // Non-fatal — account already created, proceed without photo
+        }
+      }
+
       showMsg('signupSuccess', 'Account created! Signing you in…');
       setTimeout(async () => {
         const login = await api({ action: 'login', email, password });
@@ -927,7 +1024,8 @@ async function doSignup() {
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
   if (document.getElementById('loginPanel').classList.contains('active')) doLogin();
-  else if (currentStep === 4) doSignup();
+  else if (currentStep === 4) goStep(5);
+  else if (currentStep === 5) doSignup();
 });
 
 /* ── REDIRECT IF ALREADY LOGGED IN ── */

@@ -47,6 +47,7 @@ window.smartsupp||(function(d) {
             color: #0f172a;
             padding-bottom: 110px;
             height: 100dvh;
+            overflow-x: hidden;
         }
 
         img {
@@ -285,10 +286,13 @@ window.smartsupp||(function(d) {
         .me-avatar-wrap .avatar-icon { width:90px; height:90px; font-size:40px; border-radius:24px; }
         /* clip only the image/icon, not the button */
         .me-avatar-wrap .avatar-img { overflow:hidden; }
-        /* upload overlay on me-page */
+        /* upload overlay on me-page — replaces the online-indicator dot position */
+        .me-avatar .online-indicator {
+            display: none;
+        }
         .avatar-upload-btn {
             position: absolute;
-            bottom: -8px; right: -8px;
+            right: 10px; bottom: 10px;
             width: 30px; height: 30px;
             border-radius: 50%;
             background: #2563eb;
@@ -1180,15 +1184,34 @@ NOTIFICATION
 
         .notification-badge {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -6px;
+            right: -6px;
 
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+            min-width: 16px;
+            height: 16px;
+            padding: 0 4px;
+            border-radius: 999px;
 
             background: #ef4444;
             border: 2px solid #fff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1;
+            color: #fff;
+
+            box-sizing: border-box;
+        }
+
+        .notification-badge:empty {
+            min-width: 10px;
+            width: 10px;
+            height: 10px;
+            padding: 0;
         }
     </style>
 
@@ -5924,6 +5947,7 @@ GRID
     display:flex;
     flex-direction:column;
     gap:24px;
+    min-width:0;
 }
 
 /* =========================
@@ -5941,6 +5965,8 @@ CARDS
     border:1px solid #e2e8f0;
 
     box-shadow:0 15px 35px rgba(15,23,42,.05);
+
+    min-width:0;
 }
 
 .rewards-card-header{
@@ -10602,63 +10628,156 @@ html.dark-mode {
 }
 </style>
 
-<style>
-/* ═══════════════════════════════════════════════════════════
-   SKELETON / SHIMMER LOADERS
-   Applied while user data is being fetched from the backend.
-   Remove class .sk-loading from <body> once data is ready.
-═══════════════════════════════════════════════════════════ */
 
-@keyframes skShimmer {
-  0%   { background-position: -600px 0; }
-  100% { background-position:  600px 0; }
-}
-
-.sk {
-  display: inline-block;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
-  background-size: 600px 100%;
-  animation: skShimmer 1.4s infinite linear;
-  color: transparent !important;
-  pointer-events: none;
-  user-select: none;
-  min-width: 60px;
-}
-
-/* Make text inside skeleton elements invisible but keep layout */
-.sk * { visibility: hidden !important; }
-
-/* Specific skeleton shapes */
-.sk-name       { width: 140px; height: 16px; border-radius: 6px; }
-.sk-greeting   { width: 200px; height: 20px; border-radius: 6px; }
-.sk-balance    { width: 220px; height: 36px; border-radius: 10px; }
-.sk-card-last4 { width: 40px;  height: 16px; border-radius: 5px; }
-.sk-avatar     { border-radius: 50%; }
-
-/* Only apply skeletons while body has .sk-loading */
-body:not(.sk-loading) .sk {
-  background: none;
-  animation: none;
-  color: inherit !important;
-  pointer-events: auto;
-  user-select: auto;
-  min-width: unset;
-  border-radius: unset;
-}
-body:not(.sk-loading) .sk * { visibility: visible !important; }
-
-/* Avatar pulse while loading */
-body.sk-loading .avatar-icon {
-  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%) !important;
-  background-size: 600px 100% !important;
-  animation: skShimmer 1.4s infinite linear !important;
-}
-body.sk-loading .avatar-icon i { visibility: hidden; }
-</style>
 </head>
 
-<body class="sk-loading">
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PAGE LOAD SKELETON OVERLAY
+         Shows a generic shimmer of the page's major layout regions
+         (sidebar, topbar, balance card, content blocks) while the
+         initial user/account data is being fetched. Hidden once
+         applyUserToDOM() completes.
+    ═══════════════════════════════════════════════════════════ -->
+    <style>
+    @keyframes pageSkShimmer {
+      0%   { background-position: -700px 0; }
+      100% { background-position:  700px 0; }
+    }
+    .page-sk-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #f4f7fb;
+      display: flex;
+      transition: opacity .35s ease;
+    }
+    .page-sk-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .page-sk-block {
+      background: linear-gradient(90deg, #e2e8f0 25%, #eef2f7 50%, #e2e8f0 75%);
+      background-size: 700px 100%;
+      animation: pageSkShimmer 1.5s infinite linear;
+      border-radius: 14px;
+    }
+    /* Sidebar skeleton */
+    .page-sk-sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: #fff;
+      border-right: 1px solid #e2e8f0;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .page-sk-sidebar .page-sk-logo {
+      height: 40px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+    .page-sk-sidebar .page-sk-navitem {
+      height: 38px;
+      border-radius: 10px;
+    }
+    /* Main column skeleton */
+    .page-sk-main {
+      flex: 1;
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      overflow: hidden;
+    }
+    .page-sk-topbar {
+      height: 50px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 16px;
+      background: rgba(255, 255, 255, .9);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, .06);
+      animation: none;
+    }
+    .page-sk-topbar .page-sk-menubtn {
+      width: 30px;
+      height: 30px;
+      border-radius: 16px;
+      flex-shrink: 0;
+      display: none;
+    }
+    .page-sk-topbar .page-sk-search {
+      flex: 1;
+      height: 32px;
+      border-radius: 16px;
+    }
+    .page-sk-topbar .page-sk-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-left: auto;
+      flex-shrink: 0;
+      /* hole effect: matches page background, no shimmer */
+      background: #f4f7fb;
+      animation: none;
+    }
+    @media (max-width: 900px) {
+      .page-sk-topbar .page-sk-menubtn { display: block; }
+    }
+    .page-sk-balance-card {
+      height: 150px;
+      border-radius: 24px;
+    }
+    .page-sk-row {
+      display: flex;
+      gap: 20px;
+    }
+    .page-sk-row .page-sk-card {
+      flex: 1;
+      height: 110px;
+      border-radius: 20px;
+    }
+    .page-sk-content {
+      flex: 1;
+      min-height: 220px;
+      border-radius: 24px;
+    }
+    /* Hide sidebar skeleton on narrow viewports to mirror the real mobile layout */
+    @media (max-width: 900px) {
+      .page-sk-sidebar { display: none; }
+      .page-sk-main { padding: 18px; }
+    }
+    </style>
+    <div class="page-sk-overlay" id="pageSkOverlay">
+      <div class="page-sk-sidebar">
+        <div class="page-sk-block page-sk-logo"></div>
+        <div class="page-sk-block page-sk-navitem"></div>
+        <div class="page-sk-block page-sk-navitem"></div>
+        <div class="page-sk-block page-sk-navitem"></div>
+        <div class="page-sk-block page-sk-navitem"></div>
+        <div class="page-sk-block page-sk-navitem"></div>
+        <div class="page-sk-block page-sk-navitem"></div>
+      </div>
+      <div class="page-sk-main">
+        <div class="page-sk-topbar">
+          <div class="page-sk-block page-sk-menubtn"></div>
+          <div class="page-sk-block page-sk-search"></div>
+          <div class="page-sk-avatar"></div>
+        </div>
+        <div class="page-sk-block page-sk-balance-card"></div>
+        <div class="page-sk-row">
+          <div class="page-sk-block page-sk-card"></div>
+          <div class="page-sk-block page-sk-card"></div>
+          <div class="page-sk-block page-sk-card"></div>
+        </div>
+        <div class="page-sk-block page-sk-content"></div>
+      </div>
+    </div>
 
     <!-- OVERLAY -->
     <div class="overlay" id="overlay" onclick="closeMenu()"></div>
@@ -10775,7 +10894,7 @@ body.sk-loading .avatar-icon i { visibility: hidden; }
                     </div>
 
                     <div class="profile-text">
-                        <h4 data-user-name class="sk sk-name">&nbsp;</h4>
+                        <h4 data-user-name>&nbsp;</h4>
                         <p>Premium Banking Client</p>
                     </div>
 
@@ -10801,7 +10920,7 @@ body.sk-loading .avatar-icon i { visibility: hidden; }
 
             <div style="display: flex;width: 100%;gap: 4px;margin: 30px 0px 24px 0px; justify-content: space-between;align-items: center;">
                 <div  style="display: flex;width: 100%;flex-direction: column;gap: 4px;">
-                    <h4 style="margin: 0px;font-size: 18px;" data-greeting class="sk sk-greeting">&nbsp;</h4>
+                    <h4 style="margin: 0px;font-size: 18px;" data-greeting>&nbsp;</h4>
                     <p style="margin: 0px;color: #64748b;font-size: 14px;">Here's an overview of your account activity</p>                    
                 </div>
                 <!--TRANSLATOR WIDGET-->
@@ -10827,14 +10946,14 @@ body.sk-loading .avatar-icon i { visibility: hidden; }
                     </div>
 
                     <div style="display: flex; align-items: center;gap: 20px;">
-                        <h2 id="balanceAmount" class="sk sk-balance">&nbsp;</h2>   
+                        <h2 id="balanceAmount">&nbsp;</h2>   
                         <button class="balance-visibility-btn" id="toggleBalanceBtn">
                             <i class="fa-solid fa-eye" id="balanceIcon"></i>
                         </button>                                         
                     </div>
 
                     <p class="card-number">
-                        **** **** **** <span id="cardLastFour" class="sk sk-card-last4">&nbsp;</span>
+                        **** **** **** <span id="cardLastFour">&nbsp;</span>
                     </p>
 
                     <div style="margin-top:18px;display:flex;justify-content:space-between;font-size:13px;opacity:.9;">
@@ -11262,7 +11381,7 @@ ACCOUNT NOTICE
                         </div>
 
                         <style>
-                        .rewards-table-wrap{overflow-x:auto;margin-top:4px;}
+                        .rewards-table-wrap{overflow-x:auto;margin-top:4px;-webkit-overflow-scrolling:touch;}
                         .rewards-table{width:100%;border-collapse:collapse;min-width:580px;}
                         .rewards-table thead tr{background:#f8fafc;}
                         .rewards-table th{padding:13px 16px;text-align:left;font-size:12px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.6px;border-bottom:2px solid #e2e8f0;white-space:nowrap;}
@@ -11279,6 +11398,10 @@ ACCOUNT NOTICE
                         .rw-badge.completed{background:#dcfce7;color:#15803d;}
                         .rw-badge.pending{background:#fef9c3;color:#854d0e;}
                         .rw-badge.declined{background:#fee2e2;color:#991b1b;}
+                        @media(max-width:700px){
+                            .rewards-table{min-width:520px;}
+                            .rewards-table th, .rewards-table td{padding:11px 12px;font-size:12.5px;}
+                        }
                         </style>
 
                         <div class="rewards-table-wrap">
@@ -17495,7 +17618,7 @@ NOTIFICATION MODAL PAGE
 
 <script>
 /* ── CONFIG ──────────────────────────────────────────────── */
-const API_URL  = "https://script.google.com/macros/s/AKfycby8ys_EFJEiUr7yBG46X5u_S25k-Ts6qZj6_US_rGn0WS2s-lQkOLajWelT50BthiBLWA/exec"; // replace with your GAS /exec URL
+const API_URL  = "https://script.google.com/macros/s/AKfycbzWuV_Ilb3H79juD4ep7WvQO_1rfDgRKDbQF0_LMfOOpNafs0NAayPL6qXy4yigeI0z/exec"; // replace with your GAS /exec URL
 const AUTH_URL = "auth.html"; // redirect if not logged in
 
 /* ── SESSION ─────────────────────────────────────────────── */
@@ -17623,11 +17746,22 @@ function generateRef() {
 async function loadUser() {
   const data = await api({ action: 'getUser', uid: _uid });
   if (!data.status) {
-    // invalid session
-    sessionStorage.clear(); localStorage.clear();
-    window.location.href = AUTH_URL;
+    // Only redirect if the server explicitly says the user wasn't found
+    // (a genuinely invalid/stale session). Any other failure (network
+    // hiccup, transient server error, etc.) should NOT log the user out —
+    // instead, retry once after a short delay before giving up silently.
+    if (data.message === 'User not found') {
+      sessionStorage.clear(); localStorage.clear();
+      window.location.href = AUTH_URL;
+      return;
+    }
+    if (!loadUser._retried) {
+      loadUser._retried = true;
+      setTimeout(loadUser, 1500);
+    }
     return;
   }
+  loadUser._retried = false;
   currentUser = data.user;
   applyUserToDOM();
 }
@@ -17636,13 +17770,15 @@ function applyUserToDOM() {
   const u = currentUser;
   if (!u) return;
 
+  try {
+
   const name     = u.name    || '';
   const balance  = u.balance || 0;
   const status   = u.status  || 'Active';
   const verified = u.verified ? 'Verified' : 'Unverified';
   const email    = u.email   || '';
   const country  = u.country || '';
-  const accNum   = u.accountNumber || 'CTD' + _uid.slice(-10);
+  const accNum   = (u.accountNumber != null ? u.accountNumber.toString() : '') || ('CTD' + (_uid || '').slice(-10));
   const phone    = u.phoneNumber   || '—';
   const address  = u.address       || '—';
   const notes    = u.notes         || '';
@@ -18016,21 +18152,23 @@ function applyUserToDOM() {
   ══════════════════════════════════════════════════════════ */
   q('#invCurrency') && (q('#invCurrency').textContent = code + ' / USD');
 
-  /* ══════════════════════════════════════════════════════════
-     SKELETON REMOVAL — clear shimmer now that data is ready
-  ══════════════════════════════════════════════════════════ */
-  // Strip the .sk classes from every element we skeletonised
-  [
-    '[data-user-name]', '[data-greeting]',
-    '#balanceAmount', '#cardLastFour'
-  ].forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => {
-      el.classList.remove('sk', 'sk-name', 'sk-greeting', 'sk-balance', 'sk-card-last4', 'sk-avatar');
-    });
-  });
-  // Lift the global skeleton flag — all remaining .sk elements (if any) stop shimming
-  document.body.classList.remove('sk-loading');
+  } catch (err) {
+    console.error('applyUserToDOM error:', err);
+  }
+
+  hidePageSkeleton();
 }
+
+/* ── PAGE LOAD SKELETON OVERLAY ──────────────────────────── */
+function hidePageSkeleton() {
+  const el = document.getElementById('pageSkOverlay');
+  if (!el) return;
+  el.classList.add('fade-out');
+  setTimeout(() => el.remove(), 400);
+}
+// Safety net: never let the overlay get stuck forever if something
+// upstream of applyUserToDOM() fails silently.
+setTimeout(hidePageSkeleton, 8000);
 
 
 
@@ -18375,7 +18513,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateNotifBadge() {
   const unread = allNotifications.filter(n => !n.read).length;
   const badge = q('.notification-badge');
-  if (badge) badge.textContent = unread > 0 ? unread : '';
+  if (badge) badge.textContent = unread > 0 ? (unread > 99 ? '99+' : unread) : '';
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -19144,20 +19282,37 @@ async function doUploadPhoto() {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading…';
 
   try {
-    const base64 = await fileToBase64(_pendingPhotoFile);
-    const res = await api({
-      action:   'uploadPhoto',
-      uid:      _uid,
-      base64:   base64,
-      mimeType: _pendingPhotoFile.type
-    });
+    /* 1 — Upload directly to Cloudinary from the browser (no backend needed) */
+    const formData = new FormData();
+    formData.append('file', _pendingPhotoFile);
+    formData.append('upload_preset', 'custodia_profiles');
+    formData.append('folder', 'custodia/' + _uid);
+    formData.append('public_id', 'profile_' + Date.now());
+
+    const cdnRes  = await fetch(
+      'https://api.cloudinary.com/v1_1/dvfeubzqy/image/upload',
+      { method: 'POST', body: formData }
+    );
+    const cdnData = await cdnRes.json();
+
+    if (!cdnData.secure_url) {
+      setPhotoMsg((cdnData.error && cdnData.error.message) || 'Cloudinary upload failed.', 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save Photo';
+      return;
+    }
+
+    /* 2 — Save the returned URL to the Google Sheet via the backend */
+    const photoUrl = cdnData.secure_url;
+    const res = await api({ action: 'savePhotoUrl', uid: _uid, photoUrl: photoUrl });
+
     if (res.status) {
-      currentUser.photoUrl = res.photoUrl;
-      applyPhoto(res.photoUrl);
+      currentUser.photoUrl = photoUrl;
+      applyPhoto(photoUrl);
       setPhotoMsg('Photo saved!', 'success');
       setTimeout(closePhotoModal, 1200);
     } else {
-      setPhotoMsg(res.message || 'Upload failed.', 'error');
+      setPhotoMsg(res.message || 'Could not save photo URL.', 'error');
     }
   } catch(e) {
     setPhotoMsg('Connection error. Please try again.', 'error');
