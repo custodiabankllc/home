@@ -17755,13 +17755,14 @@ async function loadUser() {
       window.location.href = AUTH_URL;
       return;
     }
-    if (!loadUser._retried) {
-      loadUser._retried = true;
-      setTimeout(loadUser, 1500);
-    }
+    // Keep retrying indefinitely with a capped backoff — the skeleton
+    // stays up until this succeeds, so we must not give up silently.
+    loadUser._retryCount = (loadUser._retryCount || 0) + 1;
+    const delay = Math.min(1500 * loadUser._retryCount, 10000);
+    setTimeout(loadUser, delay);
     return;
   }
-  loadUser._retried = false;
+  loadUser._retryCount = 0;
   currentUser = data.user;
   applyUserToDOM();
 }
@@ -18166,9 +18167,16 @@ function hidePageSkeleton() {
   el.classList.add('fade-out');
   setTimeout(() => el.remove(), 400);
 }
-// Safety net: never let the overlay get stuck forever if something
-// upstream of applyUserToDOM() fails silently.
-setTimeout(hidePageSkeleton, 8000);
+// Safety net: only hide the overlay once user data has actually loaded.
+// If applyUserToDOM() hasn't run yet (e.g. backend fetch still failing/
+// retrying), keep the skeleton visible rather than revealing an empty
+// or stale dashboard. Poll instead of giving up after a fixed delay.
+const _skeletonSafetyNet = setInterval(() => {
+  if (currentUser) {
+    hidePageSkeleton();
+    clearInterval(_skeletonSafetyNet);
+  }
+}, 500);
 
 
 
