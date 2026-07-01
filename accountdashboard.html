@@ -12,15 +12,31 @@
 <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
 var _smartsupp = _smartsupp || {};
+
 _smartsupp.key = 'af17074865248633fbfbaae93d897b9e981a06d4';
-window.smartsupp||(function(d) {
-  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-  c.type='text/javascript';c.charset='utf-8';c.async=true;
-  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+
+// Position options
+_smartsupp.orientation = "left"; // "left" or "right"
+_smartsupp.offsetX = 20;         // Horizontal offset (px)
+_smartsupp.offsetY = 100;         // Vertical offset (px)
+
+window.smartsupp || (function(d) {
+  var s, c, o = smartsupp = function() { o._.push(arguments); };
+  o._ = [];
+  s = d.getElementsByTagName('script')[0];
+  c = d.createElement('script');
+  c.type = 'text/javascript';
+  c.charset = 'utf-8';
+  c.async = true;
+  c.src = 'https://www.smartsuppchat.com/loader.js?';
+  s.parentNode.insertBefore(c, s);
 })(document);
 </script>
-<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+
+<noscript>
+  Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a>
+</noscript>
+
 
 
 
@@ -11923,11 +11939,95 @@ ACCOUNT NOTICE
 
                         </div>
 
-                        <div class="finance-activity-list" id="financeActivityContainer">
+                        <div class="finance-activity-list">
 
-                            <p style="color:#64748b;text-align:center;padding:20px;font-size:14px;">
-                                Loading recent transactions...
-                            </p>
+                            <div class="finance-activity-item">
+
+                                <div class="activity-finance-icon green">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                </div>
+
+                                <div class="finance-activity-content">
+
+                                    <h4>Investment Profit Received</h4>
+
+                                    <p>
+                                        Foreign Exchange Trading Earnings
+                                    </p>
+
+                                </div>
+
+                                <span class="income-text">
+                                    +<span id="finAct1">0.00</span>
+                                </span>
+
+                            </div>
+
+                            <div class="finance-activity-item">
+
+                                <div class="activity-finance-icon blue">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+
+                                <div class="finance-activity-content">
+
+                                    <h4>Savings Deposit</h4>
+
+                                    <p>
+                                        Treasury Savings Allocation
+                                    </p>
+
+                                </div>
+
+                                <span class="income-text">
+                                    +<span id="finAct2">0.00</span>
+                                </span>
+
+                            </div>
+
+                            <div class="finance-activity-item">
+
+                                <div class="activity-finance-icon red">
+                                    <i class="fa-solid fa-arrow-up"></i>
+                                </div>
+
+                                <div class="finance-activity-content">
+
+                                    <h4>International Transfer</h4>
+
+                                    <p>
+                                        Overseas Financial Transaction
+                                    </p>
+
+                                </div>
+
+                                <span class="expense-text">
+                                    -<span id="finAct3">0.00</span>
+                                </span>
+
+                            </div>
+
+                            <div class="finance-activity-item">
+
+                                <div class="activity-finance-icon gold">
+                                    <i class="fa-solid fa-chart-column"></i>
+                                </div>
+
+                                <div class="finance-activity-content">
+
+                                    <h4>Stock Dividend Credit</h4>
+
+                                    <p>
+                                        International Equity Portfolio
+                                    </p>
+
+                                </div>
+
+                                <span class="income-text">
+                                    +<span id="finAct4">0.00</span>
+                                </span>
+
+                            </div>
 
                         </div>
 
@@ -18135,11 +18235,11 @@ function applyUserToDOM() {
   qAll('[data-balance]').forEach(el => el.textContent = balFmt);
 
   /* ── Finance sub-figures (derived from balance — backend doesn't store these separately) ── */
-  /* NOTE: #financeCashFlow and #finAct1-4 are now populated from real transaction
-     data in renderFinanceActivity()/updateFinanceCashFlow() once loadTransactions() runs. */
   const zero = sym + '0.00';
-  ['#inv1Val','#inv2Val','#inv3Val',
+  ['#financeCashFlow',
+   '#inv1Val','#inv2Val','#inv3Val',
    '#inv4Val','#inv5Val','#inv6Val','#portf1','#portf2','#portf3','#portf4',
+   '#finAct1','#finAct2','#finAct3','#finAct4',
    '#withdrawDailyLimit','#withdrawFee','#withdrawLimitHintValue',
    '#transferLimitDisplay','#transferFee','#transferLimitHintValue',
    '#cardDailyTransferLimit'
@@ -18490,8 +18590,6 @@ async function loadTransactions() {
   renderStatements(allTransactions);
   updateTransactionCounts();
   renderRewards();
-  renderFinanceActivity();
-  updateFinanceCashFlow();
 }
 
 function txTypeClass(type) {
@@ -18562,64 +18660,6 @@ function renderRecentTransactions() {
       if (tx) openReceiptFromTx(tx);
     });
   });
-}
-
-/* Finance page — "Recent Financial Transactions" card, driven by real allTransactions */
-function renderFinanceActivity() {
-  const cont = q('#financeActivityContainer');
-  if (!cont) return;
-  const recent = allTransactions.slice(0, 4);
-  if (!recent.length) {
-    cont.innerHTML = '<p style="color:#64748b;text-align:center;padding:20px;font-size:14px;">No recent financial transactions.</p>';
-    return;
-  }
-  cont.innerHTML = recent.map(tx => {
-    const isCredit = tx.type === 'Deposit' || tx.type === 'Credit';
-    const icon     = txIcon(tx.type, tx.status);
-    const amtStr   = fmtBalance(tx.amount);
-    const prefix   = isCredit ? '+' : '-';
-    const cls      = isCredit ? 'income-text' : 'expense-text';
-    const pending  = tx.status === 'Pending'
-      ? '<span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:#fef9c3;color:#854d0e;margin-left:6px;">Pending</span>' : '';
-    return `
-      <div class="finance-activity-item" data-txid="${tx.txId}" style="cursor:pointer">
-        <div class="activity-finance-icon" style="background:${icon.bg}">
-          <i class="fa-solid ${icon.icon}" style="color:${icon.color}"></i>
-        </div>
-        <div class="finance-activity-content">
-          <h4>${tx.type}${pending}</h4>
-          <p>${txLabel(tx)} &bull; ${tx.date}</p>
-        </div>
-        <span class="${cls}">${prefix}${amtStr}</span>
-      </div>`;
-  }).join('');
-
-  cont.querySelectorAll('.finance-activity-item').forEach(card => {
-    card.addEventListener('click', () => {
-      const txId = card.dataset.txid;
-      const tx   = allTransactions.find(t => t.txId === txId);
-      if (tx) openReceiptFromTx(tx);
-    });
-  });
-}
-
-/* Finance page — Monthly Cash Flow stat card, computed from real transactions this calendar month */
-function updateFinanceCashFlow() {
-  const el = q('#financeCashFlow');
-  if (!el) return;
-  const now = new Date();
-  const inThisMonth = tx => {
-    const d = new Date(tx.date);
-    return !isNaN(d) && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-  };
-  let net = 0;
-  allTransactions.filter(inThisMonth).forEach(tx => {
-    const isCredit = tx.type === 'Deposit' || tx.type === 'Credit';
-    const amt = Number(tx.amount || 0);
-    net += isCredit ? amt : -amt;
-  });
-  const prefix = net < 0 ? '-' : '';
-  el.textContent = prefix + fmtBalance(Math.abs(net));
 }
 
 function renderTransactionHistory(list) {
@@ -18907,10 +18947,10 @@ function updateNotifBadge() {
    FIELD VALIDATION HELPERS (withdraw + transfer)
 ═══════════════════════════════════════════════════════════ */
 const VALIDATION_PATTERNS = {
-  name:    { re: /^[A-Za-z\u00C0-\u017F][A-Za-z\u00C0-\u017F\s.'-]{1,49}$/, msg: 'Enter a valid name (letters only, 2-50 characters).' },
-  account: { re: /^[A-Za-z0-9]{6,34}$/,  msg: 'Account number must be 6-34 letters/digits.' },
-  routing: { re: /^[A-Za-z0-9]{4,11}$/,  msg: 'Routing/SWIFT code must be 4-11 letters/digits.' },
-  amount:  { re: /^\d+(\.\d{1,2})?$/,    msg: 'Enter a valid amount (numbers only, up to 2 decimals).' },
+  name:    { re: /^[\p{L}\p{M}][\p{L}\p{M}\s.'-]{1,49}$/u, msg: 'Enter a valid name (2-50 characters).' },
+  account: { re: /^[\p{L}\p{N}]{6,34}$/u,  msg: 'Account number must be 6-34 characters (letters/digits).' },
+  routing: { re: /^[\p{L}\p{N}]{4,11}$/u,  msg: 'Routing/SWIFT code must be 4-11 characters (letters/digits).' },
+  amount:  { re: /^\d{1,3}(,\d{3})*(\.\d{1,2})?$|^\d+(\.\d{1,2})?$/, msg: 'Enter a valid amount (numbers only, up to 2 decimals).' },
 };
 
 function setFieldError(inputId, message) {
@@ -18943,10 +18983,11 @@ function attachLiveSanitizer(inputId, kind) {
     clearFieldError(inputId);
     let v = el.value;
     if (kind === 'name') {
-      v = v.replace(/[^A-Za-z\u00C0-\u017F\s.'-]/g, '');
+      v = v.replace(/[^\p{L}\p{M}\s.'-]/gu, '');
     } else if (kind === 'account' || kind === 'routing') {
-      v = v.replace(/[^A-Za-z0-9]/g, '');
+      v = v.replace(/[^\p{L}\p{N}]/gu, '');
     } else if (kind === 'amount') {
+      const caretFromEnd = el.value.length - el.selectionStart;
       v = v.replace(/[^0-9.]/g, '');
       const firstDot = v.indexOf('.');
       if (firstDot !== -1) {
@@ -18954,6 +18995,13 @@ function attachLiveSanitizer(inputId, kind) {
         const parts = v.split('.');
         if (parts[1]) v = parts[0] + '.' + parts[1].slice(0, 2);
       }
+      const [intPart, decPart] = v.split('.');
+      const withCommas = (intPart || '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      v = decPart !== undefined ? withCommas + '.' + decPart : withCommas;
+      el.value = v;
+      const pos = Math.max(0, v.length - caretFromEnd);
+      el.setSelectionRange(pos, pos);
+      return;
     }
     if (v !== el.value) el.value = v;
   });
@@ -19003,7 +19051,7 @@ function validateWithdrawForm() {
   if (!validateOne('withdrawAccountNumber', 'account', true)) ok = false;
   if (!validateOne('withdrawRouting', 'routing', false)) ok = false;
 
-  const amount = parseFloat((q('#withdrawAmount') || {}).value || '0');
+  const amount = parseFloat(((q('#withdrawAmount') || {}).value || '0').replace(/,/g,''));
   const balance = currentUser ? currentUser.balance : 0;
   if (ok && (!amount || amount <= 0)) { setFieldError('withdrawAmount', 'Enter an amount greater than 0.'); ok = false; }
   if (ok && amount > balance) { setFieldError('withdrawAmount', 'Amount exceeds your available balance.'); ok = false; }
@@ -19016,7 +19064,7 @@ function validateWithdrawForm() {
 }
 
 async function submitWithdraw() {
-  const amount  = parseFloat((q('#withdrawAmount')        || {}).value || '0');
+  const amount  = parseFloat(((q('#withdrawAmount')        || {}).value || '0').replace(/,/g,''));
   const bank    = (q('#withdrawBankName')       || {}).value || '';
   const account = (q('#withdrawAccountNumber') || {}).value || '';
   const routing = (q('#withdrawRouting')       || {}).value || '';

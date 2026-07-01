@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Custodia Bank — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:#f4f7fb;color:#0f172a;min-height:100dvh;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+/* ══════════════════════════════════════
+   LOGIN GATE
+══════════════════════════════════════ */
+.gate{
+  position:fixed;inset:0;z-index:2000;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(circle at top left,rgba(37,99,235,.18),transparent 30%),
+             radial-gradient(circle at bottom right,rgba(14,165,233,.15),transparent 35%),
+             linear-gradient(to bottom right,#f8fbff,#edf5ff);
+}
+.gate.hidden{display:none;}
+.gate-card{
+  width:100%;max-width:420px;background:#fff;border-radius:28px;padding:40px 36px;
+  box-shadow:0 10px 40px rgba(15,23,42,.08),0 2px 10px rgba(15,23,42,.04);
+  border:1px solid rgba(255,255,255,.8);
+}
+.gate-icon{
+  width:56px;height:56px;border-radius:16px;
+  background:linear-gradient(135deg,#2563eb,#0ea5e9);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:22px;margin-bottom:20px;
+}
+.gate-card h1{font-size:26px;font-weight:800;margin-bottom:6px;}
+.gate-card>p{color:#64748b;font-size:14px;margin-bottom:26px;line-height:1.6;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;margin-bottom:7px;font-size:13px;font-weight:600;color:#1e293b;}
+.form-group input{
+  width:100%;height:52px;border-radius:14px;border:1px solid #dbe5f3;
+  background:#f8fbff;padding:0 16px;font-size:15px;outline:none;transition:.25s;
+}
+.form-group input:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.1);}
+.gate-btn{
+  width:100%;height:52px;border:none;border-radius:14px;margin-top:6px;
+  background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;
+  font-size:15px;font-weight:700;cursor:pointer;transition:.25s;
+  box-shadow:0 14px 28px rgba(37,99,235,.22);
+  display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;
+}
+.gate-btn:hover:not(:disabled){transform:translateY(-2px);}
+.gate-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.gate-err{
+  margin-top:14px;padding:11px 14px;border-radius:12px;font-size:13.5px;font-weight:600;
+  background:#fef2f2;border:1px solid #fecaca;color:#dc2626;display:none;
+}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ══════════════════════════════════════
+   APP SHELL
+══════════════════════════════════════ */
+.app{display:none;}
+.app.ready{display:block;}
+
+.overlay{
+  position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(4px);
+  z-index:1000;opacity:0;visibility:hidden;transition:.3s;
+}
+.overlay.on{opacity:1;visibility:visible;}
+
+/* ── Sidebar ── */
+.sidebar{
+  position:fixed;top:0;left:-280px;width:260px;height:100dvh;
+  background:#fff;z-index:1100;padding:22px 18px;overflow-y:auto;
+  transition:.35s;border-right:1px solid #e2e8f0;
+}
+.sidebar.open{left:0;}
+@media(min-width:1000px){
+  .sidebar{left:0;}
+  .main{margin-left:260px;}
+  .menu-btn{display:none !important;}
+}
+
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid #f1f5f9;}
+.logo-badge{
+  width:42px;height:42px;border-radius:13px;flex-shrink:0;
+  background:linear-gradient(135deg,#0f172a,#2563eb);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;
+}
+.logo h2{font-size:16px;font-weight:800;}
+.logo p{font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+
+.nav-section{font-size:11px;font-weight:700;color:#94a3b8;margin:18px 0 8px;text-transform:uppercase;letter-spacing:1px;}
+.nav-link{
+  display:flex;align-items:center;gap:13px;padding:12px 14px;border-radius:14px;
+  margin-bottom:4px;font-size:14px;font-weight:600;color:#334155;cursor:pointer;transition:.2s;
+}
+.nav-link i{width:18px;font-size:15px;text-align:center;}
+.nav-link:hover{background:#f8fafc;}
+.nav-link.active{background:#eff6ff;color:#2563eb;}
+.nav-link .pill{
+  margin-left:auto;background:#ef4444;color:#fff;
+  font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:99px;
+}
+.nav-logout{margin-top:16px;background:#fef2f2 !important;color:#dc2626 !important;}
+
+/* ── Main ── */
+.main{padding:16px;padding-bottom:60px;}
+
+/* ══════════════════════════════════════
+   TOP NAV — matches accountdashboard.html exactly
+══════════════════════════════════════ */
+.topbar{
+  position:sticky;top:10px;z-index:50;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(16px);
+  border-radius:24px;padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  margin-bottom:22px;border:1px solid #e2e8f0;
+  box-shadow:0 10px 25px rgba(15,23,42,.06);
+}
+.top-left{display:flex;align-items:center;gap:12px;flex:1;}
+.menu-btn{
+  width:30px;height:30px;border:none;border-radius:16px;background:#f8fafc;
+  cursor:pointer;transition:.2s;font-size:18px;color:#0f172a;flex-shrink:0;
+}
+.menu-btn:active{transform:scale(.95);}
+.search{
+  background:#f8fafc;border-radius:16px;height:48px;
+  display:flex;align-items:center;gap:10px;padding:0 16px;
+  flex:1;border:1px solid #e2e8f0;
+}
+.search i{color:#64748b;font-size:15px;}
+.search input{width:100%;border:none;outline:none;background:none;font-size:14px;}
+.topbar-right{display:flex;align-items:center;gap:14px;margin-left:auto;}
+.notification-btn{
+  width:30px;height:30px;border-radius:16px;background:#f8fafc;
+  border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;transition:.25s;flex-shrink:0;
+}
+.notification-btn:hover{background:#eff6ff;}
+.notification-btn i{font-size:18px;color:#334155;}
+.notification-badge{
+  position:absolute;top:-6px;right:-6px;min-width:16px;height:16px;padding:0 4px;
+  border-radius:999px;background:#ef4444;border:2px solid #fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;line-height:1;color:#fff;box-sizing:border-box;
+}
+.notification-badge:empty{min-width:10px;width:10px;height:10px;padding:0;}
+.profile{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.avatar-wrap{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;border-radius:50%;
+  background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;
+}
+.topbar-avatar{width:36px;height:36px;font-size:17px;}
+.profile h4{font-size:14px;font-weight:700;}
+.profile p{font-size:12px;color:#64748b;}
+@media(max-width:700px){.profile-text{display:none;}}
+@media(max-width:560px){.search{display:none;}}
+
+/* ══════════════════════════════════════
+   PAGES
+══════════════════════════════════════ */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── Stat cards ── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px;}
+@media(max-width:1100px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.stat-grid{grid-template-columns:1fr 1fr;}}
+.stat-card{
+  background:#fff;border-radius:20px;padding:20px;
+  border:1px solid #e2e8f0;box-shadow:0 6px 18px rgba(15,23,42,.04);
+}
+.stat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.stat-ico{
+  width:38px;height:38px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+}
+.stat-card h3{font-size:24px;font-weight:800;margin-bottom:3px;}
+.stat-card span{font-size:12.5px;color:#94a3b8;font-weight:600;}
+
+/* ── Panel ── */
+.panel{
+  background:#fff;border-radius:22px;border:1px solid #e2e8f0;
+  box-shadow:0 6px 18px rgba(15,23,42,.04);margin-bottom:20px;overflow:hidden;
+}
+.panel-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:18px 20px;border-bottom:1px solid #f1f5f9;flex-wrap:wrap;
+}
+.panel-head h3{font-size:15px;font-weight:800;}
+.panel-head p{font-size:12px;color:#94a3b8;margin-top:2px;}
+.panel-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.panel-body{padding:20px;}
+
+/* ── Buttons ── */
+.btn{
+  height:40px;padding:0 16px;border-radius:13px;border:none;
+  font-size:13px;font-weight:700;cursor:pointer;transition:.2s;
+  display:inline-flex;align-items:center;gap:7px;font-family:inherit;
+}
+.btn-primary{background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;box-shadow:0 8px 20px rgba(37,99,235,.2);}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-ghost{background:#f8fafc;color:#334155;border:1px solid #e2e8f0;}
+.btn-ghost:hover{background:#f1f5f9;}
+.btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;}
+.btn-danger:hover{background:#fee2e2;}
+.btn-success{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;}
+.btn-sm{height:34px;padding:0 12px;font-size:12px;border-radius:10px;}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none !important;}
+
+.input-sm{
+  height:40px;border-radius:12px;border:1px solid #dbe5f3;background:#f8fbff;
+  padding:0 13px;font-size:13px;outline:none;transition:.2s;font-family:inherit;
+}
+.input-sm:focus{border-color:#2563eb;background:#fff;}
+select.input-sm{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+}
+
+/* ── Table ── */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{
+  text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;
+  color:#94a3b8;font-weight:700;padding:0 14px 12px;white-space:nowrap;
+}
+tbody td{padding:13px 14px;border-top:1px solid #f1f5f9;vertical-align:middle;white-space:nowrap;}
+tbody tr:hover{background:#f8fafc;}
+.cell-user{display:flex;align-items:center;gap:10px;}
+.row-av{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;overflow:hidden;
+  background:#eff6ff;color:#2563eb;font-weight:700;font-size:12px;
+  display:flex;align-items:center;justify-content:center;
+}
+.row-av img{width:100%;height:100%;object-fit:cover;}
+.cell-user strong{display:block;font-weight:700;}
+.cell-user small{display:block;font-size:11px;color:#94a3b8;}
+.badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;display:inline-block;}
+.bg{background:#f0fdf4;color:#16a34a;}
+.br{background:#fef2f2;color:#dc2626;}
+.by{background:#fffbeb;color:#d97706;}
+.bb{background:#eff6ff;color:#2563eb;}
+.bs{background:#f1f5f9;color:#64748b;}
+.acts{display:flex;gap:5px;}
+.ia{
+  width:30px;height:30px;border-radius:9px;border:1px solid #e2e8f0;
+  background:#fff;color:#334155;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:12px;transition:.15s;
+}
+.ia:hover{background:#f8fafc;}
+.ia.ap{color:#16a34a;border-color:#bbf7d0;background:#f0fdf4;}
+.ia.de{color:#dc2626;border-color:#fecaca;background:#fef2f2;}
+.empty-row td{padding:50px 20px;text-align:center;color:#94a3b8;}
+.empty-row td i{font-size:28px;display:block;margin-bottom:10px;color:#cbd5e1;}
+
+/* skeleton shimmer */
+.skel{height:13px;border-radius:8px;background:linear-gradient(90deg,#e2e8f0 25%,#eef2f7 50%,#e2e8f0 75%);
+  background-size:600px;animation:shim 1.4s infinite linear;}
+@keyframes shim{0%{background-position:-600px}100%{background-position:600px}}
+
+.pager{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-top:1px solid #f1f5f9;gap:10px;flex-wrap:wrap;}
+.pager span{font-size:12px;color:#94a3b8;}
+.pager-btns{display:flex;gap:6px;}
+
+/* ── Form ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr;}}
+.fg{display:flex;flex-direction:column;gap:7px;}
+.fg label{font-size:12.5px;font-weight:700;color:#1e293b;}
+.fg .input-sm{height:46px;}
+
+/* ── Modal ── */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);
+  z-index:1500;display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;visibility:hidden;transition:.25s;
+}
+.modal-bg.on{opacity:1;visibility:visible;}
+.modal{
+  width:100%;max-width:500px;background:#fff;border-radius:24px;padding:28px;
+  max-height:90vh;overflow-y:auto;transform:translateY(12px);transition:.25s;
+}
+.modal-bg.on .modal{transform:translateY(0);}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.modal-hd h3{font-size:18px;font-weight:800;}
+.modal-x{width:32px;height:32px;border-radius:10px;border:none;background:#f8fafc;cursor:pointer;color:#334155;font-size:16px;}
+.detail-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13px;}
+.detail-row:last-child{border-bottom:none;}
+.detail-row span:first-child{color:#94a3b8;font-weight:600;}
+.detail-row span:last-child{font-weight:700;}
+.m-msg{margin-top:14px;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:600;display:none;}
+.m-msg.err{display:block;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;}
+.m-msg.ok{display:block;background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;}
+.m-acts{display:flex;gap:10px;margin-top:18px;}
+.m-acts .btn{flex:1;justify-content:center;height:46px;}
+.m-sep{margin:18px 0;border:none;border-top:1px solid #f1f5f9;}
+
+/* ── Toast ── */
+.toasts{position:fixed;bottom:20px;right:20px;z-index:3000;display:flex;flex-direction:column;gap:8px;}
+.toast{
+  background:#0f172a;color:#fff;padding:12px 18px;border-radius:13px;font-size:13px;font-weight:600;
+  box-shadow:0 12px 28px rgba(15,23,42,.25);display:flex;align-items:center;gap:10px;min-width:230px;
+  opacity:0;transform:translateY(6px);transition:.25s;
+}
+.toast.on{opacity:1;transform:translateY(0);}
+.toast.ok i{color:#4ade80;}
+.toast.er i{color:#f87171;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN GATE ═══════════════ -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-icon"><i class="fa-solid fa-user-shield"></i></div>
+    <h1>Admin Console</h1>
+    <p>Sign in with your administrator credentials to access the Custodia Bank control panel.</p>
+    <div class="form-group">
+      <label>Admin Email</label>
+      <input type="email" id="gEmail" placeholder="admin@custodiabank.com" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="gPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="gate-btn" id="gBtn" onclick="doLogin()">
+      <i class="fa-solid fa-right-to-bracket"></i> Sign In
+    </button>
+    <p class="gate-err" id="gErr"></p>
+  </div>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div class="app" id="app">
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-badge"><i class="fa-solid fa-shield-halved"></i></div>
+      <div><h2>Custodia Admin</h2><p>Control Panel</p></div>
+    </div>
+
+    <div class="nav-section">Overview</div>
+    <a class="nav-link active" data-p="pgDash" onclick="go('pgDash',this)"><i class="fa-solid fa-gauge-high"></i>Dashboard</a>
+
+    <div class="nav-section">Management</div>
+    <a class="nav-link" data-p="pgUsers" onclick="go('pgUsers',this)"><i class="fa-solid fa-users"></i>Users</a>
+    <a class="nav-link" data-p="pgDeposits" onclick="go('pgDeposits',this)"><i class="fa-solid fa-circle-arrow-down"></i>Deposits<span class="pill" id="pilDep" style="display:none">0</span></a>
+    <a class="nav-link" data-p="pgWithdrawals" onclick="go('pgWithdrawals',this)"><i class="fa-solid fa-circle-arrow-up"></i>Withdrawals<span class="pill" id="pilWd" style="display:none">0</span></a>
+    <a class="nav-link" data-p="pgTransfers" onclick="go('pgTransfers',this)"><i class="fa-solid fa-right-left"></i>Transfers<span class="pill" id="pilTxf" style="display:none">0</span></a>
+    <a class="nav-link" data-p="pgTxns" onclick="go('pgTxns',this)"><i class="fa-solid fa-list-ul"></i>All Transactions</a>
+    <a class="nav-link" data-p="pgNotif" onclick="go('pgNotif',this)"><i class="fa-solid fa-bullhorn"></i>Send Notification</a>
+
+    <div class="nav-section">Settings</div>
+    <a class="nav-link" data-p="pgSettings" onclick="go('pgSettings',this)"><i class="fa-solid fa-gear"></i>Settings</a>
+    <a class="nav-link nav-logout" onclick="doLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i>Log Out</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOP NAV -->
+    <div class="topbar">
+      <div class="top-left">
+        <button class="menu-btn" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div class="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="gSearch" placeholder="Search users by name or email…" onkeydown="if(event.key==='Enter')searchUsers()">
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="notification-btn" onclick="go('pgNotif',document.querySelector('[data-p=pgNotif]'))">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notification-badge" id="pendingBadge" style="display:none"></span>
+        </button>
+        <div class="profile" onclick="go('pgSettings',document.querySelector('[data-p=pgSettings]'))">
+          <div class="avatar-wrap topbar-avatar" id="adminAvatar">A</div>
+          <div class="profile-text">
+            <h4 id="adminName">Admin</h4>
+            <p>Administrator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD ── -->
+    <section class="page active" id="pgDash">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-head">
+            <div class="stat-ico" style="background:#eff6ff;color:#2563eb;"><i class="fa-solid fa-users"></i></div>
+          </div>
+          <h3 id="sUsers">—</h3><span>Total Users</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-head">
+            <div class="stat-ico" style="background:#f0fdf4;color:#16a34a;"><i class="fa-solid fa-sack-dollar"></i></div>
+          </div>
+          <h3 id="sBal">—</h3><span>Total Deposits</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-head">
+            <div class="stat-ico" style="background:#fffbeb;color:#d97706;"><i class="fa-solid fa-hourglass-half"></i></div>
+          </div>
+          <h3 id="sPending">—</h3><span>Pending Approvals</span>
+        </div>
+        <div class="stat-card">
+          <div class="stat-head">
+            <div class="stat-ico" style="background:#fef2f2;color:#dc2626;"><i class="fa-solid fa-lock"></i></div>
+          </div>
+          <h3 id="sFrozen">—</h3><span>Frozen Accounts</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Pending Deposits</h3><p>Awaiting your approval</p></div>
+          <button class="btn btn-ghost btn-sm" onclick="go('pgDeposits',document.querySelector('[data-p=pgDeposits]'))">View All <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="tbl-wrap"><table><thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Reference</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody id="dashDepBody"></tbody></table></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Pending Withdrawals</h3><p>Awaiting your approval</p></div>
+          <button class="btn btn-ghost btn-sm" onclick="go('pgWithdrawals',document.querySelector('[data-p=pgWithdrawals]'))">View All <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="tbl-wrap"><table><thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody id="dashWdBody"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- ── USERS ── -->
+    <section class="page" id="pgUsers">
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>All Users</h3><p id="userCount">Loading…</p></div>
+          <div class="panel-tools">
+            <input class="input-sm" id="uSearch" placeholder="Name or email…" oninput="renderUsers()">
+            <select class="input-sm" id="uStatus" onchange="renderUsers()">
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Frozen">Frozen</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="loadUsers()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>User</th><th>Email</th><th>Country</th><th>Balance</th><th>Status</th><th>Verified</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="usersBody"><tr><td colspan="8"><div class="skel"></div></td></tr></tbody>
+        </table></div>
+        <div class="pager"><span id="uPgInfo"></span><div class="pager-btns">
+          <button class="btn btn-ghost btn-sm" onclick="uPage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="btn btn-ghost btn-sm" onclick="uPage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ── DEPOSITS ── -->
+    <section class="page" id="pgDeposits">
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Deposit Requests</h3><p id="depCount">Loading…</p></div>
+          <div class="panel-tools">
+            <select class="input-sm" id="depFilter" onchange="renderDeposits()">
+              <option value="">All</option><option value="Pending">Pending</option>
+              <option value="Approved">Approved</option><option value="Declined">Declined</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="loadDeposits()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>User</th><th>Email</th><th>Amount</th><th>Method</th><th>Reference</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="depBody"><tr><td colspan="8"><div class="skel"></div></td></tr></tbody>
+        </table></div>
+        <div class="pager"><span id="depPgInfo"></span><div class="pager-btns">
+          <button class="btn btn-ghost btn-sm" onclick="dPage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="btn btn-ghost btn-sm" onclick="dPage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ── WITHDRAWALS ── -->
+    <section class="page" id="pgWithdrawals">
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Withdrawal Requests</h3><p id="wdCount">Loading…</p></div>
+          <div class="panel-tools">
+            <select class="input-sm" id="wdFilter" onchange="renderWithdrawals()">
+              <option value="">All</option><option value="Pending">Pending</option>
+              <option value="Approved">Approved</option><option value="Declined">Declined</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="loadWithdrawals()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>User</th><th>Email</th><th>Amount</th><th>Method</th><th>Bank Details</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="wdBody"><tr><td colspan="8"><div class="skel"></div></td></tr></tbody>
+        </table></div>
+        <div class="pager"><span id="wdPgInfo"></span><div class="pager-btns">
+          <button class="btn btn-ghost btn-sm" onclick="wPage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="btn btn-ghost btn-sm" onclick="wPage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ── TRANSFERS ── -->
+    <section class="page" id="pgTransfers">
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Transfer Requests</h3><p id="txfCount">Loading…</p></div>
+          <div class="panel-tools">
+            <select class="input-sm" id="txfFilter" onchange="renderTransfers()">
+              <option value="">All</option><option value="Pending">Pending</option>
+              <option value="Completed">Completed</option><option value="Declined">Declined</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="loadTransfers()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>User</th><th>Recipient</th><th>Bank</th><th>Amount</th><th>Type</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="txfBody"><tr><td colspan="8"><div class="skel"></div></td></tr></tbody>
+        </table></div>
+        <div class="pager"><span id="txfPgInfo"></span><div class="pager-btns">
+          <button class="btn btn-ghost btn-sm" onclick="tfPage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="btn btn-ghost btn-sm" onclick="tfPage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ── ALL TRANSACTIONS ── -->
+    <section class="page" id="pgTxns">
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>All Transactions</h3><p id="txnCount">Loading…</p></div>
+          <div class="panel-tools">
+            <input class="input-sm" id="txnSearch" placeholder="Search name, type…" oninput="renderTxns()">
+            <select class="input-sm" id="txnType" onchange="renderTxns()">
+              <option value="">All Types</option>
+              <option>Deposit</option><option>Withdrawal</option><option>Transfer</option>
+              <option>Credit</option><option>Debit</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="loadTxns()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Date</th><th>User</th><th>Type</th><th>Method</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody id="txnBody"><tr><td colspan="6"><div class="skel"></div></td></tr></tbody>
+        </table></div>
+        <div class="pager"><span id="txnPgInfo"></span><div class="pager-btns">
+          <button class="btn btn-ghost btn-sm" onclick="tPage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="btn btn-ghost btn-sm" onclick="tPage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ── SEND NOTIFICATION ── -->
+    <section class="page" id="pgNotif">
+      <div class="panel">
+        <div class="panel-head"><div><h3>Send Notification</h3><p>Push a message to one user or all users</p></div></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="fg" style="grid-column:1/-1;">
+              <label>Recipient</label>
+              <select class="input-sm" id="nRecipient"><option value="all">All Users</option></select>
+            </div>
+            <div class="fg" style="grid-column:1/-1;">
+              <label>Title</label>
+              <input class="input-sm" id="nTitle" placeholder="e.g. Scheduled Maintenance">
+            </div>
+            <div class="fg" style="grid-column:1/-1;">
+              <label>Message</label>
+              <input class="input-sm" id="nMsg" placeholder="Write your notification message…">
+            </div>
+          </div>
+          <button class="btn btn-primary" id="nBtn" style="margin-top:18px" onclick="doSendNotif()">
+            <i class="fa-solid fa-paper-plane"></i> Send Notification
+          </button>
+          <p class="m-msg" id="nFeedback"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SETTINGS ── -->
+    <section class="page" id="pgSettings">
+      <div class="panel">
+        <div class="panel-head"><div><h3>Admin Account</h3></div></div>
+        <div class="panel-body">
+          <div class="detail-row"><span>Email</span><span id="setEmail">—</span></div>
+          <div class="detail-row"><span>Role</span><span id="setRole">—</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Global Wallet Address</h3><p>Shown to users as the deposit target</p></div></div>
+        <div class="panel-body">
+          <div class="fg">
+            <label>Wallet Address</label>
+            <input class="input-sm" id="walletInput" placeholder="e.g. 0x1234…abcd or a BTC address">
+          </div>
+          <button class="btn btn-primary" id="walletBtn" style="margin-top:14px" onclick="saveWallet()">
+            <i class="fa-solid fa-floppy-disk"></i> Save Wallet
+          </button>
+          <p class="m-msg" id="walletMsg"></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══ USER MODAL ══ -->
+<div class="modal-bg" id="userModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3>User Details</h3>
+      <button class="modal-x" onclick="closeModal('userModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="userModalBody"></div>
+    <hr class="m-sep">
+    <p style="font-size:12.5px;font-weight:700;color:#94a3b8;margin-bottom:10px;">ADJUST BALANCE</p>
+    <div class="form-grid">
+      <div class="fg"><label>New Balance</label><input class="input-sm" type="number" id="mBalance" step="0.01" min="0"></div>
+      <div class="fg"><label>Notes</label><input class="input-sm" id="mNotes" placeholder="Reason…"></div>
+    </div>
+    <div class="m-acts">
+      <button class="btn btn-danger" id="mFreezeBtn" onclick="toggleFreeze()"><i class="fa-solid fa-lock"></i> <span id="mFreezeLabel">Freeze</span></button>
+      <button class="btn btn-danger btn-sm" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;" onclick="deleteUser()"><i class="fa-solid fa-trash"></i></button>
+      <button class="btn btn-primary" onclick="saveUser()" style="flex:1"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+    </div>
+    <p class="m-msg" id="userModalMsg"></p>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+// ─────────────────────────────────────────
+const API_URL = "https://script.google.com/macros/s/AKfycbzWuV_Ilb3H79juD4ep7WvQO_1rfDgRKDbQF0_LMfOOpNafs0NAayPL6qXy4yigeI0z/exec";
+
+// ── State ──────────────────────────────
+let TOKEN  = sessionStorage.getItem('ctk') || '';
+let ADMIN  = JSON.parse(sessionStorage.getItem('cad') || 'null');
+let users  = [], deposits  = [], withdrawals = [], transfers = [], txns = [];
+let uPg=1, dPg=1, wPg=1, tfPg=1, tPg=1;
+const PER = 12;
+let selUser = null;
+
+// ── API ────────────────────────────────
+async function api(payload) {
+  const res = await fetch(API_URL, { method:'POST', body:JSON.stringify(payload) });
+  const data = await res.json();
+  if (data.sessionExpired) { doLogout(); return data; }
+  return data;
+}
+
+// ── Helpers ────────────────────────────
+function fmt(n){ return '$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function ini(n){ return (n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function sbadge(s){
+  const m={active:'bg',approved:'bg',completed:'bg',pending:'by',frozen:'br',declined:'br',failed:'br',false:'bs',true:'bb'};
+  return `<span class="badge ${m[(s||'').toLowerCase()]||'bs'}">${s||'—'}</span>`;
+}
+function avHtml(u){
+  return u.photoUrl
+    ? `<div class="row-av"><img src="${u.photoUrl}"></div>`
+    : `<div class="row-av">${ini(u.name)}</div>`;
+}
+function emRow(n,t){return `<tr class="empty-row"><td colspan="${n}"><i class="fa-solid fa-inbox"></i>${t}</td></tr>`;}
+function skelRow(n){return `<tr><td colspan="${n}"><div class="skel"></div></td></tr>`;}
+function toast(msg,type='ok'){
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.innerHTML=`<i class="fa-solid ${type==='ok'?'fa-circle-check':'fa-circle-exclamation'}"></i>${msg}`;
+  document.getElementById('toasts').appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('on'));
+  setTimeout(()=>{el.classList.remove('on');setTimeout(()=>el.remove(),300);},3000);
+}
+function setMsg(id,text,type){const e=document.getElementById(id);e.textContent=text;e.className='m-msg '+type;}
+
+// ── Sidebar ────────────────────────────
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('on');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('on');}
+
+// ── Navigation ─────────────────────────
+const pageMeta={
+  pgDash:       'Dashboard',
+  pgUsers:      'Users',
+  pgDeposits:   'Deposits',
+  pgWithdrawals:'Withdrawals',
+  pgTransfers:  'Transfers',
+  pgTxns:       'All Transactions',
+  pgNotif:      'Send Notification',
+  pgSettings:   'Settings',
+};
+function go(id, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(a=>a.classList.remove('active'));
+  if(el) el.classList.add('active');
+  closeSidebar();
+}
+
+// ── Login ──────────────────────────────
+async function doLogin(){
+  const email=(document.getElementById('gEmail').value||'').trim();
+  const password=(document.getElementById('gPass').value||'').trim();
+  const errEl=document.getElementById('gErr');
+  errEl.style.display='none';
+  if(!email||!password){errEl.textContent='Enter your email and password.';errEl.style.display='block';return;}
+  const btn=document.getElementById('gBtn');
+  btn.disabled=true;btn.innerHTML='<div class="spinner"></div> Signing in…';
+  try{
+    const d=await api({action:'adminLogin',email,password});
+    if(d.status){
+      TOKEN=d.token;
+      ADMIN=d.admin;
+      sessionStorage.setItem('ctk',TOKEN);
+      sessionStorage.setItem('cad',JSON.stringify(ADMIN));
+      enterApp();
+    }else{
+      errEl.textContent=d.message||'Invalid credentials.';
+      errEl.style.display='block';
+    }
+  }catch(e){errEl.textContent='Connection error. Try again.';errEl.style.display='block';}
+  btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Sign In';
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!document.getElementById('gate').classList.contains('hidden'))doLogin();
+});
+
+function doLogout(){
+  sessionStorage.removeItem('ctk');sessionStorage.removeItem('cad');
+  TOKEN='';ADMIN=null;
+  document.getElementById('app').classList.remove('ready');
+  document.getElementById('gate').classList.remove('hidden');
+}
+
+function enterApp(){
+  document.getElementById('gate').classList.add('hidden');
+  document.getElementById('app').classList.add('ready');
+  document.getElementById('adminName').textContent=ADMIN.email||'Admin';
+  document.getElementById('adminAvatar').textContent=ini(ADMIN.email);
+  document.getElementById('setEmail').textContent=ADMIN.email||'—';
+  document.getElementById('setRole').textContent=ADMIN.role||'admin';
+  loadAll();
+}
+
+// ── Auto-restore session ────────────────
+if(TOKEN&&ADMIN){ enterApp(); }
+
+// ── Load All ───────────────────────────
+async function loadAll(){
+  await Promise.all([loadUsers(true),loadDeposits(true),loadWithdrawals(true),loadTransfers(true),loadTxns(true)]);
+  renderStats();
+  renderDashPending();
+  updatePills();
+}
+
+// ── Stats ──────────────────────────────
+function renderStats(){
+  document.getElementById('sUsers').textContent=users.length.toLocaleString();
+  const totalDep=deposits.filter(d=>d.status==='Approved').reduce((s,d)=>s+d.amount,0);
+  document.getElementById('sBal').textContent=fmt(totalDep);
+  const pending=deposits.filter(d=>d.status==='Pending').length+withdrawals.filter(w=>w.status==='Pending').length+transfers.filter(t=>t.status==='Pending').length;
+  document.getElementById('sPending').textContent=pending.toLocaleString();
+  document.getElementById('sFrozen').textContent=users.filter(u=>(u.status||'').toLowerCase()==='frozen').length.toLocaleString();
+  // badge on bell
+  const el=document.getElementById('pendingBadge');
+  if(pending>0){el.textContent=pending>99?'99+':pending;el.style.display='flex';}else{el.style.display='none';}
+}
+
+function updatePills(){
+  const pd=deposits.filter(d=>d.status==='Pending').length;
+  const pw=withdrawals.filter(w=>w.status==='Pending').length;
+  const pt=transfers.filter(t=>t.status==='Pending').length;
+  setPill('pilDep',pd);setPill('pilWd',pw);setPill('pilTxf',pt);
+}
+function setPill(id,n){const e=document.getElementById(id);if(n>0){e.textContent=n;e.style.display='inline-block';}else{e.style.display='none';}}
+
+// ── Dashboard pending panels ────────────
+function renderDashPending(){
+  const pDeps=deposits.filter(d=>d.status==='Pending').slice(0,5);
+  document.getElementById('dashDepBody').innerHTML=pDeps.length?pDeps.map(d=>`
+    <tr>
+      <td>${d.name}</td><td>${fmt(d.amount)}</td><td>${d.method}</td>
+      <td>${d.reference||'—'}</td><td>${d.date}</td>
+      <td><div class="acts">
+        <button class="ia ap" onclick="decideDeposit('${d.depId}','approve')" title="Approve"><i class="fa-solid fa-check"></i></button>
+        <button class="ia de" onclick="decideDeposit('${d.depId}','decline')" title="Decline"><i class="fa-solid fa-xmark"></i></button>
+      </div></td>
+    </tr>`).join(''):emRow(6,'No pending deposits');
+
+  const pWds=withdrawals.filter(w=>w.status==='Pending').slice(0,5);
+  document.getElementById('dashWdBody').innerHTML=pWds.length?pWds.map(w=>`
+    <tr>
+      <td>${w.name}</td><td>${fmt(w.amount)}</td><td>${w.method}</td><td>${w.date}</td>
+      <td><div class="acts">
+        <button class="ia ap" onclick="decideWd('${w.wdId}','approve')" title="Approve"><i class="fa-solid fa-check"></i></button>
+        <button class="ia de" onclick="decideWd('${w.wdId}','decline')" title="Decline"><i class="fa-solid fa-xmark"></i></button>
+      </div></td>
+    </tr>`).join(''):emRow(5,'No pending withdrawals');
+}
+
+// ── Users ──────────────────────────────
+async function loadUsers(silent){
+  if(!silent) document.getElementById('usersBody').innerHTML=skelRow(8);
+  const d=await api({action:'getAllUsers',token:TOKEN});
+  users=(d.status&&d.users)?d.users:[];
+  populateNotifSelect();
+  uPg=1;renderUsers();
+}
+function renderUsers(){
+  const q=(document.getElementById('uSearch').value||'').toLowerCase();
+  const sf=document.getElementById('uStatus').value;
+  let f=users.filter(u=>
+    (!q||(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q))&&
+    (!sf||(u.status||'Active')===sf)
+  );
+  document.getElementById('userCount').textContent=`${f.length} user${f.length===1?'':'s'}`;
+  const tp=Math.max(1,Math.ceil(f.length/PER));uPg=Math.min(uPg,tp);
+  const pg=f.slice((uPg-1)*PER,uPg*PER);
+  document.getElementById('usersBody').innerHTML=pg.length?pg.map(u=>`
+    <tr>
+      <td><div class="cell-user">${avHtml(u)}<div><strong>${u.name||'—'}</strong><small>${u.uid}</small></div></div></td>
+      <td>${u.email}</td><td>${u.country||'—'}</td><td>${fmt(u.balance)}</td>
+      <td>${sbadge(u.status||'Active')}</td>
+      <td>${sbadge(u.verified?'Verified':'Unverified')}</td>
+      <td>${u.dateRegistered?u.dateRegistered.slice(0,10):'—'}</td>
+      <td><button class="ia" onclick="openUserModal('${u.uid}')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button></td>
+    </tr>`).join(''):emRow(8,'No matching users');
+  document.getElementById('uPgInfo').textContent=f.length?`Page ${uPg} of ${tp}`:'';
+}
+function uPage(d){uPg=Math.max(1,uPg+d);renderUsers();}
+function searchUsers(){
+  const q=document.getElementById('gSearch').value.trim();
+  document.getElementById('uSearch').value=q;
+  go('pgUsers',document.querySelector('[data-p=pgUsers]'));
+  renderUsers();
+}
+
+// ── User Modal ─────────────────────────
+function openUserModal(uid){
+  selUser=users.find(u=>u.uid===uid);
+  if(!selUser)return;
+  document.getElementById('userModalBody').innerHTML=`
+    <div class="detail-row"><span>UID</span><span>${selUser.uid}</span></div>
+    <div class="detail-row"><span>Name</span><span>${selUser.name||'—'}</span></div>
+    <div class="detail-row"><span>Email</span><span>${selUser.email||'—'}</span></div>
+    <div class="detail-row"><span>Phone</span><span>${selUser.phoneNumber||'—'}</span></div>
+    <div class="detail-row"><span>Country</span><span>${selUser.country||'—'}</span></div>
+    <div class="detail-row"><span>Account #</span><span>${selUser.accountNumber||'—'}</span></div>
+    <div class="detail-row"><span>Balance</span><span>${fmt(selUser.balance)}</span></div>
+    <div class="detail-row"><span>Status</span><span>${sbadge(selUser.status||'Active')}</span></div>
+    <div class="detail-row"><span>Verified</span><span>${sbadge(selUser.verified?'Verified':'Unverified')}</span></div>
+    <div class="detail-row"><span>Total Deposits</span><span>${fmt(selUser.totalDeposits)}</span></div>
+    <div class="detail-row"><span>Total Withdrawals</span><span>${fmt(selUser.totalWithdrawals)}</span></div>
+  `;
+  document.getElementById('mBalance').value=selUser.balance||0;
+  document.getElementById('mNotes').value=selUser.notes||'';
+  const frozen=(selUser.status||'').toLowerCase()==='frozen';
+  document.getElementById('mFreezeLabel').textContent=frozen?'Unfreeze':'Freeze';
+  document.getElementById('mFreezeBtn').className=frozen?'btn btn-success':'btn btn-danger';
+  document.getElementById('userModalMsg').style.display='none';
+  document.getElementById('userModal').classList.add('on');
+}
+function closeModal(id){document.getElementById(id).classList.remove('on');}
+document.getElementById('userModal').addEventListener('click',e=>{if(e.target.id==='userModal')closeModal('userModal');});
+
+async function saveUser(){
+  if(!selUser)return;
+  const balance=parseFloat(document.getElementById('mBalance').value);
+  const notes=document.getElementById('mNotes').value.trim();
+  const d=await api({action:'updateUser',token:TOKEN,uid:selUser.uid,balance,notes});
+  if(d.status){toast('User saved.');closeModal('userModal');loadUsers();}
+  else setMsg('userModalMsg',d.message||'Error saving user.','err');
+}
+async function toggleFreeze(){
+  if(!selUser)return;
+  const frozen=(selUser.status||'').toLowerCase()==='frozen';
+  const d=await api({action:'updateUser',token:TOKEN,uid:selUser.uid,status:frozen?'Active':'Frozen'});
+  if(d.status){toast(frozen?'Account reactivated.':'Account frozen.');closeModal('userModal');loadUsers();}
+  else setMsg('userModalMsg',d.message||'Error.','err');
+}
+async function deleteUser(){
+  if(!selUser)return;
+  if(!confirm(`Delete ${selUser.name}? This cannot be undone.`))return;
+  const d=await api({action:'deleteUser',token:TOKEN,uid:selUser.uid});
+  if(d.status){toast('User deleted.');closeModal('userModal');loadUsers();}
+  else setMsg('userModalMsg',d.message||'Error deleting.','err');
+}
+
+// ── Deposits ───────────────────────────
+async function loadDeposits(silent){
+  if(!silent) document.getElementById('depBody').innerHTML=skelRow(8);
+  const d=await api({action:'getDeposits',token:TOKEN});
+  deposits=(d.status&&d.deposits)?d.deposits:[];
+  dPg=1;renderDeposits();
+}
+function renderDeposits(){
+  const sf=document.getElementById('depFilter').value;
+  let f=deposits.filter(d=>!sf||d.status===sf);
+  document.getElementById('depCount').textContent=`${f.length} deposit${f.length===1?'':'s'}`;
+  const tp=Math.max(1,Math.ceil(f.length/PER));dPg=Math.min(dPg,tp);
+  const pg=f.slice((dPg-1)*PER,dPg*PER);
+  document.getElementById('depBody').innerHTML=pg.length?pg.map(d=>`
+    <tr>
+      <td>${d.name}</td><td>${d.email}</td><td>${fmt(d.amount)}</td>
+      <td>${d.method}</td><td>${d.reference||'—'}</td>
+      <td>${sbadge(d.status)}</td><td>${d.date}</td>
+      <td><div class="acts">${d.status==='Pending'?`
+        <button class="ia ap" onclick="decideDeposit('${d.depId}','approve')" title="Approve"><i class="fa-solid fa-check"></i></button>
+        <button class="ia de" onclick="decideDeposit('${d.depId}','decline')" title="Decline"><i class="fa-solid fa-xmark"></i></button>
+      `:d.status==='Approved'?'<span style="font-size:11px;color:#16a34a;font-weight:700">✓ Approved</span>':'<span style="font-size:11px;color:#dc2626;font-weight:700">✗ Declined</span>'}</div></td>
+    </tr>`).join(''):emRow(8,'No deposits found');
+  document.getElementById('depPgInfo').textContent=f.length?`Page ${dPg} of ${tp}`:'';
+}
+function dPage(d){dPg=Math.max(1,dPg+d);renderDeposits();}
+async function decideDeposit(depId,decision){
+  const d=await api({action:'decideDeposit',token:TOKEN,depId,decision});
+  if(d.status){toast(decision==='approve'?'Deposit approved.':'Deposit declined.');await loadDeposits();renderStats();updatePills();renderDashPending();}
+  else toast(d.message||'Error.','er');
+}
+
+// ── Withdrawals ────────────────────────
+async function loadWithdrawals(silent){
+  if(!silent) document.getElementById('wdBody').innerHTML=skelRow(8);
+  const d=await api({action:'getWithdrawals',token:TOKEN});
+  withdrawals=(d.status&&d.withdrawals)?d.withdrawals:[];
+  wPg=1;renderWithdrawals();
+}
+function renderWithdrawals(){
+  const sf=document.getElementById('wdFilter').value;
+  let f=withdrawals.filter(w=>!sf||w.status===sf);
+  document.getElementById('wdCount').textContent=`${f.length} withdrawal${f.length===1?'':'s'}`;
+  const tp=Math.max(1,Math.ceil(f.length/PER));wPg=Math.min(wPg,tp);
+  const pg=f.slice((wPg-1)*PER,wPg*PER);
+  document.getElementById('wdBody').innerHTML=pg.length?pg.map(w=>{
+    let det='—';try{const j=JSON.parse(w.details||'{}');det=`${j.bank||''} ${j.account||''}`.trim()||'—';}catch(e){}
+    return`<tr>
+      <td>${w.name}</td><td>${w.email}</td><td>${fmt(w.amount)}</td>
+      <td>${w.method}</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;">${det}</td>
+      <td>${sbadge(w.status)}</td><td>${w.date}</td>
+      <td><div class="acts">${w.status==='Pending'?`
+        <button class="ia ap" onclick="decideWd('${w.wdId}','approve')" title="Approve"><i class="fa-solid fa-check"></i></button>
+        <button class="ia de" onclick="decideWd('${w.wdId}','decline')" title="Decline"><i class="fa-solid fa-xmark"></i></button>
+      `:w.status==='Approved'?'<span style="font-size:11px;color:#16a34a;font-weight:700">✓ Approved</span>':'<span style="font-size:11px;color:#dc2626;font-weight:700">✗ Declined</span>'}</div></td>
+    </tr>`;}).join(''):emRow(8,'No withdrawals found');
+  document.getElementById('wdPgInfo').textContent=f.length?`Page ${wPg} of ${tp}`:'';
+}
+function wPage(d){wPg=Math.max(1,wPg+d);renderWithdrawals();}
+async function decideWd(wdId,decision){
+  const d=await api({action:'decideWithdrawal',token:TOKEN,wdId,decision});
+  if(d.status){toast(decision==='approve'?'Withdrawal approved.':'Withdrawal declined & refunded.');await loadWithdrawals();await loadUsers();renderStats();updatePills();renderDashPending();}
+  else toast(d.message||'Error.','er');
+}
+
+// ── Transfers ──────────────────────────
+async function loadTransfers(silent){
+  if(!silent) document.getElementById('txfBody').innerHTML=skelRow(8);
+  const d=await api({action:'getTransfers',token:TOKEN});
+  transfers=(d.status&&d.transfers)?d.transfers:[];
+  tfPg=1;renderTransfers();
+}
+function renderTransfers(){
+  const sf=document.getElementById('txfFilter').value;
+  let f=transfers.filter(t=>!sf||t.status===sf);
+  document.getElementById('txfCount').textContent=`${f.length} transfer${f.length===1?'':'s'}`;
+  const tp=Math.max(1,Math.ceil(f.length/PER));tfPg=Math.min(tfPg,tp);
+  const pg=f.slice((tfPg-1)*PER,tfPg*PER);
+  document.getElementById('txfBody').innerHTML=pg.length?pg.map(t=>`
+    <tr>
+      <td>${t.name}</td><td>${t.recipient||'—'}</td><td>${t.bank||'—'}</td>
+      <td>${fmt(t.amount)}</td><td>${t.type||'—'}</td>
+      <td>${sbadge(t.status)}</td><td>${t.date}</td>
+      <td><div class="acts">${t.status==='Pending'?`
+        <button class="ia ap" onclick="decideTxf('${t.txfId}','approve')" title="Approve"><i class="fa-solid fa-check"></i></button>
+        <button class="ia de" onclick="decideTxf('${t.txfId}','decline')" title="Decline"><i class="fa-solid fa-xmark"></i></button>
+      `:t.status==='Completed'?'<span style="font-size:11px;color:#16a34a;font-weight:700">✓ Completed</span>':'<span style="font-size:11px;color:#dc2626;font-weight:700">✗ Declined</span>'}</div></td>
+    </tr>`).join(''):emRow(8,'No transfers found');
+  document.getElementById('txfPgInfo').textContent=f.length?`Page ${tfPg} of ${tp}`:'';
+}
+function tfPage(d){tfPg=Math.max(1,tfPg+d);renderTransfers();}
+async function decideTxf(txfId,decision){
+  const d=await api({action:'decideTransfer',token:TOKEN,txfId,decision});
+  if(d.status){toast(decision==='approve'?'Transfer approved.':'Transfer declined & refunded.');await loadTransfers();await loadUsers();renderStats();updatePills();renderDashPending();}
+  else toast(d.message||'Error.','er');
+}
+
+// ── All Transactions ───────────────────
+async function loadTxns(silent){
+  if(!silent) document.getElementById('txnBody').innerHTML=skelRow(6);
+  const d=await api({action:'getAllTransactions',token:TOKEN});
+  txns=(d.status&&d.transactions)?d.transactions:[];
+  tPg=1;renderTxns();
+}
+function renderTxns(){
+  const q=(document.getElementById('txnSearch').value||'').toLowerCase();
+  const tf=document.getElementById('txnType').value;
+  let f=txns.filter(t=>
+    (!q||(t.name||'').toLowerCase().includes(q)||(t.email||'').toLowerCase().includes(q))&&
+    (!tf||t.type===tf)
+  );
+  document.getElementById('txnCount').textContent=`${f.length} transaction${f.length===1?'':'s'}`;
+  const tp=Math.max(1,Math.ceil(f.length/PER));tPg=Math.min(tPg,tp);
+  const pg=f.slice((tPg-1)*PER,tPg*PER);
+  document.getElementById('txnBody').innerHTML=pg.length?pg.map(t=>`
+    <tr>
+      <td>${t.date}</td>
+      <td><div class="cell-user"><div class="row-av">${ini(t.name)}</div><div><strong>${t.name||'—'}</strong><small>${t.email||''}</small></div></div></td>
+      <td>${t.type||'—'}</td><td>${t.method||'—'}</td><td>${fmt(t.amount)}</td>
+      <td>${sbadge(t.status)}</td>
+    </tr>`).join(''):emRow(6,'No transactions found');
+  document.getElementById('txnPgInfo').textContent=f.length?`Page ${tPg} of ${tp}`:'';
+}
+function tPage(d){tPg=Math.max(1,tPg+d);renderTxns();}
+
+// ── Send Notification ──────────────────
+function populateNotifSelect(){
+  const sel=document.getElementById('nRecipient');
+  const cur=sel.value;
+  sel.innerHTML='<option value="all">All Users</option>'+users.map(u=>`<option value="${u.uid}">${u.name} — ${u.email}</option>`).join('');
+  sel.value=cur||'all';
+}
+async function doSendNotif(){
+  const uid=document.getElementById('nRecipient').value;
+  const title=document.getElementById('nTitle').value.trim();
+  const message=document.getElementById('nMsg').value.trim();
+  const fbEl=document.getElementById('nFeedback');fbEl.style.display='none';
+  if(!title||!message){setMsg('nFeedback','Title and message are required.','err');return;}
+  const btn=document.getElementById('nBtn');btn.disabled=true;
+  btn.innerHTML='<div class="spinner" style="border-top-color:#fff;border-color:rgba(255,255,255,.3)"></div> Sending…';
+
+  let ok=true;
+  if(uid==='all'){
+    for(const u of users){
+      const r=await api({action:'sendNotif',token:TOKEN,uid:u.uid,title,message});
+      if(!r.status)ok=false;
+    }
+  }else{
+    const r=await api({action:'sendNotif',token:TOKEN,uid,title,message});
+    ok=r.status;
+  }
+
+  btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Send Notification';
+  if(ok){
+    setMsg('nFeedback','Notification sent successfully.','ok');
+    document.getElementById('nTitle').value='';
+    document.getElementById('nMsg').value='';
+  }else{
+    setMsg('nFeedback','Some notifications failed to send.','err');
+  }
+}
+
+// ── Wallet ─────────────────────────────
+async function saveWallet(){
+  const wallet=document.getElementById('walletInput').value.trim();
+  const btn=document.getElementById('walletBtn');btn.disabled=true;
+  const d=await api({action:'updateWallet',token:TOKEN,wallet});
+  btn.disabled=false;
+  if(d.status){setMsg('walletMsg','Wallet address saved.','ok');toast('Wallet updated.');}
+  else setMsg('walletMsg',d.message||'Error saving wallet.','err');
+}
+</script>
+</body>
+</html>
