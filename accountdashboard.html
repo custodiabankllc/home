@@ -420,6 +420,132 @@ window.smartsupp||(function(d) {
             }
         }
 
+        /* =========================
+        OVERLAY PAGES
+        (every page except home, rewards,
+        finance, cards and me opens as a
+        full-screen overlay, same pattern
+        as the notification modal)
+        ========================= */
+
+        .page-view.overlay-page {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100dvh;
+            z-index: 99990;
+            background: #f4f7fb;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 18px;
+            padding-bottom: 100px;
+            display: none;
+        }
+
+        .page-view.overlay-page.active-page {
+            display: block;
+            animation: overlaySlideIn .3s ease;
+        }
+
+        @keyframes overlaySlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Topbars inside overlay pages — styled and positioned to
+           match the main app topbar (floating rounded card, blurred
+           white background, border, shadow) and pinned to the same
+           10px offset while the page content scrolls underneath. */
+        .page-view.overlay-page .withdraw-topbar,
+        .page-view.overlay-page .transfer-topbar,
+        .page-view.overlay-page .investment-topbar,
+        .page-view.overlay-page .savings-topbar,
+        .page-view.overlay-page .loan-topbar,
+        .page-view.overlay-page .statement-topbar,
+        .page-view.overlay-page .security-topbar,
+        .page-view.overlay-page .addfunds-topbar,
+        .page-view.overlay-page .settings-topbar,
+        .page-view.overlay-page .help-topbar,
+        .page-view.overlay-page .transaction-topbar {
+            position: sticky;
+            top: 10px;
+            z-index: 30;
+
+            background: rgba(255, 255, 255, .9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, .06);
+
+            padding: 14px 18px;
+            margin: 0 0 22px 0;
+        }
+
+        .page-view.overlay-page .withdraw-back-btn,
+        .page-view.overlay-page .transfer-back-btn,
+        .page-view.overlay-page .investment-back-btn,
+        .page-view.overlay-page .savings-back-btn,
+        .page-view.overlay-page .loan-back-btn,
+        .page-view.overlay-page .statement-back-btn,
+        .page-view.overlay-page .security-back-btn,
+        .page-view.overlay-page .addfunds-back-btn,
+        .page-view.overlay-page .settings-back-btn,
+        .page-view.overlay-page .help-back-btn,
+        .page-view.overlay-page .transaction-back-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            box-shadow: none;
+        }
+
+        .page-view.overlay-page .withdraw-back-btn:hover,
+        .page-view.overlay-page .transfer-back-btn:hover,
+        .page-view.overlay-page .investment-back-btn:hover,
+        .page-view.overlay-page .savings-back-btn:hover,
+        .page-view.overlay-page .loan-back-btn:hover,
+        .page-view.overlay-page .statement-back-btn:hover,
+        .page-view.overlay-page .security-back-btn:hover,
+        .page-view.overlay-page .addfunds-back-btn:hover,
+        .page-view.overlay-page .settings-back-btn:hover,
+        .page-view.overlay-page .help-back-btn:hover,
+        .page-view.overlay-page .transaction-back-btn:hover {
+            background: #eff6ff;
+            color: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        @media(max-width:520px) {
+            .page-view.overlay-page {
+                padding: 14px;
+                padding-bottom: 100px;
+            }
+
+            .page-view.overlay-page .withdraw-topbar,
+            .page-view.overlay-page .transfer-topbar,
+            .page-view.overlay-page .investment-topbar,
+            .page-view.overlay-page .savings-topbar,
+            .page-view.overlay-page .loan-topbar,
+            .page-view.overlay-page .statement-topbar,
+            .page-view.overlay-page .security-topbar,
+            .page-view.overlay-page .addfunds-topbar,
+            .page-view.overlay-page .settings-topbar,
+            .page-view.overlay-page .help-topbar,
+            .page-view.overlay-page .transaction-topbar {
+                top: 8px;
+                border-radius: 20px;
+                padding: 12px 14px;
+                margin-bottom: 18px;
+            }
+        }
+
 
 
 
@@ -2255,6 +2381,21 @@ FORM
 
     cursor:pointer;
 }
+
+/* Inline field validation state (withdraw + transfer share this pattern) */
+.withdraw-input.field-err,
+.transfer-input.field-err{
+    border-color:#ef4444 !important;
+    background:#fef2f2 !important;
+}
+.field-err-msg{
+    margin-top:6px;
+    font-size:12px;
+    font-weight:600;
+    color:#ef4444;
+    display:none;
+}
+.field-err-msg.show{ display:block; }
 
 /* =========================
 WARNING
@@ -10925,9 +11066,9 @@ html.dark-mode {
                 </div>
                 <!--TRANSLATOR WIDGET-->
                 <div style="min-width: 70px; padding: 9px 12px;background: white;border-radius: 5px; width: fit-content;margin-left: 15px;border: 1px solid #ececec;">
-    <div class="gtranslate_wrapper"></div>
-    <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"languages":["en","fr","zh-CN","it","es"],"wrapper_selector":".gtranslate_wrapper","flag_size":16,"flag_style":"3d","alt_flags":{"en":"usa"}}</script>
-    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+                    <div class="gtranslate_wrapper"></div>
+                    <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"languages":["en","fr","zh-CN","ja","es"],"wrapper_selector":".gtranslate_wrapper","flag_size":16,"flag_style":"3d","alt_flags":{"en":"usa"}}</script>
+                    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
                 </div>
 
             </div>
@@ -11782,95 +11923,11 @@ ACCOUNT NOTICE
 
                         </div>
 
-                        <div class="finance-activity-list">
+                        <div class="finance-activity-list" id="financeActivityContainer">
 
-                            <div class="finance-activity-item">
-
-                                <div class="activity-finance-icon green">
-                                    <i class="fa-solid fa-arrow-down"></i>
-                                </div>
-
-                                <div class="finance-activity-content">
-
-                                    <h4>Investment Profit Received</h4>
-
-                                    <p>
-                                        Foreign Exchange Trading Earnings
-                                    </p>
-
-                                </div>
-
-                                <span class="income-text">
-                                    +<span id="finAct1">0.00</span>
-                                </span>
-
-                            </div>
-
-                            <div class="finance-activity-item">
-
-                                <div class="activity-finance-icon blue">
-                                    <i class="fa-solid fa-building-columns"></i>
-                                </div>
-
-                                <div class="finance-activity-content">
-
-                                    <h4>Savings Deposit</h4>
-
-                                    <p>
-                                        Treasury Savings Allocation
-                                    </p>
-
-                                </div>
-
-                                <span class="income-text">
-                                    +<span id="finAct2">0.00</span>
-                                </span>
-
-                            </div>
-
-                            <div class="finance-activity-item">
-
-                                <div class="activity-finance-icon red">
-                                    <i class="fa-solid fa-arrow-up"></i>
-                                </div>
-
-                                <div class="finance-activity-content">
-
-                                    <h4>International Transfer</h4>
-
-                                    <p>
-                                        Overseas Financial Transaction
-                                    </p>
-
-                                </div>
-
-                                <span class="expense-text">
-                                    -<span id="finAct3">0.00</span>
-                                </span>
-
-                            </div>
-
-                            <div class="finance-activity-item">
-
-                                <div class="activity-finance-icon gold">
-                                    <i class="fa-solid fa-chart-column"></i>
-                                </div>
-
-                                <div class="finance-activity-content">
-
-                                    <h4>Stock Dividend Credit</h4>
-
-                                    <p>
-                                        International Equity Portfolio
-                                    </p>
-
-                                </div>
-
-                                <span class="income-text">
-                                    +<span id="finAct4">0.00</span>
-                                </span>
-
-                            </div>
+                            <p style="color:#64748b;text-align:center;padding:20px;font-size:14px;">
+                                Loading recent transactions...
+                            </p>
 
                         </div>
 
@@ -12757,7 +12814,7 @@ ME PAGE / PROFILE PAGE
 
 
 
-        <section id="accountsPage" class="page-view">
+        <section id="accountsPage" class="page-view overlay-page">
 
             <style>
                 /* =========================
@@ -13535,7 +13592,7 @@ WITHDRAW PAGE
 WITHDRAW PAGE
 ========================= -->
 
-<section id="withdrawPage" class="page-view">
+<section id="withdrawPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -13627,6 +13684,7 @@ WITHDRAW PAGE
                         <p id="withdrawLimitHint" style="margin-top:6px;font-size:12px;color:#64748b;">
                             Withdrawal limit: <span id="withdrawLimitHintValue">0.00</span>
                         </p>
+                        <p class="field-err-msg" id="withdrawAmountErr"></p>
 
                     </div>
 
@@ -13643,6 +13701,7 @@ WITHDRAW PAGE
                                    maxlength="50"
                                    >
                         </div>
+                        <p class="field-err-msg" id="withdrawBankNameErr"></p>
 
                     </div>
 
@@ -13659,6 +13718,7 @@ WITHDRAW PAGE
                                    inputmode="numeric"
                                    maxlength="34">
                         </div>
+                        <p class="field-err-msg" id="withdrawAccountNumberErr"></p>
 
                     </div>
 
@@ -13676,6 +13736,7 @@ WITHDRAW PAGE
                                        placeholder="Enter routing number"
                                        maxlength="11">
                             </div>
+                            <p class="field-err-msg" id="withdrawRoutingErr"></p>
 
                         </div>
 
@@ -13846,7 +13907,7 @@ WITHDRAW PAGE
 TRANSFER PAGE
 ========================= -->
 
-<section id="transferPage" class="page-view">
+<section id="transferPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -13936,6 +13997,7 @@ TRANSFER PAGE
                                    maxlength="50">
 
                         </div>
+                        <p class="field-err-msg" id="transferRecipientErr"></p>
 
                     </div>
 
@@ -13955,6 +14017,7 @@ TRANSFER PAGE
                                    maxlength="50">
 
                         </div>
+                        <p class="field-err-msg" id="transferBankNameErr"></p>
 
                     </div>
 
@@ -13975,6 +14038,7 @@ TRANSFER PAGE
                                    maxlength="34">
 
                         </div>
+                        <p class="field-err-msg" id="transferAccountNumberErr"></p>
 
                     </div>
 
@@ -13996,6 +14060,7 @@ TRANSFER PAGE
                                        maxlength="11">
 
                             </div>
+                            <p class="field-err-msg" id="transferRoutingErr"></p>
 
                         </div>
 
@@ -14018,6 +14083,7 @@ TRANSFER PAGE
                             <p id="transferLimitHint" style="margin-top:6px;font-size:12px;color:#64748b;">
                                 Transfer limit: <span id="transferLimitHintValue">0.00</span>
                             </p>
+                            <p class="field-err-msg" id="transferAmountErr"></p>
 
                         </div>
 
@@ -14215,7 +14281,7 @@ TRANSFER PAGE
 INVESTMENT PAGE
 ========================= -->
 
-<section id="investmentPage" class="page-view">
+<section id="investmentPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -14646,7 +14712,7 @@ INVESTMENT PAGE
 OPEN SAVINGS PAGE
 ========================= -->
 
-<section id="openSavingsPage" class="page-view">
+<section id="openSavingsPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -15030,7 +15096,7 @@ OPEN SAVINGS PAGE
 LOAN PAGE
 ========================= -->
 
-<section id="loanPage" class="page-view">
+<section id="loanPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -15450,7 +15516,7 @@ LOAN PAGE
 ACCOUNT STATEMENT PAGE
 ========================= -->
 
-<section id="statementPage" class="page-view">
+<section id="statementPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -15550,7 +15616,8 @@ ACCOUNT STATEMENT PAGE
 
                     <th>Date</th>
                     <th>Reference</th>
-                    <th>Description</th>
+                    <th>Sender</th>
+                    <th>Recipient</th>
                     <th>Type</th>
                     <th>Amount</th>
                     <th>Status</th>
@@ -15574,7 +15641,7 @@ ACCOUNT STATEMENT PAGE
 SECURITY PAGE
 ========================= -->
 
-<section id="securityPage" class="page-view">
+<section id="securityPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -15919,7 +15986,7 @@ SECURITY PAGE
 ADD FUNDS PAGE
 ========================= -->
 
-<section id="addFundsPage" class="page-view">
+<section id="addFundsPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -16308,7 +16375,7 @@ ADD FUNDS PAGE
 SETTINGS PAGE
 ========================= -->
 
-<section id="settingsPage" class="page-view">
+<section id="settingsPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -16786,7 +16853,7 @@ SETTINGS PAGE
 HELP CENTER PAGE
 ========================= -->
 
-<section id="helpCenterPage" class="page-view">
+<section id="helpCenterPage" class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -17127,7 +17194,7 @@ OWNERSHIP PROCEDURE PAGE
 ========================= -->
 
 <section id="ownershipProcedurePage"
-         class="page-view">
+         class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -17240,7 +17307,7 @@ TRANSACTION HISTORY PAGE
 ========================= -->
 
 <section id="transactionHistoryPage"
-         class="page-view">
+         class="page-view overlay-page">
 
     <!-- TOP BAR -->
 
@@ -17341,7 +17408,9 @@ TRANSACTION HISTORY PAGE
 
                     <th>Reference</th>
 
-                    <th>Description</th>
+                    <th>Sender</th>
+
+                    <th>Recipient</th>
 
                     <th>Type</th>
 
@@ -17606,6 +17675,226 @@ NOTIFICATION MODAL PAGE
 </div>
 
 
+<!-- ═══════════════════════════════════════════════
+     RECEIPT MODAL MARKUP + STYLES
+     (Required by openReceiptFromTx() in the script below —
+      previously missing, which is why the modal never appeared.)
+     ═══════════════════════════════════════════════ -->
+<style>
+/* ── Receipt overlay ──────────────────────────── */
+.rcpt-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(7,17,31,.55);
+    z-index: 999999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s, visibility .25s;
+}
+.rcpt-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+.rcpt-modal {
+    background: #fff;
+    border-radius: 28px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 88dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 40px 100px rgba(7,17,31,.22);
+    transform: translateY(24px) scale(.97);
+    transition: transform .3s cubic-bezier(.34,1.38,.64,1);
+}
+.rcpt-scroll {
+    overflow-y: auto;
+    flex: 1;
+    border-radius: 0 0 28px 28px;
+}
+.rcpt-overlay.open .rcpt-modal {
+    transform: translateY(0) scale(1);
+}
+.rcpt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 0;
+}
+.rcpt-header h3 {
+    font-size: 17px;
+    font-weight: 800;
+    color: #07111f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.rcpt-header h3 i { color: #0066ff; }
+.rcpt-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: #f1f5f9;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+}
+.rcpt-close:hover { background: #e2e8f0; }
+.rcpt-stamp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 28px 24px 20px;
+    text-align: center;
+}
+.rcpt-stamp-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+.rcpt-stamp-icon.s-credit  { background: #dcfce7; color: #16a34a; }
+.rcpt-stamp-icon.s-debit   { background: #dbeafe; color: #2563eb; }
+.rcpt-stamp-icon.s-pending { background: #fef3c7; color: #d97706; }
+.rcpt-amount {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+.rcpt-amount.a-plus  { color: #16a34a; }
+.rcpt-amount.a-minus { color: #dc2626; }
+.rcpt-badge {
+    padding: 4px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+.rcpt-badge.b-done    { background: #dcfce7; color: #15803d; }
+.rcpt-badge.b-pending { background: #fef9c3; color: #854d0e; }
+.rcpt-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 24px;
+}
+.rcpt-divider-line { flex: 1; height: 1px; background: #f1f5f9; }
+.rcpt-divider span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+}
+.rcpt-rows {
+    padding: 16px 24px 20px;
+    display: flex;
+    flex-direction: column;
+}
+.rcpt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f8fafc;
+}
+.rcpt-row:last-child { border-bottom: none; }
+.rcpt-row-lbl { font-size: 13px; color: #94a3b8; font-weight: 500; flex-shrink: 0; }
+.rcpt-row-val { font-size: 13px; color: #07111f; font-weight: 700; text-align: right; word-break: break-all; }
+.rcpt-actions {
+    display: flex;
+    gap: 12px;
+    padding: 0 24px 24px;
+}
+.rcpt-btn-print {
+    flex: 1;
+    height: 46px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #334155;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background .2s;
+}
+.rcpt-btn-print:hover { background: #f8fafc; }
+.rcpt-btn-done {
+    flex: 1;
+    height: 46px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, #0066ff, #00b7ff);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity .2s;
+}
+.rcpt-btn-done:hover { opacity: .9; }
+
+/* ── Make table rows + recent cards clickable ── */
+#transactionHistoryTableBody tr { cursor: pointer; transition: background .15s; }
+#transactionHistoryTableBody tr:hover { background: #f8fbff; }
+#recentTransactionsContainer .transaction { cursor: pointer; }
+</style>
+
+<!-- Receipt Modal HTML -->
+<div id="rcptOverlay" class="rcpt-overlay" role="dialog" aria-modal="true">
+    <div class="rcpt-modal">
+
+        <div class="rcpt-header">
+            <h3><i class="fa-solid fa-receipt"></i>Transaction Receipt</h3>
+            <button class="rcpt-close" id="rcptClose"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="rcpt-scroll">
+        <div class="rcpt-stamp">
+            <div class="rcpt-stamp-icon" id="rcptIcon"><i class="fa-solid fa-circle-check" id="rcptIconEl"></i></div>
+            <div class="rcpt-amount" id="rcptAmount"></div>
+            <span class="rcpt-badge" id="rcptBadge"></span>
+        </div>
+
+        <div class="rcpt-divider">
+            <div class="rcpt-divider-line"></div>
+            <span>Details</span>
+            <div class="rcpt-divider-line"></div>
+        </div>
+
+        <div class="rcpt-rows" id="rcptRows"></div>
+
+        <div class="rcpt-actions">
+            <button class="rcpt-btn-print" id="rcptPrint"><i class="fa-solid fa-print"></i> Print</button>
+            <button class="rcpt-btn-done"  id="rcptDone"><i class="fa-solid fa-check"></i> Done</button>
+        </div>
+
+        </div><!-- /.rcpt-scroll -->
+
+    </div>
+</div>
 
 
 
@@ -17846,11 +18135,11 @@ function applyUserToDOM() {
   qAll('[data-balance]').forEach(el => el.textContent = balFmt);
 
   /* ── Finance sub-figures (derived from balance — backend doesn't store these separately) ── */
+  /* NOTE: #financeCashFlow and #finAct1-4 are now populated from real transaction
+     data in renderFinanceActivity()/updateFinanceCashFlow() once loadTransactions() runs. */
   const zero = sym + '0.00';
-  ['#homeInvestments','#homeMonthlyIncome','#financeInvestments','#financeCashFlow',
-   '#invTotalValue','#inv1Val','#inv2Val','#inv3Val',
+  ['#inv1Val','#inv2Val','#inv3Val',
    '#inv4Val','#inv5Val','#inv6Val','#portf1','#portf2','#portf3','#portf4',
-   '#finAct1','#finAct2','#finAct3','#finAct4',
    '#withdrawDailyLimit','#withdrawFee','#withdrawLimitHintValue',
    '#transferLimitDisplay','#transferFee','#transferLimitHintValue',
    '#cardDailyTransferLimit'
@@ -17860,10 +18149,19 @@ function applyUserToDOM() {
   const totalDep = fmtBalance(u.totalDeposits    || 0);
   const totalWd  = fmtBalance(u.totalWithdrawals || 0);
   const totalTxf = fmtBalance(u.totalTransfers   || 0);
+  const totalInv = fmtBalance(u.investments      || 0);
+  const monthlyIncome = fmtBalance(u.monthlyIncome || 0);
 
   q('#statTotalDeposits')    && (q('#statTotalDeposits').textContent    = totalDep);
   q('#statTotalWithdrawals') && (q('#statTotalWithdrawals').textContent = totalWd);
   q('#statTotalTransfers')   && (q('#statTotalTransfers').textContent   = totalTxf);
+
+  /* ── Investments (real value stored on the Users sheet) ── */
+  ['#homeInvestments','#financeInvestments','#invTotalValue']
+    .forEach(id => { const el = q(id); if (el) el.textContent = totalInv; });
+
+  /* ── Monthly Income (real value stored on the Users sheet) ── */
+  q('#homeMonthlyIncome') && (q('#homeMonthlyIncome').textContent = monthlyIncome);
 
   /* ── Rewards ── */
   // rewards cashback: populated by renderRewards() after transactions load
@@ -18192,6 +18490,8 @@ async function loadTransactions() {
   renderStatements(allTransactions);
   updateTransactionCounts();
   renderRewards();
+  renderFinanceActivity();
+  updateFinanceCashFlow();
 }
 
 function txTypeClass(type) {
@@ -18208,6 +18508,19 @@ function txIcon(type, status) {
   if (type === 'Withdrawal') return { icon:'fa-money-bill-wave', bg:'#fef3c7', color:'#d97706' };
   if (type === 'Transfer')   return { icon:'fa-paper-plane', bg:'#dbeafe', color:'#2563eb' };
   return { icon:'fa-arrow-up-right', bg:'#fee2e2', color:'#dc2626' };
+}
+
+/* Shared helpers for sender/recipient display — backend returns senderName/receiverName */
+function txSender(tx)    { return (tx.senderName   && tx.senderName.toString().trim())   || (tx.sender    && tx.sender.toString().trim())    || tx.type || '—'; }
+function txRecipient(tx) { return (tx.receiverName && tx.receiverName.toString().trim()) || (tx.recipient && tx.recipient.toString().trim()) || tx.type || '—'; }
+function txCounterparty(tx) {
+  // The "other side" of the transaction, from this user's point of view
+  const isCredit = tx.type === 'Deposit' || tx.type === 'Credit';
+  return isCredit ? txSender(tx) : txRecipient(tx);
+}
+function txLabel(tx) {
+  const isCredit = tx.type === 'Deposit' || tx.type === 'Credit';
+  return (isCredit ? 'From ' : 'To ') + txCounterparty(tx);
 }
 
 function renderRecentTransactions() {
@@ -18233,7 +18546,7 @@ function renderRecentTransactions() {
             <i class="fa-solid ${icon.icon}" style="color:${icon.color}"></i>
           </div>
           <div>
-            <h4>${tx.details || tx.type}</h4>
+            <h4>${txLabel(tx)}</h4>
             <p>${tx.date} &bull; ${tx.txId} ${pending}</p>
           </div>
         </div>
@@ -18251,18 +18564,77 @@ function renderRecentTransactions() {
   });
 }
 
+/* Finance page — "Recent Financial Transactions" card, driven by real allTransactions */
+function renderFinanceActivity() {
+  const cont = q('#financeActivityContainer');
+  if (!cont) return;
+  const recent = allTransactions.slice(0, 4);
+  if (!recent.length) {
+    cont.innerHTML = '<p style="color:#64748b;text-align:center;padding:20px;font-size:14px;">No recent financial transactions.</p>';
+    return;
+  }
+  cont.innerHTML = recent.map(tx => {
+    const isCredit = tx.type === 'Deposit' || tx.type === 'Credit';
+    const icon     = txIcon(tx.type, tx.status);
+    const amtStr   = fmtBalance(tx.amount);
+    const prefix   = isCredit ? '+' : '-';
+    const cls      = isCredit ? 'income-text' : 'expense-text';
+    const pending  = tx.status === 'Pending'
+      ? '<span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:#fef9c3;color:#854d0e;margin-left:6px;">Pending</span>' : '';
+    return `
+      <div class="finance-activity-item" data-txid="${tx.txId}" style="cursor:pointer">
+        <div class="activity-finance-icon" style="background:${icon.bg}">
+          <i class="fa-solid ${icon.icon}" style="color:${icon.color}"></i>
+        </div>
+        <div class="finance-activity-content">
+          <h4>${tx.type}${pending}</h4>
+          <p>${txLabel(tx)} &bull; ${tx.date}</p>
+        </div>
+        <span class="${cls}">${prefix}${amtStr}</span>
+      </div>`;
+  }).join('');
+
+  cont.querySelectorAll('.finance-activity-item').forEach(card => {
+    card.addEventListener('click', () => {
+      const txId = card.dataset.txid;
+      const tx   = allTransactions.find(t => t.txId === txId);
+      if (tx) openReceiptFromTx(tx);
+    });
+  });
+}
+
+/* Finance page — Monthly Cash Flow stat card, computed from real transactions this calendar month */
+function updateFinanceCashFlow() {
+  const el = q('#financeCashFlow');
+  if (!el) return;
+  const now = new Date();
+  const inThisMonth = tx => {
+    const d = new Date(tx.date);
+    return !isNaN(d) && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  };
+  let net = 0;
+  allTransactions.filter(inThisMonth).forEach(tx => {
+    const isCredit = tx.type === 'Deposit' || tx.type === 'Credit';
+    const amt = Number(tx.amount || 0);
+    net += isCredit ? amt : -amt;
+  });
+  const prefix = net < 0 ? '-' : '';
+  el.textContent = prefix + fmtBalance(Math.abs(net));
+}
+
 function renderTransactionHistory(list) {
   const tbody = q('#transactionHistoryTableBody');
   if (!tbody) return;
   if (!list.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:#64748b;">No transactions yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#64748b;">No transactions yet.</td></tr>';
     return;
   }
   tbody.innerHTML = list.map(tx => `
     <tr data-txid="${tx.txId}" style="cursor:pointer">
       <td>${tx.date}</td>
       <td>${tx.txId}</td>
-      <td>${tx.details || tx.type}</td>
+      <td>${txSender(tx)}</td>
+      <td>${txRecipient(tx)}</td>
       <td class="${txTypeClass(tx.type)}">${tx.type}</td>
       <td>${fmtBalance(tx.amount)}</td>
       <td><span class="transaction-status ${txStatusClass(tx.status)}">${tx.status}</span></td>
@@ -18281,14 +18653,15 @@ function renderStatements(list) {
   const tbody = q('#statementTableBody');
   if (!tbody) return;
   if (!list.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:#64748b;">No statement records yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#64748b;">No statement records yet.</td></tr>';
     return;
   }
   tbody.innerHTML = list.map(tx => `
     <tr>
       <td>${tx.date}</td>
       <td>${tx.txId}</td>
-      <td>${tx.details || tx.type}</td>
+      <td>${txSender(tx)}</td>
+      <td>${txRecipient(tx)}</td>
       <td class="${txTypeClass(tx.type)}">${tx.type}</td>
       <td>${fmtBalance(tx.amount)}</td>
       <td><span class="transaction-status ${txStatusClass(tx.status)}">${tx.status}</span></td>
@@ -18306,7 +18679,10 @@ function filterTransactionHistory() {
   const year   = (q('#historyYearFilter')  || {}).value || 'all';
   const s      = search.toLowerCase();
   const filtered = allTransactions.filter(tx => {
-    const matchSearch = !s || (tx.details||'').toLowerCase().includes(s) || tx.txId.toLowerCase().includes(s);
+    const matchSearch = !s || (tx.details||'').toLowerCase().includes(s)
+      || txSender(tx).toLowerCase().includes(s)
+      || txRecipient(tx).toLowerCase().includes(s)
+      || tx.txId.toLowerCase().includes(s);
     const matchYear   = year === 'all' || tx.date.includes(year);
     return matchSearch && matchYear;
   });
@@ -18318,7 +18694,10 @@ function filterStatements() {
   const year   = (q('#yearFilter')       || {}).value || 'all';
   const s      = search.toLowerCase();
   const filtered = allTransactions.filter(tx => {
-    const matchSearch = !s || (tx.details||'').toLowerCase().includes(s) || tx.txId.toLowerCase().includes(s);
+    const matchSearch = !s || (tx.details||'').toLowerCase().includes(s)
+      || txSender(tx).toLowerCase().includes(s)
+      || txRecipient(tx).toLowerCase().includes(s)
+      || tx.txId.toLowerCase().includes(s);
     const matchYear   = year === 'all' || tx.date.includes(year);
     return matchSearch && matchYear;
   });
@@ -18525,8 +18904,117 @@ function updateNotifBadge() {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   FIELD VALIDATION HELPERS (withdraw + transfer)
+═══════════════════════════════════════════════════════════ */
+const VALIDATION_PATTERNS = {
+  name:    { re: /^[A-Za-z\u00C0-\u017F][A-Za-z\u00C0-\u017F\s.'-]{1,49}$/, msg: 'Enter a valid name (letters only, 2-50 characters).' },
+  account: { re: /^[A-Za-z0-9]{6,34}$/,  msg: 'Account number must be 6-34 letters/digits.' },
+  routing: { re: /^[A-Za-z0-9]{4,11}$/,  msg: 'Routing/SWIFT code must be 4-11 letters/digits.' },
+  amount:  { re: /^\d+(\.\d{1,2})?$/,    msg: 'Enter a valid amount (numbers only, up to 2 decimals).' },
+};
+
+function setFieldError(inputId, message) {
+  const input = q('#' + inputId);
+  const errEl = q('#' + inputId + 'Err');
+  if (input) {
+    const wrap = input.closest('.withdraw-input') || input.closest('.transfer-input');
+    if (wrap) wrap.classList.add('field-err');
+  }
+  if (errEl) { errEl.textContent = message; errEl.classList.add('show'); }
+}
+
+function clearFieldError(inputId) {
+  const input = q('#' + inputId);
+  const errEl = q('#' + inputId + 'Err');
+  if (input) {
+    const wrap = input.closest('.withdraw-input') || input.closest('.transfer-input');
+    if (wrap) wrap.classList.remove('field-err');
+  }
+  if (errEl) { errEl.textContent = ''; errEl.classList.remove('show'); }
+}
+
+function clearFieldErrors(ids) { ids.forEach(clearFieldError); }
+
+/* Live-sanitize inputs as the user types, per field type */
+function attachLiveSanitizer(inputId, kind) {
+  const el = q('#' + inputId);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    clearFieldError(inputId);
+    let v = el.value;
+    if (kind === 'name') {
+      v = v.replace(/[^A-Za-z\u00C0-\u017F\s.'-]/g, '');
+    } else if (kind === 'account' || kind === 'routing') {
+      v = v.replace(/[^A-Za-z0-9]/g, '');
+    } else if (kind === 'amount') {
+      v = v.replace(/[^0-9.]/g, '');
+      const firstDot = v.indexOf('.');
+      if (firstDot !== -1) {
+        v = v.slice(0, firstDot + 1) + v.slice(firstDot + 1).replace(/\./g, '');
+        const parts = v.split('.');
+        if (parts[1]) v = parts[0] + '.' + parts[1].slice(0, 2);
+      }
+    }
+    if (v !== el.value) el.value = v;
+  });
+}
+
+[
+  ['withdrawBankName','name'], ['withdrawAccountNumber','account'],
+  ['withdrawRouting','routing'], ['withdrawAmount','amount'],
+  ['transferRecipient','name'], ['transferBankName','name'],
+  ['transferAccountNumber','account'], ['transferRouting','routing'],
+  ['transferAmount','amount'],
+].forEach(([id, kind]) => attachLiveSanitizer(id, kind));
+
+/* Validates one field; returns true if valid, otherwise sets the inline error */
+function validateOne(inputId, kind, required) {
+  const el = q('#' + inputId);
+  const val = (el && el.value || '').trim();
+  if (!val) {
+    if (required) { setFieldError(inputId, 'This field is required.'); return false; }
+    clearFieldError(inputId);
+    return true;
+  }
+  const pattern = VALIDATION_PATTERNS[kind];
+  if (pattern && !pattern.re.test(val)) { setFieldError(inputId, pattern.msg); return false; }
+  clearFieldError(inputId);
+  return true;
+}
+
+function focusFirstInvalid(ids) {
+  for (const id of ids) {
+    const input = q('#' + id);
+    const wrap = input && (input.closest('.withdraw-input') || input.closest('.transfer-input'));
+    if (wrap && wrap.classList.contains('field-err')) { input.focus(); return; }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
    WITHDRAW — calls backend
 ═══════════════════════════════════════════════════════════ */
+function validateWithdrawForm() {
+  const ids = ['withdrawAmount','withdrawBankName','withdrawAccountNumber','withdrawRouting'];
+  clearFieldErrors(ids);
+
+  let ok = true;
+  if (!validateOne('withdrawAmount', 'amount', true)) ok = false;
+  if (!validateOne('withdrawBankName', 'name', true)) ok = false;
+  if (!validateOne('withdrawAccountNumber', 'account', true)) ok = false;
+  if (!validateOne('withdrawRouting', 'routing', false)) ok = false;
+
+  const amount = parseFloat((q('#withdrawAmount') || {}).value || '0');
+  const balance = currentUser ? currentUser.balance : 0;
+  if (ok && (!amount || amount <= 0)) { setFieldError('withdrawAmount', 'Enter an amount greater than 0.'); ok = false; }
+  if (ok && amount > balance) { setFieldError('withdrawAmount', 'Amount exceeds your available balance.'); ok = false; }
+
+  if (!ok) {
+    focusFirstInvalid(ids);
+    showToast('Please fix the highlighted fields.', 'warning');
+  }
+  return ok;
+}
+
 async function submitWithdraw() {
   const amount  = parseFloat((q('#withdrawAmount')        || {}).value || '0');
   const bank    = (q('#withdrawBankName')       || {}).value || '';
@@ -18534,55 +19022,69 @@ async function submitWithdraw() {
   const routing = (q('#withdrawRouting')       || {}).value || '';
   const type    = (q('#withdrawTypeSelect')    || {}).value || '';
 
-  if (!amount || amount <= 0) { showToast('Please enter a valid amount.', 'warning'); return; }
-  if (!bank)    { showToast('Please enter the destination bank.', 'warning'); return; }
-  if (!account) { showToast('Please enter the beneficiary account number.', 'warning'); return; }
-
-  // PIN validation done by pin system — this runs after pin passes
-  const balance = currentUser ? currentUser.balance : 0;
-  if (amount > balance) { showToast('Insufficient balance.', 'error'); return; }
-
-  const btn = q('#submitWithdrawBtn');
-  btn.disabled = true;
-  btn.textContent = 'Processing…';
-
-  const res = await api({
-    action: 'withdraw', uid: _uid,
-    amount, bank, account, routing,
-    method: type || 'Wire Transfer', type
-  });
-
-  if (res.status) {
-    currentUser.balance = res.balance;
-    applyUserToDOM();
-    // Update transaction list
-    await loadTransactions();
-
-    const txId = allTransactions[0] ? allTransactions[0].txId : generateRef();
-    openReceiptFromTx({
-      txId, type: 'Withdrawal',
-      amount, details: 'Withdrawal to ' + bank,
-      status: 'Pending', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}),
-      method: type, bank, account, routing
+  try {
+    const res = await api({
+      action: 'withdraw', uid: _uid,
+      amount, bank, account, routing,
+      method: type || 'Wire Transfer', type
     });
 
-    // reset form
-    ['withdrawAmount','withdrawBankName','withdrawAccountNumber','withdrawRouting'].forEach(id => {
-      q('#' + id) && (q('#' + id).value = '');
-    });
-    q('#withdrawTypeSelect') && (q('#withdrawTypeSelect').value = '');
-    showToast('Withdrawal submitted and pending admin approval.', 'success');
-  } else {
-    showToast(res.message || 'Withdrawal failed.', 'error');
+    if (res.status) {
+      currentUser.balance = res.balance;
+      applyUserToDOM();
+      // Update transaction list
+      await loadTransactions();
+
+      const txId = allTransactions[0] ? allTransactions[0].txId : generateRef();
+      openReceiptFromTx({
+        txId, type: 'Withdrawal',
+        amount, details: 'Withdrawal to ' + bank,
+        status: 'Pending', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}),
+        method: type, bank, account, routing,
+        senderName: currentUser ? currentUser.name : '', receiverName: bank || 'External Bank Account'
+      });
+
+      // reset form
+      ['withdrawAmount','withdrawBankName','withdrawAccountNumber','withdrawRouting'].forEach(id => {
+        q('#' + id) && (q('#' + id).value = '');
+      });
+      q('#withdrawTypeSelect') && (q('#withdrawTypeSelect').value = '');
+      showToast('Withdrawal submitted and pending admin approval.', 'success');
+    } else {
+      showToast(res.message || 'Withdrawal failed. Please try again.', 'error');
+    }
+  } catch (err) {
+    console.error('submitWithdraw error:', err);
+    showToast('Something went wrong while processing your withdrawal. Please try again.', 'error');
   }
-
-  btn.disabled = false;
-  btn.textContent = 'Withdraw';
 }
 
 /* ═══════════════════════════════════════════════════════════
    TRANSFER — calls backend
 ═══════════════════════════════════════════════════════════ */
+function validateTransferForm() {
+  const ids = ['transferRecipient','transferBankName','transferAccountNumber','transferRouting','transferAmount'];
+  clearFieldErrors(ids);
+
+  let ok = true;
+  if (!validateOne('transferRecipient', 'name', true)) ok = false;
+  if (!validateOne('transferBankName', 'name', true)) ok = false;
+  if (!validateOne('transferAccountNumber', 'account', true)) ok = false;
+  if (!validateOne('transferRouting', 'routing', false)) ok = false;
+  if (!validateOne('transferAmount', 'amount', true)) ok = false;
+
+  const amount = parseFloat(((q('#transferAmount') || {}).value || '0').replace(/,/g,''));
+  const balance = currentUser ? currentUser.balance : 0;
+  if (ok && (!amount || amount <= 0)) { setFieldError('transferAmount', 'Enter an amount greater than 0.'); ok = false; }
+  if (ok && amount > balance) { setFieldError('transferAmount', 'Amount exceeds your available funds.'); ok = false; }
+
+  if (!ok) {
+    focusFirstInvalid(ids);
+    showToast('Please fix the highlighted fields.', 'warning');
+  }
+  return ok;
+}
+
 async function submitTransfer() {
   const recipient = (q('#transferRecipient')      || {}).value || '';
   const bank      = (q('#transferBankName')       || {}).value || '';
@@ -18592,48 +19094,39 @@ async function submitTransfer() {
   const type      = (q('#transferTypeSelect')    || {}).value || 'Wire Transfer';
   const note      = (q('#transferNote')          || {}).value || '';
 
-  if (!recipient) { showToast('Please enter recipient name.', 'warning'); return; }
-  if (!bank)      { showToast('Please enter destination bank.', 'warning'); return; }
-  if (!account)   { showToast('Please enter account number.', 'warning'); return; }
-  if (!amount || amount <= 0) { showToast('Please enter a valid amount.', 'warning'); return; }
-
-  const balance = currentUser ? currentUser.balance : 0;
-  if (amount > balance) { showToast('Insufficient funds.', 'error'); return; }
-
-  const btn = q('#submitTransferBtn');
-  btn.disabled = true;
-  btn.textContent = 'Processing…';
-
-  const res = await api({
-    action: 'transfer', uid: _uid,
-    recipient, bank, account, routing,
-    amount, type, note
-  });
-
-  if (res.status) {
-    currentUser.balance = res.balance;
-    applyUserToDOM();
-    await loadTransactions();
-
-    const txId = allTransactions[0] ? allTransactions[0].txId : generateRef();
-    openReceiptFromTx({
-      txId, type: 'Transfer',
-      amount, details: 'Transfer to ' + recipient + ' (' + bank + ')',
-      status: 'Pending', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}),
-      method: type, bank, account, routing, note
+  try {
+    const res = await api({
+      action: 'transfer', uid: _uid,
+      recipient, bank, account, routing,
+      amount, type, note
     });
 
-    ['transferRecipient','transferBankName','transferAccountNumber','transferRouting','transferAmount','transferNote'].forEach(id => {
-      q('#' + id) && (q('#' + id).value = '');
-    });
-    q('#transferTypeSelect') && (q('#transferTypeSelect').value = '');
-    showToast('Transfer submitted and pending admin approval.', 'success', 6000);
-  } else {
-    showToast(res.message || 'Transfer failed.', 'error');
+    if (res.status) {
+      currentUser.balance = res.balance;
+      applyUserToDOM();
+      await loadTransactions();
+
+      const txId = allTransactions[0] ? allTransactions[0].txId : generateRef();
+      openReceiptFromTx({
+        txId, type: 'Transfer',
+        amount, details: 'Transfer to ' + recipient + ' (' + bank + ')',
+        status: 'Pending', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}),
+        method: type, bank, account, routing, note,
+        senderName: currentUser ? currentUser.name : '', receiverName: recipient
+      });
+
+      ['transferRecipient','transferBankName','transferAccountNumber','transferRouting','transferAmount','transferNote'].forEach(id => {
+        q('#' + id) && (q('#' + id).value = '');
+      });
+      q('#transferTypeSelect') && (q('#transferTypeSelect').value = '');
+      showToast('Transfer submitted and pending admin approval.', 'success', 6000);
+    } else {
+      showToast(res.message || 'Transfer failed. Please try again.', 'error');
+    }
+  } catch (err) {
+    console.error('submitTransfer error:', err);
+    showToast('Something went wrong while processing your transfer. Please try again.', 'error');
   }
-
-  btn.disabled = false;
-  btn.textContent = 'Submit Transfer';
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -18691,6 +19184,8 @@ function openReceiptFromTx(tx) {
 
   const fields = [
     { lbl:'Reference',     val: tx.txId },
+    { lbl:'Sender',        val: tx.senderName   || tx.sender },
+    { lbl:'Recipient',     val: tx.receiverName || tx.recipient },
     { lbl:'Description',   val: tx.details },
     { lbl:'Date',          val: tx.date },
     { lbl:'Type',          val: tx.type },
@@ -18893,9 +19388,19 @@ window.addEventListener('load', function() {
   if (wBtn && withdrawPin) {
     wBtn.addEventListener('click', async e => {
       e.stopImmediatePropagation();
-      if (await withdrawPin.validate()) {
+      if (!validateWithdrawForm()) return;
+
+      const originalLabel = wBtn.textContent;
+      wBtn.disabled = true;
+      wBtn.textContent = 'Processing…';
+
+      try {
+        if (!(await withdrawPin.validate())) return;
         await submitWithdraw();
         withdrawPin.reset();
+      } finally {
+        wBtn.disabled = false;
+        wBtn.textContent = originalLabel;
       }
     }, true);
   }
@@ -18904,9 +19409,19 @@ window.addEventListener('load', function() {
   if (tBtn && transferPin) {
     tBtn.addEventListener('click', async e => {
       e.stopImmediatePropagation();
-      if (await transferPin.validate()) {
+      if (!validateTransferForm()) return;
+
+      const originalHTML = tBtn.innerHTML;
+      tBtn.disabled = true;
+      tBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing…';
+
+      try {
+        if (!(await transferPin.validate())) return;
         await submitTransfer();
         transferPin.reset();
+      } finally {
+        tBtn.disabled = false;
+        tBtn.innerHTML = originalHTML;
       }
     }, true);
   }
@@ -18990,6 +19505,9 @@ function navigateTo(pageId) {
   document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-page'));
   const target = q('#' + pageId);
   if (target) target.classList.add('active-page');
+
+  // Lock background scroll while a full-screen overlay page is open
+  document.body.style.overflow = (target && target.classList.contains('overlay-page')) ? 'hidden' : '';
 
   // Sync bottom nav
   document.querySelectorAll('.nav-item').forEach(i => {
@@ -19105,6 +19623,8 @@ function renderRewards(filterType, searchStr) {
     const matchType   = typeF === 'all' || tx.type === typeF;
     const matchSearch = !search ||
       (tx.details || '').toLowerCase().includes(search) ||
+      txSender(tx).toLowerCase().includes(search) ||
+      txRecipient(tx).toLowerCase().includes(search) ||
       tx.txId.toLowerCase().includes(search) ||
       tx.type.toLowerCase().includes(search);
     return matchType && matchSearch;
@@ -19138,7 +19658,7 @@ function renderRewards(filterType, searchStr) {
           <div class="rw-icon" style="background:${ic.bg}">
             <i class="fa-solid ${ic.icon}" style="color:${ic.color}"></i>
           </div>
-          <span style="line-height:1.4">${tx.details || tx.type}<br>
+          <span style="line-height:1.4">${txLabel(tx)}<br>
             <span style="font-size:11px;color:#94a3b8;">${tx.txId}</span>
           </span>
         </div>
