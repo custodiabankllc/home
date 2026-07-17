@@ -245,6 +245,7 @@ window.smartsupp || (function(d) {
             padding: 0 16px;
             flex: 1;
             border: 1px solid #e2e8f0;
+            position: relative;
         }
 
         .search i {
@@ -258,6 +259,113 @@ window.smartsupp || (function(d) {
             outline: none;
             background: none;
             font-size: 14px;
+        }
+
+        /* =========================
+        GLOBAL SEARCH — RESULTS DROPDOWN
+        (search bar doubles as an alternate
+        navigation shortcut to features/pages)
+        ========================= */
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, .14);
+            max-height: 380px;
+            overflow-y: auto;
+            z-index: 500;
+            display: none;
+            padding: 8px;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-section {
+            font-size: 10px;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            padding: 10px 10px 6px;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: .15s;
+        }
+
+        .search-result-item:hover,
+        .search-result-item.active-result {
+            background: #eff6ff;
+        }
+
+        .search-result-icon {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 12px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-result-icon i {
+            color: #2563eb;
+            font-size: 14px;
+        }
+
+        .search-result-text {
+            min-width: 0;
+        }
+
+        .search-result-text h5 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-result-text p {
+            font-size: 11.5px;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-result-empty {
+            padding: 26px 14px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .search-result-kbd {
+            margin-left: auto;
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 2px 6px;
+            flex-shrink: 0;
         }
 
         .profile {
@@ -747,6 +855,134 @@ window.smartsupp || (function(d) {
         .amount.minus {
             color: #dc2626;
             font-weight: 700;
+        }
+
+        /* =========================
+        TRANSACTION LIST ROW
+        (shared component used by both the
+        dashboard "Recent Transactions" card
+        and the full Transaction History page)
+        ========================= */
+
+        .txn-list-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .txn-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 4px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .txn-row:last-child {
+            border-bottom: none;
+        }
+
+        .txn-row:hover {
+            background: #f8fafc;
+            border-radius: 14px;
+        }
+
+        .txn-row-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .txn-row-icon {
+            width: 46px;
+            height: 46px;
+            min-width: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .txn-row-icon i {
+            font-size: 16px;
+        }
+
+        .txn-row-info {
+            min-width: 0;
+        }
+
+        .txn-row-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .txn-row-info p {
+            font-size: 12px;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .txn-row-right {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .txn-row-amount {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            white-space: nowrap;
+        }
+
+        .txn-row-amount.plus {
+            color: #16a34a;
+        }
+
+        .txn-row-amount.minus {
+            color: #dc2626;
+        }
+
+        .txn-row-status {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .txn-row-status.success {
+            color: #16a34a;
+        }
+
+        .txn-row-status.pending {
+            color: #d97706;
+        }
+
+        .txn-row-status.failed {
+            color: #dc2626;
+        }
+
+        @media(max-width:520px) {
+            .txn-row-icon {
+                width: 40px;
+                height: 40px;
+                min-width: 40px;
+            }
+
+            .txn-row-info h4 {
+                font-size: 13px;
+                max-width: 150px;
+            }
         }
 
         /* =========================
@@ -11022,7 +11258,9 @@ html.dark-mode {
 
                 <div class="search">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search transactions, cards, investments..." />
+                    <input type="text" id="globalSearchInput" autocomplete="off"
+                           placeholder="Search features, e.g. transfer, cards, security..." />
+                    <div class="search-results" id="globalSearchResults"></div>
                 </div>
 
 
@@ -17494,39 +17732,13 @@ TRANSACTION HISTORY PAGE
 
     </div>
 
-    <!-- TABLE -->
+    <!-- TRANSACTION LIST -->
 
     <div class="transaction-table-wrapper">
 
-        <table class="transaction-table">
+        <div id="transactionHistoryTableBody" class="txn-list-wrap">
 
-            <thead>
-
-                <tr>
-
-                    <th>Date</th>
-
-                    <th>Reference</th>
-
-                    <th>Sender</th>
-
-                    <th>Recipient</th>
-
-                    <th>Type</th>
-
-                    <th>Amount</th>
-
-                    <th>Status</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="transactionHistoryTableBody">
-
-            </tbody>
-
-        </table>
+        </div>
 
     </div>
 
@@ -17801,10 +18013,10 @@ NOTIFICATION MODAL PAGE
 }
 .rcpt-modal {
     background: #fff;
-    border-radius: 28px;
+    border-radius: 20px;
     width: 100%;
-    max-width: 480px;
-    max-height: 88dvh;
+    max-width: 360px;
+    max-height: 90dvh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -17815,7 +18027,7 @@ NOTIFICATION MODAL PAGE
 .rcpt-scroll {
     overflow-y: auto;
     flex: 1;
-    border-radius: 0 0 28px 28px;
+    border-radius: 0 0 20px 20px;
 }
 .rcpt-overlay.open .rcpt-modal {
     transform: translateY(0) scale(1);
@@ -17824,64 +18036,80 @@ NOTIFICATION MODAL PAGE
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 24px 0;
+    gap: 10px;
+    padding: 14px 16px 0;
 }
-.rcpt-header h3 {
-    font-size: 17px;
-    font-weight: 800;
-    color: #07111f;
+.rcpt-header-brand {
     display: flex;
     align-items: center;
     gap: 8px;
 }
-.rcpt-header h3 i { color: #0066ff; }
+.rcpt-header-brand img {
+    height: 22px;
+    width: auto;
+    display: block;
+}
+.rcpt-header-brand span {
+    font-size: 13px;
+    font-weight: 800;
+    color: #07111f;
+    letter-spacing: -.2px;
+}
+.rcpt-header-brand small {
+    display: block;
+    font-size: 9px;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: .04em;
+}
 .rcpt-close {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     border: none;
     background: #f1f5f9;
-    border-radius: 10px;
+    border-radius: 9px;
     cursor: pointer;
     color: #64748b;
-    font-size: 15px;
+    font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background .2s;
+    flex-shrink: 0;
 }
 .rcpt-close:hover { background: #e2e8f0; }
 .rcpt-stamp {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 28px 24px 20px;
+    gap: 6px;
+    padding: 14px 16px 12px;
     text-align: center;
 }
 .rcpt-stamp-icon {
-    width: 68px;
-    height: 68px;
-    border-radius: 22px;
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+    font-size: 17px;
 }
 .rcpt-stamp-icon.s-credit  { background: #dcfce7; color: #16a34a; }
 .rcpt-stamp-icon.s-debit   { background: #dbeafe; color: #2563eb; }
 .rcpt-stamp-icon.s-pending { background: #fef3c7; color: #d97706; }
 .rcpt-amount {
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 800;
-    letter-spacing: -1px;
+    letter-spacing: -.5px;
     line-height: 1;
 }
 .rcpt-amount.a-plus  { color: #16a34a; }
 .rcpt-amount.a-minus { color: #dc2626; }
 .rcpt-badge {
-    padding: 4px 16px;
+    padding: 3px 12px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 10.5px;
     font-weight: 700;
 }
 .rcpt-badge.b-done    { background: #dcfce7; color: #15803d; }
@@ -17889,19 +18117,19 @@ NOTIFICATION MODAL PAGE
 .rcpt-divider {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 0 24px;
+    gap: 8px;
+    margin: 0 16px;
 }
 .rcpt-divider-line { flex: 1; height: 1px; background: #f1f5f9; }
 .rcpt-divider span {
-    font-size: 11px;
+    font-size: 9.5px;
     font-weight: 700;
     color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: .07em;
 }
 .rcpt-rows {
-    padding: 16px 24px 20px;
+    padding: 8px 16px 10px;
     display: flex;
     flex-direction: column;
 }
@@ -17909,57 +18137,56 @@ NOTIFICATION MODAL PAGE
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 16px;
-    padding: 12px 0;
+    gap: 14px;
+    padding: 7px 0;
     border-bottom: 1px solid #f8fafc;
 }
 .rcpt-row:last-child { border-bottom: none; }
-.rcpt-row-lbl { font-size: 13px; color: #94a3b8; font-weight: 500; flex-shrink: 0; }
-.rcpt-row-val { font-size: 13px; color: #07111f; font-weight: 700; text-align: right; word-break: break-all; }
+.rcpt-row-lbl { font-size: 11.5px; color: #94a3b8; font-weight: 500; flex-shrink: 0; }
+.rcpt-row-val { font-size: 11.5px; color: #07111f; font-weight: 700; text-align: right; word-break: break-all; }
 .rcpt-actions {
     display: flex;
-    gap: 12px;
-    padding: 0 24px 24px;
+    gap: 10px;
+    padding: 4px 16px 16px;
 }
 .rcpt-btn-print {
     flex: 1;
-    height: 46px;
-    border-radius: 14px;
+    height: 38px;
+    border-radius: 12px;
     border: 1px solid #e2e8f0;
     background: #fff;
     color: #334155;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 12.5px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     transition: background .2s;
 }
 .rcpt-btn-print:hover { background: #f8fafc; }
 .rcpt-btn-done {
     flex: 1;
-    height: 46px;
-    border-radius: 14px;
+    height: 38px;
+    border-radius: 12px;
     border: none;
     background: linear-gradient(135deg, #0066ff, #00b7ff);
     color: #fff;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 12.5px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     transition: opacity .2s;
 }
 .rcpt-btn-done:hover { opacity: .9; }
 
-/* ── Make table rows + recent cards clickable ── */
-#transactionHistoryTableBody tr { cursor: pointer; transition: background .15s; }
-#transactionHistoryTableBody tr:hover { background: #f8fbff; }
-#recentTransactionsContainer .transaction { cursor: pointer; }
+/* ── Make transaction list rows clickable ── */
+#transactionHistoryTableBody .txn-row { cursor: pointer; }
+#recentTransactionsContainer .txn-row { cursor: pointer; }
 </style>
 
 <!-- Receipt Modal HTML -->
@@ -17967,7 +18194,13 @@ NOTIFICATION MODAL PAGE
     <div class="rcpt-modal">
 
         <div class="rcpt-header">
-            <h3><i class="fa-solid fa-receipt"></i>Transaction Receipt</h3>
+            <div class="rcpt-header-brand">
+                <img src="icon/custodia_logo.png" alt="Custodia Bank">
+                <div>
+                    <span>Custodia Bank</span>
+                    <small>Transaction Receipt</small>
+                </div>
+            </div>
             <button class="rcpt-close" id="rcptClose"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
@@ -18600,6 +18833,12 @@ function txStatusClass(status) {
   if (status === 'Pending')   return 'transaction-pending';
   return 'transaction-pending';
 }
+/* status label/class for the circular-icon txn-row list (dashboard + history) */
+function txRowStatus(status) {
+  if (status === 'Completed') return { label: 'Successful', cls: 'success' };
+  if (status === 'Pending')   return { label: 'Pending',     cls: 'pending' };
+  return { label: status || 'Failed', cls: 'failed' };
+}
 function txIcon(type, status) {
   if (status === 'Pending') return { icon:'fa-clock', bg:'#fef9c3', color:'#ca8a04' };
   if (type === 'Deposit' || type === 'Credit') return { icon:'fa-arrow-down-left', bg:'#dcfce7', color:'#16a34a' };
@@ -18635,25 +18874,27 @@ function renderRecentTransactions() {
     const amtStr   = fmtBalance(tx.amount);
     const prefix   = isCredit ? '+' : '-';
     const cls      = isCredit ? 'plus' : 'minus';
-    const pending  = tx.status === 'Pending'
-      ? '<span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:#fef9c3;color:#854d0e;margin-left:6px;">Pending</span>' : '';
+    const st       = txRowStatus(tx.status);
     return `
-      <div class="transaction" data-txid="${tx.txId}" style="cursor:pointer">
-        <div class="transaction-left">
-          <div class="transaction-icon" style="background:${icon.bg}">
+      <div class="txn-row" data-txid="${tx.txId}">
+        <div class="txn-row-left">
+          <div class="txn-row-icon" style="background:${icon.bg}">
             <i class="fa-solid ${icon.icon}" style="color:${icon.color}"></i>
           </div>
-          <div>
+          <div class="txn-row-info">
             <h4>${txLabel(tx)}</h4>
-            <p>${tx.date} &bull; ${tx.txId} ${pending}</p>
+            <p>${tx.date}</p>
           </div>
         </div>
-        <span class="amount ${cls}">${prefix}${amtStr}</span>
+        <div class="txn-row-right">
+          <span class="txn-row-amount ${cls}">${prefix}${amtStr}</span>
+          <span class="txn-row-status ${st.cls}">${st.label}</span>
+        </div>
       </div>`;
   }).join('');
 
   // click → receipt
-  cont.querySelectorAll('.transaction').forEach(card => {
+  cont.querySelectorAll('.txn-row').forEach(card => {
     card.addEventListener('click', () => {
       const txId = card.dataset.txid;
       const tx   = allTransactions.find(t => t.txId === txId);
@@ -18663,25 +18904,39 @@ function renderRecentTransactions() {
 }
 
 function renderTransactionHistory(list) {
-  const tbody = q('#transactionHistoryTableBody');
-  if (!tbody) return;
+  const wrap = q('#transactionHistoryTableBody');
+  if (!wrap) return;
   if (!list.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#64748b;">No transactions yet.</td></tr>';
+    wrap.innerHTML = '<p style="color:#64748b;text-align:center;padding:30px;font-size:14px;">No transactions yet.</p>';
     return;
   }
-  tbody.innerHTML = list.map(tx => `
-    <tr data-txid="${tx.txId}" style="cursor:pointer">
-      <td>${tx.date}</td>
-      <td>${tx.txId}</td>
-      <td>${txSender(tx)}</td>
-      <td>${txRecipient(tx)}</td>
-      <td class="${txTypeClass(tx.type)}">${tx.type}</td>
-      <td>${fmtBalance(tx.amount)}</td>
-      <td><span class="transaction-status ${txStatusClass(tx.status)}">${tx.status}</span></td>
-    </tr>`).join('');
+  wrap.innerHTML = list.map(tx => {
+    const isCredit = tx.type === 'Deposit' || tx.type === 'Credit';
+    const icon     = txIcon(tx.type, tx.status);
+    const amtStr   = fmtBalance(tx.amount);
+    const prefix   = isCredit ? '+' : '-';
+    const cls      = isCredit ? 'plus' : 'minus';
+    const st       = txRowStatus(tx.status);
+    return `
+      <div class="txn-row" data-txid="${tx.txId}">
+        <div class="txn-row-left">
+          <div class="txn-row-icon" style="background:${icon.bg}">
+            <i class="fa-solid ${icon.icon}" style="color:${icon.color}"></i>
+          </div>
+          <div class="txn-row-info">
+            <h4>${txLabel(tx)}</h4>
+            <p>${tx.date} &bull; ${tx.txId}</p>
+          </div>
+        </div>
+        <div class="txn-row-right">
+          <span class="txn-row-amount ${cls}">${prefix}${amtStr}</span>
+          <span class="txn-row-status ${st.cls}">${st.label}</span>
+        </div>
+      </div>`;
+  }).join('');
 
   // click rows → receipt
-  tbody.querySelectorAll('tr[data-txid]').forEach(row => {
+  wrap.querySelectorAll('.txn-row').forEach(row => {
     row.addEventListener('click', () => {
       const tx = allTransactions.find(t => t.txId === row.dataset.txid);
       if (tx) openReceiptFromTx(tx);
@@ -19489,11 +19744,11 @@ window.addEventListener('load', function() {
   rcptPrint && rcptPrint.addEventListener('click',  () => window.print());
   rcptOverlay && rcptOverlay.addEventListener('click', e => { if (e.target === rcptOverlay) closeReceipt(); });
 
-  // Transaction history table click
+  // Transaction history list click
   const histTbody = q('#transactionHistoryTableBody');
   if (histTbody) {
     histTbody.addEventListener('click', e => {
-      const row  = e.target.closest('tr[data-txid]');
+      const row  = e.target.closest('.txn-row[data-txid]');
       if (!row) return;
       const tx = allTransactions.find(t => t.txId === row.dataset.txid);
       if (tx) openReceiptFromTx(tx);
@@ -19536,6 +19791,129 @@ window.addEventListener('load', function() {
   closeBtn && closeBtn.addEventListener('click', () => {
     modal && modal.classList.remove('active');
     document.body.style.overflow = 'auto';
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL SEARCH — alternate navigation to pages/features
+═══════════════════════════════════════════════════════════ */
+const searchIndex = [
+  { title:'Home Dashboard',     desc:'Balance, quick actions & overview',        icon:'fa-house',                page:'homePage',              alias:['dashboard','balance','overview','home'] },
+  { title:'Add Funds',          desc:'Deposit money into your account',         icon:'fa-plus',                  page:'addFundsPage',          alias:['deposit','top up','fund account','load money'] },
+  { title:'Withdraw Funds',     desc:'Withdraw money securely',                 icon:'fa-money-bill-wave',       page:'withdrawPage',          alias:['cash out','atm','take out money','withdrawal'] },
+  { title:'Transfer Funds',     desc:'Send money to another account',           icon:'fa-money-bill-transfer',   page:'transferPage',          alias:['send money','wire transfer','beneficiary','pay someone'] },
+  { title:'Investments',        desc:'Track your portfolio performance',        icon:'fa-chart-line',            page:'investmentPage',        alias:['stocks','forex','portfolio','trading','shares'] },
+  { title:'Open Savings',       desc:'Create a new savings goal',               icon:'fa-piggy-bank',            page:'openSavingsPage',       alias:['savings goal','save money','open savings account'] },
+  { title:'Security Center',    desc:'Advanced account protection',             icon:'fa-shield-halved',         page:'securityPage',          alias:['2fa','two factor','fraud','security settings'] },
+  { title:'Accounts Overview',  desc:'Checking, savings & business accounts',   icon:'fa-wallet',                page:'accountsPage',          alias:['checking account','business account','linked accounts'] },
+  { title:'Loans',              desc:'Explore and manage loans',                icon:'fa-building-columns',      page:'loanPage',              alias:['borrow','credit','loan application'] },
+  { title:'Statements',         desc:'Download account statements',             icon:'fa-file-lines',            page:'statementPage',         alias:['download statement','account history','pdf'] },
+  { title:'Transaction History',desc:'View all past transactions',              icon:'fa-clock-rotate-left',     page:'transactionHistoryPage',alias:['recent transactions','payment history','activity log','receipts'] },
+  { title:'Rewards',            desc:'Cashback, points & VIP perks',            icon:'fa-gift',                  page:'rewardsPage',           alias:['points','cashback','vip','redeem'] },
+  { title:'Finance Overview',   desc:'Financial health & analytics',            icon:'fa-chart-pie',             page:'financePage',           alias:['budget','analytics','cash flow','financial health'] },
+  { title:'Cards',              desc:'Manage your debit card',                  icon:'fa-credit-card',           page:'cardsPage',             alias:['debit card','card settings','card details'] },
+  { title:'Freeze Card',        desc:'Temporarily disable your card',           icon:'fa-lock',                  page:'cardsPage',             alias:['block card','lock card','disable card'] },
+  { title:'Virtual Card',       desc:'Generate a secure virtual card',          icon:'fa-credit-card',           page:'cardsPage',             alias:['online payments card'] },
+  { title:'My Profile',         desc:'Personal details & credentials',          icon:'fa-user',                  page:'mePage',                alias:['profile','account info','edit profile','me'] },
+  { title:'Change Password',    desc:'Update your login password',              icon:'fa-key',                   page:'mePage',                alias:['password','security credentials'] },
+  { title:'Settings',           desc:'App preferences & controls',              icon:'fa-gear',                  page:'settingsPage',          alias:['preferences','app settings'] },
+  { title:'Dark Mode',          desc:'Toggle dark appearance',                  icon:'fa-moon',                  page:'settingsPage',          alias:['theme','appearance','night mode'] },
+  { title:'Trusted Devices',    desc:'Manage devices signed in to your account',icon:'fa-mobile-screen',         page:'settingsPage',          alias:['devices','sessions','sign in activity'] },
+  { title:'Help Center',        desc:'FAQs and support options',                icon:'fa-circle-question',       page:'helpCenterPage',        alias:['faq','support','contact us','get help'] },
+  { title:'Notifications',      desc:'View recent alerts & messages',           icon:'fa-bell',                  action:'notifications',       alias:['alerts','messages','inbox','bell'] },
+  { title:'Logout',             desc:'Sign out of your account',                icon:'fa-right-from-bracket',    action:'logout',              alias:['sign out','log out'] },
+];
+
+function searchIndexMatch(item, needle) {
+  const hay = [item.title, item.desc, ...(item.alias || [])].join(' ').toLowerCase();
+  return hay.includes(needle);
+}
+
+function activateSearchResult(item) {
+  if (item.page) navigateTo(item.page);
+  if (item.action === 'logout')        { const b = document.querySelector('.logout');         b && b.click(); }
+  if (item.action === 'notifications') { const b = document.querySelector('.notification-btn');b && b.click(); }
+  const input = document.getElementById('globalSearchInput');
+  const panel = document.getElementById('globalSearchResults');
+  if (input) { input.value = ''; input.blur(); }
+  if (panel) { panel.classList.remove('active'); panel.innerHTML = ''; panel._matches = []; }
+}
+
+function renderSearchResults(query) {
+  const panel = document.getElementById('globalSearchResults');
+  if (!panel) return;
+  const needle = query.trim().toLowerCase();
+  if (!needle) { panel.classList.remove('active'); panel.innerHTML = ''; panel._matches = []; return; }
+
+  const matches = searchIndex.filter(it => searchIndexMatch(it, needle)).slice(0, 8);
+  panel._matches = matches;
+
+  if (!matches.length) {
+    panel.innerHTML = `<div class="search-result-empty">No matching features for "${query}"</div>`;
+    panel.classList.add('active');
+    return;
+  }
+
+  panel.innerHTML = '<div class="search-result-section">Jump to</div>' + matches.map((it, idx) => `
+    <div class="search-result-item" data-idx="${idx}">
+      <div class="search-result-icon"><i class="fa-solid ${it.icon}"></i></div>
+      <div class="search-result-text">
+        <h5>${it.title}</h5>
+        <p>${it.desc}</p>
+      </div>
+    </div>`).join('');
+  panel.classList.add('active');
+
+  panel.querySelectorAll('.search-result-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const item = matches[Number(el.dataset.idx)];
+      if (item) activateSearchResult(item);
+    });
+  });
+}
+
+(function() {
+  const input = document.getElementById('globalSearchInput');
+  const panel = document.getElementById('globalSearchResults');
+  if (!input || !panel) return;
+
+  let activeIndex = -1;
+
+  function highlightActive() {
+    const items = panel.querySelectorAll('.search-result-item');
+    items.forEach((el, i) => el.classList.toggle('active-result', i === activeIndex));
+    if (items[activeIndex]) items[activeIndex].scrollIntoView({ block: 'nearest' });
+  }
+
+  input.addEventListener('input', () => { activeIndex = -1; renderSearchResults(input.value); });
+  input.addEventListener('focus', () => { if (input.value.trim()) renderSearchResults(input.value); });
+
+  input.addEventListener('keydown', e => {
+    const matches = panel._matches || [];
+    if (!matches.length) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIndex = (activeIndex + 1) % matches.length;
+      highlightActive();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIndex = (activeIndex - 1 + matches.length) % matches.length;
+      highlightActive();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const idx = activeIndex >= 0 ? activeIndex : 0;
+      if (matches[idx]) activateSearchResult(matches[idx]);
+    } else if (e.key === 'Escape') {
+      panel.classList.remove('active');
+      panel.innerHTML = '';
+      panel._matches = [];
+      input.blur();
+    }
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search')) panel.classList.remove('active');
   });
 })();
 
