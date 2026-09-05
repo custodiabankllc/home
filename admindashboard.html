@@ -275,6 +275,46 @@ tbody tr:hover{background:#f8fafc;}
 .fg label{font-size:12.5px;font-weight:700;color:#1e293b;}
 .fg .input-sm{height:46px;}
 
+/* ── Notepad-style expandable textarea ── */
+.notepad-textarea{
+  width:100%;
+  box-sizing:border-box;
+  min-height:120px;
+  max-height:480px;
+  overflow-y:auto;
+  resize:none;
+  border-radius:12px;
+  border:1px solid #dbe5f3;
+  background:
+    linear-gradient(#f8fbff 0 0) padding-box,
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 27px,
+      #e2ebf7 28px
+    );
+  background-position: 0 26px;
+  background-attachment: local;
+  padding:12px 16px 12px 20px;
+  font-size:13.5px;
+  font-family:inherit;
+  line-height:28px;
+  color:#1e293b;
+  outline:none;
+  transition:.2s;
+  position:relative;
+  border-left:4px solid #fca5a5;
+}
+.notepad-textarea:focus{
+  border-color:#2563eb;
+  border-left-color:#f87171;
+  background-color:#fff;
+}
+.notepad-textarea::placeholder{
+  color:#94a3b8;
+  line-height:28px;
+}
+
 /* ── Modal ── */
 .modal-bg{
   position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(4px);
@@ -577,8 +617,8 @@ tbody tr:hover{background:#f8fafc;}
               <input class="input-sm" id="nTitle" placeholder="e.g. Scheduled Maintenance">
             </div>
             <div class="fg" style="grid-column:1/-1;">
-              <label>Message</label>
-              <input class="input-sm" id="nMsg" placeholder="Write your notification message…">
+              <label>Message <span style="font-weight:400;color:#94a3b8;">(line breaks &amp; blank-line paragraphs are preserved in the email)</span></label>
+              <textarea class="notepad-textarea" id="nMsg" rows="4" oninput="autoGrowTextarea(this)" placeholder="Write your notification message… &#10;&#10;Leave a blank line to start a new paragraph."></textarea>
             </div>
             <div class="fg" style="grid-column:1/-1;">
               <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;">
@@ -638,8 +678,8 @@ tbody tr:hover{background:#f8fafc;}
       <div class="fg"><label>Notes</label><input class="input-sm" id="mNotes" placeholder="Reason…"></div>
     </div>
     <div class="fg" id="mReasonWrap" style="margin-top:12px;">
-      <label>Restriction Reason <span style="font-weight:400;color:#94a3b8;">(shown to the user on their dashboard &amp; sent by email)</span></label>
-      <input class="input-sm" id="mStatusReason" placeholder="e.g. Suspicious activity detected on this account">
+      <label>Restriction Reason <span style="font-weight:400;color:#94a3b8;">(shown to the user on their dashboard &amp; sent by email — line breaks are preserved in the email)</span></label>
+      <textarea class="input-sm" id="mStatusReason" rows="3" style="height:auto;min-height:70px;resize:vertical;line-height:1.6;padding-top:10px;" placeholder="e.g. Suspicious activity detected on this account"></textarea>
     </div>
     <div class="m-acts">
       <button class="btn btn-danger" id="mFreezeBtn" onclick="toggleFreeze()"><i class="fa-solid fa-lock"></i> <span id="mFreezeLabel">Freeze</span></button>
@@ -1054,6 +1094,18 @@ function populateNotifSelect(){
   sel.innerHTML='<option value="all">All Users</option>'+users.map(u=>`<option value="${u.uid}">${u.name} — ${u.email}</option>`).join('');
   sel.value=cur||'all';
 }
+/**
+ * Grows a textarea's height to fit its content, notepad-style, up to the
+ * CSS max-height (after which it scrolls internally). Reset height to
+ * 'auto' first so shrinking (e.g. after deleting text) is measured
+ * correctly, not just growth.
+ */
+function autoGrowTextarea(el){
+  if(!el) return;
+  el.style.height='auto';
+  el.style.height=el.scrollHeight+'px';
+}
+
 async function doSendNotif(){
   const uid=document.getElementById('nRecipient').value;
   const title=document.getElementById('nTitle').value.trim();
@@ -1080,6 +1132,7 @@ async function doSendNotif(){
     setMsg('nFeedback',sendEmail?'Notification sent and emailed successfully.':'Notification sent successfully.','ok');
     document.getElementById('nTitle').value='';
     document.getElementById('nMsg').value='';
+    document.getElementById('nMsg').style.height='auto';
     document.getElementById('nSendEmail').checked=false;
   }else{
     setMsg('nFeedback','Some notifications failed to send.','err');
