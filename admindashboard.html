@@ -580,6 +580,13 @@ tbody tr:hover{background:#f8fafc;}
               <label>Message</label>
               <input class="input-sm" id="nMsg" placeholder="Write your notification message…">
             </div>
+            <div class="fg" style="grid-column:1/-1;">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;">
+                <input type="checkbox" id="nSendEmail" style="width:16px;height:16px;accent-color:#2563eb;cursor:pointer;">
+                Also send as email
+                <span style="font-weight:400;color:#94a3b8;">(delivers a branded email to the recipient's inbox in addition to the in-app notification)</span>
+              </label>
+            </div>
           </div>
           <button class="btn btn-primary" id="nBtn" style="margin-top:18px" onclick="doSendNotif()">
             <i class="fa-solid fa-paper-plane"></i> Send Notification
@@ -1051,6 +1058,7 @@ async function doSendNotif(){
   const uid=document.getElementById('nRecipient').value;
   const title=document.getElementById('nTitle').value.trim();
   const message=document.getElementById('nMsg').value.trim();
+  const sendEmail=document.getElementById('nSendEmail').checked;
   const fbEl=document.getElementById('nFeedback');fbEl.style.display='none';
   if(!title||!message){setMsg('nFeedback','Title and message are required.','err');return;}
   const btn=document.getElementById('nBtn');btn.disabled=true;
@@ -1059,19 +1067,20 @@ async function doSendNotif(){
   let ok=true;
   if(uid==='all'){
     for(const u of users){
-      const r=await api({action:'sendNotif',token:TOKEN,uid:u.uid,title,message});
+      const r=await api({action:'sendNotif',token:TOKEN,uid:u.uid,title,message,sendEmail});
       if(!r.status)ok=false;
     }
   }else{
-    const r=await api({action:'sendNotif',token:TOKEN,uid,title,message});
+    const r=await api({action:'sendNotif',token:TOKEN,uid,title,message,sendEmail});
     ok=r.status;
   }
 
   btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Send Notification';
   if(ok){
-    setMsg('nFeedback','Notification sent successfully.','ok');
+    setMsg('nFeedback',sendEmail?'Notification sent and emailed successfully.':'Notification sent successfully.','ok');
     document.getElementById('nTitle').value='';
     document.getElementById('nMsg').value='';
+    document.getElementById('nSendEmail').checked=false;
   }else{
     setMsg('nFeedback','Some notifications failed to send.','err');
   }
