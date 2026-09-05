@@ -630,6 +630,10 @@ tbody tr:hover{background:#f8fafc;}
       <div class="fg"><label>New Balance</label><input class="input-sm" type="number" id="mBalance" step="0.01" min="0"></div>
       <div class="fg"><label>Notes</label><input class="input-sm" id="mNotes" placeholder="Reason…"></div>
     </div>
+    <div class="fg" id="mReasonWrap" style="margin-top:12px;">
+      <label>Restriction Reason <span style="font-weight:400;color:#94a3b8;">(shown to the user on their dashboard &amp; sent by email)</span></label>
+      <input class="input-sm" id="mStatusReason" placeholder="e.g. Suspicious activity detected on this account">
+    </div>
     <div class="m-acts">
       <button class="btn btn-danger" id="mFreezeBtn" onclick="toggleFreeze()"><i class="fa-solid fa-lock"></i> <span id="mFreezeLabel">Freeze</span></button>
       <button class="btn btn-danger btn-sm" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;" onclick="deleteUser()"><i class="fa-solid fa-trash"></i></button>
@@ -865,9 +869,11 @@ function openUserModal(uid){
   `;
   document.getElementById('mBalance').value=selUser.balance||0;
   document.getElementById('mNotes').value=selUser.notes||'';
+  document.getElementById('mStatusReason').value=selUser.statusReason||'';
   const frozen=(selUser.status||'').toLowerCase()==='frozen';
   document.getElementById('mFreezeLabel').textContent=frozen?'Unfreeze':'Freeze';
   document.getElementById('mFreezeBtn').className=frozen?'btn btn-success':'btn btn-danger';
+  document.getElementById('mReasonWrap').style.display=frozen?'none':'block';
   document.getElementById('userModalMsg').style.display='none';
   document.getElementById('userModal').classList.add('on');
 }
@@ -885,8 +891,20 @@ async function saveUser(){
 async function toggleFreeze(){
   if(!selUser)return;
   const frozen=(selUser.status||'').toLowerCase()==='frozen';
-  const d=await api({action:'updateUser',token:TOKEN,uid:selUser.uid,status:frozen?'Active':'Frozen'});
-  if(d.status){toast(frozen?'Account reactivated.':'Account frozen.');closeModal('userModal');loadUsers();}
+  let statusReason;
+  if(!frozen){
+    // About to freeze — a cause is required so the user sees it on their dashboard + email
+    statusReason=document.getElementById('mStatusReason').value.trim();
+    if(!statusReason){
+      setMsg('userModalMsg','Please enter a reason before restricting this account.','err');
+      document.getElementById('mStatusReason').focus();
+      return;
+    }
+  }
+  const payload={action:'updateUser',token:TOKEN,uid:selUser.uid,status:frozen?'Active':'Frozen'};
+  if(!frozen) payload.statusReason=statusReason;
+  const d=await api(payload);
+  if(d.status){toast(frozen?'Account reactivated.':'Account frozen — user notified by email.');closeModal('userModal');loadUsers();}
   else setMsg('userModalMsg',d.message||'Error.','err');
 }
 async function deleteUser(){

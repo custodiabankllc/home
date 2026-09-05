@@ -210,6 +210,58 @@ window.smartsupp || (function(d) {
             box-shadow: 0 10px 25px rgba(15, 23, 42, .06);
         }
 
+        /* =========================
+        ACCOUNT RESTRICTION MARQUEE
+        ========================= */
+
+        .acct-restriction-bar {
+            position: sticky;
+            top: 0;
+            z-index: 49;
+            width: 100%;
+            overflow: hidden;
+            background: linear-gradient(90deg, #dc2626, #b91c1c);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(220, 38, 38, .25);
+            margin-bottom: 22px;
+        }
+
+        .acct-restriction-track {
+            display: flex;
+            align-items: center;
+            width: max-content;
+            animation: acctRestrictionMarquee 26s linear infinite;
+            will-change: transform;
+        }
+
+        .acct-restriction-bar:hover .acct-restriction-track {
+            animation-play-state: paused;
+        }
+
+        .acct-restriction-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            padding: 11px 48px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .01em;
+            color: #ffffff;
+        }
+
+        @keyframes acctRestrictionMarquee {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @media (max-width: 640px) {
+            .acct-restriction-text {
+                font-size: 12px;
+                padding: 10px 30px;
+            }
+        }
+
         .top-left {
             display: flex;
             align-items: center;
@@ -3137,6 +3189,48 @@ ALERT
     color:#64748b;
     line-height:1.9;
     font-size:14px;
+}
+
+.transfer-custodia-badge{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    border-radius:14px;
+    padding:12px 14px;
+
+    margin-top:10px;
+
+    animation:custodiaBadgeIn .2s ease;
+}
+
+.transfer-custodia-badge i{
+    color:#16a34a;
+    font-size:15px;
+    margin-top:1px;
+}
+
+.transfer-custodia-badge strong{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    color:#166534;
+}
+
+.transfer-custodia-badge span{
+    display:block;
+    font-size:12px;
+    font-weight:500;
+    color:#15803d;
+    margin-top:2px;
+    line-height:1.5;
+}
+
+@keyframes custodiaBadgeIn{
+    from{ opacity:0; transform:translateY(-4px); }
+    to{ opacity:1; transform:translateY(0); }
 }
 
 /* =========================
@@ -11451,6 +11545,17 @@ html.dark-mode {
         </div>
 
         <!-- =========================
+        ACCOUNT RESTRICTION NOTICE (shown only when status !== Active)
+        ========================= -->
+
+        <div class="acct-restriction-bar" id="acctRestrictionBar" style="display:none;">
+            <div class="acct-restriction-track" id="acctRestrictionTrack">
+                <span class="acct-restriction-text" id="acctRestrictionText1"><i class="fa-solid fa-triangle-exclamation"></i>&nbsp;</span>
+                <span class="acct-restriction-text" id="acctRestrictionText2"><i class="fa-solid fa-triangle-exclamation"></i>&nbsp;</span>
+            </div>
+        </div>
+
+        <!-- =========================
         HOME PAGE
         ========================= -->
 
@@ -14551,6 +14656,14 @@ TRANSFER PAGE
 
                         </div>
                         <p class="field-err-msg" id="transferBankNameErr"></p>
+
+                        <div class="transfer-custodia-badge" id="transferCustodiaBadge" style="display:none;">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <div>
+                                <strong>Custodia to Custodia Transfer</strong>
+                                <span>This recipient banks with Custodia, so this transfer is processed instantly with no fees.</span>
+                            </div>
+                        </div>
 
                     </div>
 
@@ -18584,6 +18697,44 @@ async function loadUser() {
   applyUserToDOM();
 }
 
+/**
+ * Shows/hides the horizontally scrolling account-restriction marquee
+ * right below the topbar. Visible only when the account status (set by
+ * an admin) is anything other than "Active" — e.g. Frozen, Suspended.
+ * The text is duplicated back-to-back so the CSS animation loops
+ * seamlessly, and includes the cause the admin entered.
+ */
+function updateAcctRestrictionBar(status, reason) {
+  const bar = document.getElementById('acctRestrictionBar');
+  if (!bar) return;
+
+  const isRestricted = !!status && status.toString().trim().toLowerCase() !== 'active';
+
+  if (!isRestricted) {
+    bar.style.display = 'none';
+    return;
+  }
+
+  const reasonText = (reason || '').toString().trim() || 'Contact support for more information.';
+  const message = `Account ${status.toString().toUpperCase()} — Reason: ${reasonText}. Some features may be limited until this is resolved. Need help? Email custodiabankllc@gmail.com.`;
+
+  const t1 = document.getElementById('acctRestrictionText1');
+  const t2 = document.getElementById('acctRestrictionText2');
+  const iconHtml = '<i class="fa-solid fa-triangle-exclamation"></i>&nbsp;';
+  if (t1) t1.innerHTML = iconHtml + escapeHtmlText(message);
+  if (t2) t2.innerHTML = iconHtml + escapeHtmlText(message);
+
+  bar.style.display = 'block';
+}
+
+/** Minimal HTML-escaping for text injected into the marquee via innerHTML. */
+function escapeHtmlText(str) {
+  return (str || '').toString()
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function applyUserToDOM() {
   const u = currentUser;
   if (!u) return;
@@ -18650,6 +18801,9 @@ function applyUserToDOM() {
   qAll('[data-user-status]').forEach(el => el.textContent = status);
   qAll('[data-user-verified]').forEach(el => el.textContent = verified);
   qAll('[data-user-account]').forEach(el => el.textContent = accNum);
+
+  /* ── Account restriction marquee (shown only while status !== Active) ── */
+  updateAcctRestrictionBar(status, u.statusReason || '');
 
   /* ── Balance: all IDs and data-balance ── */
   const balFmt = fmtBalance(balance);
@@ -19465,6 +19619,23 @@ function attachLiveSanitizer(inputId, kind) {
   ['transferAmount','amount'],
 ].forEach(([id, kind]) => attachLiveSanitizer(id, kind));
 
+/* Detects when the transfer recipient's bank is also Custodia Bank
+   and surfaces an inline "Custodia to Custodia" indicator so the user
+   knows the transfer will be instant and fee-free. */
+function checkCustodiaToCustodia() {
+  const bankEl = q('#transferBankName');
+  const badge  = q('#transferCustodiaBadge');
+  if (!bankEl || !badge) return;
+
+  const isCustodia = bankEl.value.trim().toLowerCase().includes('custodia');
+  badge.style.display = isCustodia ? 'flex' : 'none';
+}
+
+const _transferBankNameEl = q('#transferBankName');
+if (_transferBankNameEl) {
+  _transferBankNameEl.addEventListener('input', checkCustodiaToCustodia);
+}
+
 /* Validates one field; returns true if valid, otherwise sets the inline error */
 function validateOne(inputId, kind, required) {
   const el = q('#' + inputId);
@@ -19617,6 +19788,7 @@ async function submitTransfer() {
         q('#' + id) && (q('#' + id).value = '');
       });
       q('#transferTypeSelect') && (q('#transferTypeSelect').value = '');
+      checkCustodiaToCustodia();
       showToast('Transfer submitted and pending admin approval.', 'success', 6000);
     } else {
       showToast(res.message || 'Transfer failed. Please try again.', 'error');
