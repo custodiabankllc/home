@@ -3228,6 +3228,108 @@ ALERT
     line-height:1.5;
 }
 
+/* =========================
+ACCOUNT LOOKUP DROPDOWN (transfer — matches an internal Custodia account)
+========================= */
+
+.account-lookup-wrap{
+    position:relative;
+}
+
+.account-lookup-dropdown{
+    position:absolute;
+    left:0;
+    right:0;
+    top:calc(100% + 8px);
+    z-index:99999;
+
+    background:#ffffff;
+    border:1px solid #e2e8f0;
+    border-radius:16px;
+    box-shadow:0 12px 32px rgba(15,23,42,.12);
+
+    overflow:hidden;
+    display:none;
+}
+
+.account-lookup-dropdown.show{ display:block; }
+
+.account-lookup-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:13px 16px;
+    cursor:pointer;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.account-lookup-item:last-child{ border-bottom:none; }
+
+.account-lookup-item:hover,
+.account-lookup-item:active{ background:#f8fafc; }
+
+.account-lookup-avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    flex-shrink:0;
+
+    background:linear-gradient(135deg,#2563eb,#0ea5e9);
+    color:#ffffff;
+    font-size:13.5px;
+    font-weight:800;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.account-lookup-info{ min-width:0; flex:1; }
+
+.account-lookup-name{
+    font-size:13.5px;
+    font-weight:700;
+    color:#0f172a;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.account-lookup-meta{
+    font-size:11.5px;
+    font-weight:600;
+    color:#64748b;
+    margin-top:2px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.account-lookup-badge{
+    flex-shrink:0;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.04em;
+    color:#16a34a;
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+    padding:3px 9px;
+    border-radius:999px;
+}
+
+.account-lookup-loading{
+    padding:14px 16px;
+    font-size:12.5px;
+    font-weight:600;
+    color:#64748b;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.account-lookup-loading i{ color:#2563eb; }
+
 @keyframes custodiaBadgeIn{
     from{ opacity:0; transform:translateY(-4px); }
     to{ opacity:1; transform:translateY(0); }
@@ -14673,15 +14775,22 @@ TRANSFER PAGE
 
                         <label>Account Number / IBAN</label>
 
-                        <div class="transfer-input">
+                        <div class="account-lookup-wrap">
 
-                            <i class="fa-solid fa-wallet"></i>
+                            <div class="transfer-input">
 
-                            <input type="text"
-                                   id="transferAccountNumber"
-                                   placeholder="Enter account number"
-                                   inputmode="numeric"
-                                   maxlength="34">
+                                <i class="fa-solid fa-wallet"></i>
+
+                                <input type="text"
+                                       id="transferAccountNumber"
+                                       placeholder="Enter account number"
+                                       inputmode="numeric"
+                                       maxlength="34"
+                                       autocomplete="off">
+
+                            </div>
+
+                            <div class="account-lookup-dropdown" id="transferAccountLookup"></div>
 
                         </div>
                         <p class="field-err-msg" id="transferAccountNumberErr"></p>
@@ -19635,6 +19744,118 @@ const _transferBankNameEl = q('#transferBankName');
 if (_transferBankNameEl) {
   _transferBankNameEl.addEventListener('input', checkCustodiaToCustodia);
 }
+
+/* ============================================================
+   ACCOUNT LOOKUP — matches a typed account number against
+   Custodia's own user base and offers it as a one-tap autofill
+============================================================ */
+(function setupAccountLookup() {
+  const input    = q('#transferAccountNumber');
+  const dropdown = q('#transferAccountLookup');
+  if (!input || !dropdown) return;
+
+  let debounceTimer = null;
+  let activeRequestId = 0;
+
+  function hideDropdown() {
+    dropdown.classList.remove('show');
+    dropdown.innerHTML = '';
+  }
+
+  function initials(name) {
+    const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '?';
+    return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+  }
+
+  function renderNoMatch() {
+    dropdown.innerHTML = `<div class="account-lookup-loading"><i class="fa-regular fa-circle-question"></i> No Custodia account matches that number — this looks like an external bank transfer.</div>`;
+    dropdown.classList.add('show');
+  }
+
+  function renderMatches(matches) {
+    if (!matches.length) { renderNoMatch(); return; }
+
+    dropdown.innerHTML = matches.map((m, i) => `
+      <div class="account-lookup-item" data-idx="${i}">
+        <div class="account-lookup-avatar">${initials(m.name)}</div>
+        <div class="account-lookup-info">
+          <div class="account-lookup-name">${escapeForAttr(m.name)}</div>
+          <div class="account-lookup-meta">${escapeForAttr(m.bank)} · ${escapeForAttr(m.accountNumber)}</div>
+        </div>
+        <div class="account-lookup-badge">CUSTODIA</div>
+      </div>
+    `).join('');
+
+    dropdown.querySelectorAll('.account-lookup-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const match = matches[Number(el.dataset.idx)];
+        applyMatch(match);
+      });
+    });
+
+    dropdown.classList.add('show');
+  }
+
+  function escapeForAttr(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function applyMatch(match) {
+    const recipientEl = q('#transferRecipient');
+    const bankEl       = q('#transferBankName');
+    const accountEl    = q('#transferAccountNumber');
+
+    if (recipientEl) recipientEl.value = match.name;
+    if (bankEl)       bankEl.value = match.bank;
+    if (accountEl)    accountEl.value = match.accountNumber;
+
+    clearFieldError('transferRecipient');
+    clearFieldError('transferBankName');
+    clearFieldError('transferAccountNumber');
+
+    checkCustodiaToCustodia();
+    hideDropdown();
+  }
+
+  input.addEventListener('input', () => {
+    const query = input.value.trim();
+    clearTimeout(debounceTimer);
+
+    if (query.length < 4) { hideDropdown(); return; }
+
+    const requestId = ++activeRequestId;
+    debounceTimer = setTimeout(async () => {
+      dropdown.innerHTML = `<div class="account-lookup-loading"><i class="fa-solid fa-spinner fa-spin"></i> Checking Custodia accounts…</div>`;
+      dropdown.classList.add('show');
+
+      const res = await api({
+        action: 'lookupAccount',
+        query: query,
+        excludeUid: currentUser ? currentUser.uid : ''
+      });
+
+      if (requestId !== activeRequestId) return; // a newer keystroke superseded this request
+      if (res && res.status && Array.isArray(res.matches)) {
+        renderMatches(res.matches);
+      } else {
+        // Backend error or the lookupAccount action isn't deployed yet
+        dropdown.innerHTML = `<div class="account-lookup-loading"><i class="fa-solid fa-triangle-exclamation" style="color:#dc2626;"></i> Couldn't check Custodia accounts right now.</div>`;
+        dropdown.classList.add('show');
+      }
+    }, 350);
+  });
+
+  input.addEventListener('focus', () => {
+    if (dropdown.innerHTML.trim() && input.value.trim().length >= 4) dropdown.classList.add('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target) && e.target !== input) hideDropdown();
+  });
+})();
 
 /* Validates one field; returns true if valid, otherwise sets the inline error */
 function validateOne(inputId, kind, required) {
