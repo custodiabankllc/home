@@ -240,6 +240,17 @@ body::before{
 .field-hint{font-size:12px;color:#94a3b8;margin-top:5px;}
 .label-hint{font-size:11px;color:#94a3b8;font-weight:400;margin-left:4px;}
 
+/* account type chooser */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.type-card{border:1.5px solid #dbe5f3;border-radius:16px;padding:16px;cursor:pointer;background:#f8fbff;transition:.25s;}
+.type-card:hover{border-color:#93c5fd;}
+.type-card.selected{border-color:#2563eb;background:#eff6ff;box-shadow:0 0 0 4px rgba(37,99,235,.08);}
+.type-card h4{font-size:14px;color:#0f172a;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.type-card h4 i{color:#2563eb;}
+.type-card p{font-size:12px;color:#64748b;line-height:1.6;}
+.joint-note{display:none;margin-bottom:8px;padding:14px 16px;border-radius:14px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;font-size:13px;line-height:1.7;}
+@media(max-width:480px){.type-grid{grid-template-columns:1fr;}}
+
 /* review card */
 .review-card{
   background:#f8fbff;border:1px solid #e2e8f0;border-radius:18px;padding:20px;
@@ -256,6 +267,37 @@ body::before{
   cursor:pointer;padding:2px 6px;border-radius:6px;white-space:nowrap;
 }
 .review-edit:hover{background:#eff6ff;}
+
+/* ── MOBILE: page is fixed to the screen; only the form area scrolls ── */
+@media(max-width:900px){
+  html,body{height:100%;margin:0;overflow:hidden;}
+  body{height:100vh;height:100dvh;min-height:0;}
+  .container{width:100%;height:100vh;height:100dvh;min-height:0;padding:0;display:block;}
+  .auth-wrapper{width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;border-radius:0;border:none;box-shadow:none;overflow:hidden;display:block;}
+  .form-side{height:100vh;height:100dvh;padding:0;padding-top:env(safe-area-inset-top,0px);display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;}
+
+  /* fixed numbered wizard */
+  .step-progress{flex:none;position:static;margin:0;padding:14px 20px 12px;background:#fff;box-shadow:0 1px 0 #eef2f7;}
+  .step-track{margin-bottom:12px;}
+  .step-dot span{width:28px;height:28px;font-size:12px;}
+  .step-dot label{font-size:10px;}
+
+  /* scrollable form body: the active step scrolls, its heading stays pinned inside it */
+  .wizard-step.active{display:block;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 20px 28px;}
+  .wizard-step .panel-title{position:sticky;top:0;z-index:5;background:#fff;margin:0 -20px 14px;padding:12px 20px;border-bottom:1px solid #eef2f7;}
+  .wizard-step .panel-title h1{font-size:22px;margin-bottom:4px;}
+  .wizard-step .panel-title p{font-size:12.5px;line-height:1.5;margin-bottom:0;}
+  .wizard-step .panel-title .type-pill{display:none;}
+}
+@media(max-width:900px){
+  .lang-row{flex:none;margin:10px 20px 0 !important;}
+  .auth-tabs{flex:none;margin:10px 20px 14px;}
+  #loginPanel.active{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px 24px;}
+  #signupPanel.active{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;}
+  /* sign-up: tabs stay pinned at the top, language picker hidden to save space */
+  .form-side.signup-mode .lang-row{display:none;}
+  .form-side.signup-mode .auth-tabs{margin:12px 20px 10px;}
+}
 </style>
 </head>
 <body>
@@ -289,7 +331,7 @@ body::before{
   <div class="form-side">
 
     <!-- LANGUAGE SELECTOR -->
-    <div style="display:flex;justify-content:flex-end;margin-bottom:14px;">
+    <div class="lang-row" style="display:flex;justify-content:flex-end;margin-bottom:14px;">
       <div style="min-width:70px;padding:9px 12px;background:#fff;border-radius:5px;width:fit-content;border:1px solid #ececec;">
         <div class="gtranslate_wrapper"></div>
         <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"languages":["en","fr","zh-CN","ja","es"],"wrapper_selector":".gtranslate_wrapper","flag_size":16,"flag_style":"3d","alt_flags":{"en":"usa"}}</script>
@@ -364,8 +406,22 @@ body::before{
       <div class="wizard-step active" id="step1">
         <div class="panel-title">
           <h1>Personal details</h1>
-          <p>Start with the basics — your name and where you're based.</p>
+          <p>Choose the type of account you want, then start with the basics.</p>
         </div>
+        <div class="type-grid">
+          <div class="type-card selected" id="typeIndividual" onclick="selectAcctType('individual')">
+            <h4><i class="fa-solid fa-user"></i> Individual</h4>
+            <p>An account in your name only.</p>
+          </div>
+          <div class="type-card" id="typeJoint" onclick="selectAcctType('joint')">
+            <h4><i class="fa-solid fa-user-group"></i> Joint</h4>
+            <p>Shared by two people, each with their own sign-in.</p>
+          </div>
+        </div>
+        <div class="joint-note" id="jointNote">
+          <i class="fa-solid fa-circle-info"></i> Joint accounts are opened on a dedicated page where you add both holders' details.
+        </div>
+        <div id="individualFields">
         <div class="form-group">
           <label>Full Name</label>
           <div class="input-wrap" id="wrap-signupName">
@@ -411,6 +467,7 @@ body::before{
           </div>
           <p class="field-error" id="err-signupCountry"><i class="fa fa-circle-exclamation"></i><span></span></p>
         </div>
+        </div><!-- /individualFields -->
         <div class="wizard-nav">
           <div></div>
           <button class="nav-btn next-btn" id="next1" onclick="goStep(2)" disabled>Continue <i class="fa fa-arrow-right"></i></button>
@@ -570,9 +627,26 @@ body::before{
 /* ── CONFIG ── */
 const API_URL = "https://script.google.com/macros/s/AKfycbzWuV_Ilb3H79juD4ep7WvQO_1rfDgRKDbQF0_LMfOOpNafs0NAayPL6qXy4yigeI0z/exec"; // GAS URL
 const DASHBOARD = "accountdashboard.html"; // your dashboard filename
+const JOINT_PAGE = "jointaccount.html";   // joint account creation page
+
+/* ── ACCOUNT TYPE ── */
+let acctType = 'individual';
+function selectAcctType(t) {
+  acctType = t;
+  const joint = t === 'joint';
+  document.getElementById('typeIndividual').classList.toggle('selected', !joint);
+  document.getElementById('typeJoint').classList.toggle('selected', joint);
+  document.getElementById('individualFields').style.display = joint ? 'none' : 'block';
+  document.getElementById('jointNote').style.display = joint ? 'block' : 'none';
+  const btn = document.getElementById('next1');
+  btn.innerHTML = joint ? 'Continue to joint application <i class="fa fa-arrow-right"></i>'
+                        : 'Continue <i class="fa fa-arrow-right"></i>';
+  if (joint) btn.disabled = false; else liveCheck1();
+}
 
 /* ── TAB SWITCH ── */
 function switchTab(tab) {
+  document.querySelector('.form-side').classList.toggle('signup-mode', tab === 'signup');
   document.getElementById('loginPanel').classList.toggle('active', tab === 'login');
   document.getElementById('signupPanel').classList.toggle('active', tab === 'signup');
   document.getElementById('loginTab').classList.toggle('active', tab === 'login');
@@ -586,6 +660,7 @@ function switchTab(tab) {
     if (img) { img.style.display = 'none'; img.src = ''; }
     const icon = document.getElementById('signupPhotoIcon');
     if (icon) icon.style.display = 'block';
+    selectAcctType('individual');
     goStep(1);
   }
   clearMessages();
@@ -657,6 +732,7 @@ async function doLogin() {
       const storage = remember ? localStorage : sessionStorage;
       storage.setItem('custodia_uid',  data.user.uid);
       storage.setItem('custodia_name', data.user.name);
+      storage.setItem('custodia_role', data.user.loggedInAs || 'primary');
       showMsg('loginSuccess', 'Login successful! Redirecting…');
       setTimeout(() => { window.location.href = DASHBOARD; }, 800);
     } else {
@@ -728,7 +804,7 @@ function liveCheck1() {
     setFieldError('signupCountry', '');
   }
 
-  document.getElementById('next1').disabled = !ok;
+  document.getElementById('next1').disabled = acctType === 'joint' ? false : !ok;
 }
 
 /* ── Live check: Step 2 ── */
@@ -808,6 +884,11 @@ function liveCheck3() {
 }
 
 function goStep(n) {
+  // Joint accounts are created on their own page
+  if (n === 2 && currentStep === 1 && acctType === 'joint') {
+    window.location.href = JOINT_PAGE;
+    return;
+  }
   // show field errors on current step if trying to advance but button was somehow clicked
   if (n > currentStep) {
     if (!runValidation(currentStep)) return;
@@ -829,6 +910,8 @@ function goStep(n) {
   currentStep = n;
   clearMessages();
   document.querySelector('.form-side').scrollTop = 0;
+  window.scrollTo(0, 0);
+  var _st=document.getElementById('step'+n); if(_st) _st.scrollTop=0;
 }
 
 /* Hard validation (called on goStep, shows errors explicitly for any missed fields) */
@@ -1004,6 +1087,7 @@ async function doSignup() {
         if (login.status) {
           sessionStorage.setItem('custodia_uid',  login.user.uid);
           sessionStorage.setItem('custodia_name', login.user.name);
+          sessionStorage.setItem('custodia_role', login.user.loggedInAs || 'primary');
           window.location.href = DASHBOARD;
         } else {
           switchTab('login');
@@ -1028,10 +1112,31 @@ document.addEventListener('keydown', e => {
   else if (currentStep === 5) doSignup();
 });
 
+/* ── DEEP LINK: auth.html?type=joint opens Create Account with Joint preselected ── */
+(function() {
+  if (new URLSearchParams(location.search).get('type') === 'joint') {
+    switchTab('signup');
+    selectAcctType('joint');
+  }
+})();
+
 /* ── REDIRECT IF ALREADY LOGGED IN ── */
 (function() {
   const uid = sessionStorage.getItem('custodia_uid') || localStorage.getItem('custodia_uid');
   if (uid) window.location.href = DASHBOARD;
+})();
+
+/* ── MOBILE: keep sticky offsets in sync (progress bar height) ── */
+(function(){
+  function syncProgH(){
+    var p=document.querySelector('.step-progress');
+    if(p) document.documentElement.style.setProperty('--prog-h', p.getBoundingClientRect().height+'px');
+  }
+  window.addEventListener('resize',syncProgH);
+  window.addEventListener('load',syncProgH);
+  var p=document.querySelector('.step-progress');
+  if(p && window.ResizeObserver) new ResizeObserver(syncProgH).observe(p);
+  syncProgH();
 })();
 </script>
 

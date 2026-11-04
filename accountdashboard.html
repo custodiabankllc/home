@@ -11369,6 +11369,107 @@ html.dark-mode {
 </style>
 
 
+<style id="jointModeStyles">
+/* ═══ JOINT ACCOUNT MODE — only active when body.joint-mode is set ═══ */
+/* ── SIGNATORY REQUEST POPUP ── */
+.sigreq-overlay{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100000;opacity:0;visibility:hidden;transition:.3s;}
+.sigreq-overlay.show{opacity:1;visibility:visible;}
+.sigreq-box{width:100%;max-width:460px;max-height:92vh;overflow-y:auto;background:#fff;border-radius:28px;padding:28px 26px;box-shadow:0 30px 80px rgba(0,0,0,.25);text-align:center;transform:translateY(16px) scale(.97);transition:.3s;}
+.sigreq-overlay.show .sigreq-box{transform:none;}
+.sigreq-photo{width:92px;height:92px;border-radius:26px;margin:0 auto 14px;background:#dbeafe;color:#2563eb;font-size:30px;font-weight:800;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in;}
+.sigreq-photo img{width:100%;height:100%;object-fit:cover;}
+.sigreq-chip{display:inline-flex;align-items:center;gap:6px;background:#fef3c7;color:#b45309;font-size:11px;font-weight:800;letter-spacing:.05em;padding:6px 12px;border-radius:999px;margin-bottom:10px;}
+.sigreq-box h2{font-size:21px;color:#0f172a;margin-bottom:6px;}
+.sigreq-box > p{font-size:13.5px;color:#64748b;line-height:1.7;margin-bottom:14px;}
+.sigreq-details{text-align:left;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:6px 16px;margin-bottom:14px;}
+.sigreq-details div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid #eef2f7;font-size:13px;}
+.sigreq-details div:last-child{border-bottom:none;}
+.sigreq-details span{color:#64748b;font-weight:600;flex-shrink:0;}
+.sigreq-details strong{color:#0f172a;text-align:right;word-break:break-word;}
+.sigreq-pin{width:100%;height:50px;border:1.5px solid #dbe5f3;border-radius:14px;background:#f8fbff;text-align:center;font-size:18px;letter-spacing:10px;font-weight:700;outline:none;margin-bottom:6px;}
+.sigreq-pin:focus{border-color:#2563eb;background:#fff;}
+.sigreq-hint{font-size:11.5px;color:#94a3b8;margin-bottom:12px;}
+.sigreq-msg{font-size:12.5px;font-weight:600;color:#dc2626;min-height:18px;margin-bottom:8px;}
+.sigreq-actions{display:flex;gap:10px;}
+.sigreq-actions button{flex:1;height:48px;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;}
+.sigreq-ok{background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;}
+.sigreq-no{background:#fee2e2;color:#dc2626;}
+.sigreq-actions button:disabled{opacity:.6;cursor:not-allowed;}
+.sigreq-later{background:none;border:none;color:#64748b;font-size:12.5px;font-weight:600;margin-top:12px;cursor:pointer;}
+.sigreq-count{font-size:11.5px;color:#94a3b8;margin-top:8px;}
+.joint-only{display:none !important;}
+body.joint-mode .joint-only{display:flex !important;}
+body.joint-mode .menu a.joint-only{display:flex !important;}
+
+body.joint-mode{background:linear-gradient(180deg,#f5f3ff 0%,#f8fafc 320px) !important;}
+body.joint-mode .menu a:hover,
+body.joint-mode .menu a.active{background:#ede9fe;color:#6d28d9;}
+body.joint-mode .sidebar .logo{border-bottom:3px solid #7c3aed !important;}
+body.joint-mode .topbar{box-shadow:0 8px 28px rgba(109,40,217,.12);border:1px solid #ddd6fe;}
+body.joint-mode .me-badge{background:#ede9fe !important;color:#6d28d9 !important;}
+
+.joint-banner{margin:12px 0 4px;border-radius:20px;padding:14px 18px;color:#fff;align-items:center;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#5b21b6,#7c3aed 55%,#2563eb);box-shadow:0 12px 30px rgba(91,33,182,.25);}
+.joint-banner .jb-faces{display:flex;}
+.joint-banner .jb-faces .jb-face{width:44px;height:44px;border-radius:50%;border:3px solid #fff;object-fit:cover;background:#c4b5fd;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;}
+.joint-banner .jb-faces .jb-face + .jb-face{margin-left:-14px;}
+.joint-banner .jb-text{flex:1;min-width:200px;}
+.joint-banner .jb-text strong{display:block;font-size:15px;letter-spacing:.2px;}
+.joint-banner .jb-text span{font-size:12.5px;opacity:.85;}
+.joint-banner .jb-chip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);padding:7px 14px;border-radius:999px;font-size:12px;font-weight:700;
+  display:inline-flex;align-items:center;gap:7px;}
+.joint-banner .jb-btn{background:#fff;color:#6d28d9;border:none;border-radius:12px;padding:9px 16px;font-weight:800;font-size:12.5px;cursor:pointer;}
+
+/* topbar: stacked faces of both holders next to the name */
+.topbar-dual{display:none;margin-right:-6px;}
+body.joint-mode .topbar-dual,body.multi-sig .topbar-dual{display:flex;}
+body.multi-sig .menu a.sig-nav,body.multi-sig .joint-banner{display:flex !important;}
+/* with more than one signatory, only the stacked faces show (not the single profile avatar) */
+body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !important;}
+.topbar-dual img,.topbar-dual span{width:30px;height:30px;border-radius:50%;border:2px solid #fff;object-fit:cover;background:#ddd6fe;
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:#6d28d9;}
+.topbar-dual img + img,.topbar-dual span + img,.topbar-dual img + span{margin-left:-10px;}
+
+/* signatories page */
+.sig-wrap{padding:6px 2px 40px;}
+.sig-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin:8px 0 20px;}
+.sig-head small{color:#7c3aed;font-weight:800;letter-spacing:.08em;font-size:11px;text-transform:uppercase;}
+.sig-head h1{font-size:30px;color:#0f172a;margin-top:4px;}
+.sig-head p{color:#64748b;font-size:14px;max-width:560px;line-height:1.7;margin-top:6px;}
+.sig-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:22px;}
+.sig-stat{background:#fff;border:1px solid #ede9fe;border-radius:18px;padding:16px 18px;}
+.sig-stat span{display:block;font-size:11.5px;color:#64748b;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+.sig-stat h4{font-size:16px;color:#0f172a;word-break:break-word;}
+.sig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+.sig-card{background:#fff;border:1px solid #ede9fe;border-radius:28px;overflow:hidden;box-shadow:0 14px 36px rgba(91,33,182,.08);position:relative;}
+.sig-card.is-you{border:2px solid #7c3aed;}
+.sig-top{background:linear-gradient(135deg,#ede9fe,#dbeafe);padding:26px 20px 56px;text-align:center;position:relative;}
+.sig-role{display:inline-flex;gap:6px;align-items:center;background:#fff;color:#6d28d9;font-size:11.5px;font-weight:800;letter-spacing:.06em;
+  padding:6px 12px;border-radius:999px;text-transform:uppercase;}
+.sig-you{position:absolute;top:14px;right:14px;background:#7c3aed;color:#fff;font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;}
+.sig-photo{width:132px;height:132px;border-radius:34px;border:5px solid #fff;object-fit:cover;background:#e9d5ff;margin:-70px auto 0;display:flex;
+  align-items:center;justify-content:center;font-size:44px;color:#7c3aed;box-shadow:0 12px 26px rgba(15,23,42,.15);position:relative;z-index:1;}
+.sig-body{padding:14px 22px 24px;text-align:center;}
+.sig-body h3{font-size:21px;color:#0f172a;margin-bottom:4px;}
+.sig-rel{color:#64748b;font-size:13px;margin-bottom:12px;}
+.sig-id{display:inline-flex;align-items:center;gap:7px;background:#dcfce7;color:#15803d;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;margin-bottom:16px;}
+.sig-id.missing{background:#fef3c7;color:#b45309;}
+.sig-rows{text-align:left;border-top:1px solid #f1f5f9;}
+.sig-row{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #f1f5f9;font-size:13.5px;}
+.sig-row i{color:#7c3aed;width:18px;margin-top:2px;}
+.sig-row small{display:block;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.sig-row b{color:#0f172a;font-weight:600;word-break:break-word;}
+.sig-photo-btn{cursor:zoom-in;}
+.sig-rule{margin-top:22px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:20px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;}
+.sig-rule i{color:#7c3aed;font-size:22px;margin-top:2px;}
+.sig-rule h4{color:#4c1d95;margin-bottom:4px;}
+.sig-rule p{color:#6b21a8;font-size:13.5px;line-height:1.7;}
+.sig-lightbox{position:fixed;inset:0;background:rgba(15,23,42,.8);display:none;align-items:center;justify-content:center;z-index:99999;padding:24px;}
+.sig-lightbox.open{display:flex;}
+.sig-lightbox img{max-width:min(92vw,520px);max-height:86vh;border-radius:24px;border:6px solid #fff;}
+@media(max-width:600px){.sig-head h1{font-size:24px;}}
+</style>
 </head>
 
 <body>
@@ -11569,6 +11670,11 @@ html.dark-mode {
                         Me
                     </a>
 
+                    <a class="nav-control joint-only sig-nav" data-page="signatoriesPage">
+                        <i class="fa-solid fa-user-group"></i>
+                        Signatories
+                    </a>
+
 
 
 
@@ -11635,15 +11741,28 @@ html.dark-mode {
                         <span class="avatar-icon"><i class="fa-solid fa-user"></i></span>
                     </div>
 
+                    <div class="topbar-dual" id="topbarDual"></div>
+
                     <div class="profile-text">
                         <h4 data-user-name>&nbsp;</h4>
-                        <p>Premium Banking Client</p>
+                        <p id="topbarSubtitle">Premium Banking Client</p>
                     </div>
 
                 </div>
 
             </div>
 
+        </div>
+
+        <!-- JOINT ACCOUNT BANNER (joint accounts only) -->
+        <div class="joint-banner joint-only" id="jointBanner">
+            <div class="jb-faces" id="jbFaces"></div>
+            <div class="jb-text">
+                <strong id="jbTitle">Joint Account</strong>
+                <span id="jbSub">Shared account</span>
+            </div>
+            <span class="jb-chip"><i class="fa-solid fa-pen-nib"></i> <span id="jbMode">Either to sign</span></span>
+            <button class="jb-btn" id="jbManageBtn" onclick="openManageSignatories()"><i class="fa-solid fa-users-gear"></i> Manage signatories</button>
         </div>
 
         <!-- =========================
@@ -11926,6 +12045,18 @@ ACCOUNT NOTICE
 
                     <p>
                         Move money securely.
+                    </p>
+                </div>
+
+                <div class="action-card" id="jointAcctCard" onclick="location.href='jointaccountmanage.html'" style="cursor:pointer;">
+                    <div class="action-icon">
+                        <i class="fa-solid fa-user-group"></i>
+                    </div>
+
+                    <h3>Joint Account</h3>
+
+                    <p>
+                        Add or invite signatories.
                     </p>
                 </div>
 
@@ -13138,6 +13269,36 @@ ACCOUNT NOTICE
 ME PAGE / PROFILE PAGE
 ========================= -->
 
+<!-- =========================
+SIGNATORIES PAGE (joint accounts)
+========================= -->
+
+<section id="signatoriesPage" class="page-view">
+  <div class="sig-wrap">
+    <div class="sig-head">
+      <div>
+        <small>Joint Account</small>
+        <h1>Account Signatories</h1>
+        <p>The verified holders of this account, with the photos they provided as physical identification when the account was opened.</p>
+      </div>
+      <a class="jb-btn" id="manageSigBtn" href="jointaccountmanage.html" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border-radius:12px;padding:10px 16px;font-weight:800;font-size:12.5px;text-decoration:none;white-space:nowrap;"><i class="fa-solid fa-user-plus"></i> Add signatories</a>
+    </div>
+
+    <div class="sig-summary" id="sigSummary"></div>
+    <div class="sig-grid" id="sigGrid"></div>
+
+    <div class="sig-rule">
+      <i class="fa-solid fa-shield-halved"></i>
+      <div>
+        <h4 id="sigRuleTitle">Either to sign</h4>
+        <p id="sigRuleText">Either holder can authorise transactions on this account.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sig-lightbox" id="sigLightbox" onclick="this.classList.remove('open')"><img id="sigLightboxImg" alt=""></div>
+
 <section id="mePage" class="page-view">
 
     <!-- PROFILE HERO -->
@@ -13332,7 +13493,7 @@ ME PAGE / PROFILE PAGE
 
                         <span>Account Type</span>
 
-                        <h4>International Premium Banking</h4>
+                        <h4 data-user-accounttype>Individual Account</h4>
 
                     </div>
 
@@ -13342,6 +13503,59 @@ ME PAGE / PROFILE PAGE
 
                         <h4 data-user-verified>—</h4>
 
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- JOINT HOLDER (shown only for joint accounts) -->
+
+            <div class="me-card" id="jointHolderCard" style="display:none;">
+
+                <div class="me-card-header">
+
+                    <div>
+                        <small>Shared Account</small>
+                        <h2>Joint Holder</h2>
+                    </div>
+
+                    <span class="status-pill verified" id="jointModePill">
+                        <i class="fa-solid fa-user-group"></i> <span data-joint-mode>Either to sign</span>
+                    </span>
+
+                </div>
+
+                <div class="me-info-grid">
+
+                    <div class="me-info-item">
+                        <span>Joint Holder Name</span>
+                        <h4 data-joint-name>—</h4>
+                    </div>
+
+                    <div class="me-info-item">
+                        <span>Relationship</span>
+                        <h4 data-joint-relationship>—</h4>
+                    </div>
+
+                    <div class="me-info-item">
+                        <span>Joint Holder Email</span>
+                        <h4 data-joint-email>—</h4>
+                    </div>
+
+                    <div class="me-info-item">
+                        <span>Joint Holder Phone</span>
+                        <h4 data-joint-phone>—</h4>
+                    </div>
+
+                    <div class="me-info-item">
+                        <span>Joint Holder Address</span>
+                        <h4 data-joint-address>—</h4>
+                    </div>
+
+                    <div class="me-info-item">
+                        <span>Signed In As</span>
+                        <h4 data-joint-signedin>—</h4>
                     </div>
 
                 </div>
@@ -18231,6 +18445,26 @@ ACCOUNT FROZEN MODAL
 <!--
 
 
+<!-- SIGNATORY REQUEST POPUP (primary holder authorizes new signatories) -->
+<div class="sigreq-overlay" id="sigReqModal">
+  <div class="sigreq-box">
+    <div class="sigreq-photo" id="srPhoto" onclick="srZoom()"></div>
+    <span class="sigreq-chip"><i class="fa-solid fa-user-plus"></i> NEW SIGNATORY REQUEST</span>
+    <h2 id="srTitle">Someone signed up</h2>
+    <p>This person has signed up to be a signatory on your account. They cannot sign anything until you authorize them.</p>
+    <div class="sigreq-details" id="srDetails"></div>
+    <input class="sigreq-pin" id="srPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+    <div class="sigreq-hint">Enter your 4-digit transaction PIN to authorize.</div>
+    <div class="sigreq-msg" id="srMsg"></div>
+    <div class="sigreq-actions">
+      <button class="sigreq-no" id="srNo" onclick="srDecide('decline')">Decline</button>
+      <button class="sigreq-ok" id="srOk" onclick="srDecide('approve')">Authorize</button>
+    </div>
+    <div class="sigreq-count" id="srCount"></div>
+    <button class="sigreq-later" onclick="srLater()">Decide later</button>
+  </div>
+</div>
+
 <div class="freeze-modal-overlay" id="freezeModal">
 
     <div class="freeze-modal">
@@ -18844,6 +19078,107 @@ function escapeHtmlText(str) {
     .replace(/>/g, '&gt;');
 }
 
+function applyJointToDOM(u) {
+  const isJoint = !!(u && u.isJoint && u.jointHolder);
+  document.body.classList.toggle('joint-mode', isJoint);
+  qAll('[data-user-accounttype]').forEach(el => el.textContent = isJoint ? 'Joint Account' : 'Individual Account');
+  const card = document.getElementById('jointHolderCard');
+  if (card) card.style.display = isJoint ? '' : 'none';
+  if (!isJoint) return;
+
+  const j = u.jointHolder;
+  const role = sessionStorage.getItem('custodia_role') || localStorage.getItem('custodia_role') || 'primary';
+  const me = role === 'joint' ? { name: j.name, photo: j.photoUrl } : { name: u.name, photo: u.photoUrl };
+  const first = (me.name || '').trim().split(' ')[0] || '';
+  const mode = u.operatingMode || 'Either to sign';
+  const esc = escapeHtmlText;
+
+  // ── Joint Holder card on the Me page ──
+  const set = (sel, v) => qAll(sel).forEach(el => el.textContent = v || '—');
+  set('[data-joint-name]', j.name);  set('[data-joint-relationship]', j.relationship);
+  set('[data-joint-email]', j.email); set('[data-joint-phone]', j.phone);
+  set('[data-joint-address]', j.address); set('[data-joint-mode]', mode);
+  set('[data-joint-signedin]', me.name + (role === 'joint' ? ' (Joint holder)' : ' (Primary holder)'));
+
+  // ── Signed-in holder's identity everywhere ──
+  qAll('.profile-text h4').forEach(el => el.textContent = me.name);
+  qAll('[data-greeting]').forEach(el => el.textContent = 'Welcome back, ' + first);
+  qAll('.me-user-info h1').forEach(el => el.textContent = u.name + ' & ' + j.name);
+  applyPhoto(me.photo || '');
+  const sub = document.getElementById('topbarSubtitle');
+  if (sub) sub.textContent = 'Joint Account · ' + (role === 'joint' ? 'Joint holder' : 'Primary holder');
+  qAll('.me-badge').forEach(el => el.textContent = 'Joint Account');
+
+  // ── Face stack in topbar + banner ──
+  const face = (url, cls) => url ? '<img class="' + cls + '" src="' + esc(url) + '" alt="">'
+                                 : '<span class="' + cls + '"><i class="fa-solid fa-user"></i></span>';
+  const dual = document.getElementById('topbarDual');
+  if (dual) dual.innerHTML = face(u.photoUrl, '') + face(j.photoUrl, '');
+  const faces = document.getElementById('jbFaces');
+  if (faces) faces.innerHTML = face(u.photoUrl, 'jb-face') + face(j.photoUrl, 'jb-face');
+  const t = document.getElementById('jbTitle');
+  if (t) t.textContent = u.name + ' & ' + j.name;
+  const st = document.getElementById('jbSub');
+  if (st) st.textContent = 'Joint account · signed in as ' + me.name;
+  const mm = document.getElementById('jbMode');
+  if (mm) mm.textContent = mode;
+
+  renderSignatories(u, role);
+}
+
+function openSigPhoto(url) {
+  if (!url) return;
+  document.getElementById('sigLightboxImg').src = url;
+  document.getElementById('sigLightbox').classList.add('open');
+}
+
+function renderSignatories(u, role) {
+  const j = u.jointHolder;
+  const esc = escapeHtmlText;
+  const mode = u.operatingMode || 'Either to sign';
+
+  const opened = u.dateRegistered ? new Date(u.dateRegistered) : null;
+  const openedTxt = opened && !isNaN(opened) ? opened.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
+  const sum = document.getElementById('sigSummary');
+  if (sum) sum.innerHTML = [
+    ['Account Number', u.accountNumber || '—'], ['Signatories', ((j ? 2 : 1) + (window._extraSigs || []).length) + ' signatories'],
+    ['Operating Mode', mode], ['Opened', openedTxt], ['Status', u.status || 'Active']
+  ].map(([l, v]) => '<div class="sig-stat"><span>' + l + '</span><h4>' + esc(v) + '</h4></div>').join('');
+
+  const holders = [
+    { key: 'primary', label: 'Primary Holder', name: u.name, rel: 'Account owner', email: u.email,
+      phone: u.phoneNumber, address: u.address, photo: u.photoUrl },
+  ];
+  if (j) holders.push({ key: 'joint', label: 'Joint Holder', name: j.name, rel: j.relationship || 'Joint holder', email: j.email,
+      phone: j.phone, address: j.address, photo: j.photoUrl });
+  (window._extraSigs || []).forEach(sg => holders.push({ key: 'sig-' + sg.id, label: 'Signatory', name: sg.name,
+      rel: sg.relationship || 'Signatory', email: sg.email, phone: sg.phone, address: sg.address, photo: sg.photoUrl }));
+  const grid = document.getElementById('sigGrid');
+  if (!grid) return;
+  grid.innerHTML = holders.map(h => {
+    const photo = h.photo
+      ? '<img class="sig-photo sig-photo-btn" src="' + esc(h.photo) + '" alt="' + esc(h.name) + '" onclick="openSigPhoto(this.src)">'
+      : '<div class="sig-photo"><i class="fa-solid fa-user"></i></div>';
+    const idChip = h.photo
+      ? '<div class="sig-id"><i class="fa-solid fa-circle-check"></i> ID photo on file</div>'
+      : '<div class="sig-id missing"><i class="fa-solid fa-triangle-exclamation"></i> ID photo missing</div>';
+    const row = (ic, l, v) => '<div class="sig-row"><i class="fa-solid ' + ic + '"></i><div><small>' + l + '</small><b>' + esc(v || '—') + '</b></div></div>';
+    return '<div class="sig-card ' + (h.key === role ? 'is-you' : '') + '">' +
+      '<div class="sig-top"><span class="sig-role"><i class="fa-solid ' + (h.key === 'primary' ? 'fa-crown' : 'fa-user-group') + '"></i> ' + h.label + '</span>' +
+      (h.key === role ? '<span class="sig-you">YOU</span>' : '') + '</div>' +
+      photo +
+      '<div class="sig-body"><h3>' + esc(h.name) + '</h3><div class="sig-rel">' + esc(h.rel) + '</div>' + idChip +
+      '<div class="sig-rows">' + row('fa-envelope', 'Email', h.email) + row('fa-phone', 'Phone', h.phone) + row('fa-location-dot', 'Address', h.address) + '</div></div></div>';
+  }).join('');
+
+  const rt = document.getElementById('sigRuleTitle'), rx = document.getElementById('sigRuleText');
+  if (rt) rt.textContent = mode;
+  const many = holders.length > 2;
+  if (rx) rx.textContent = mode === 'Both to sign'
+    ? (many ? 'This account is set to require all signatories to approve transactions.' : 'This account is set to require both holders to approve transactions.')
+    : (many ? 'Any signatory can authorise transactions on this account on their own.' : 'Either holder can authorise transactions on this account on their own.');
+}
+
 function applyUserToDOM() {
   const u = currentUser;
   if (!u) return;
@@ -18998,7 +19333,7 @@ function applyUserToDOM() {
       case 'Phone Number':       h4.textContent = phone;  break;
       case 'Country':            h4.textContent = country || '—'; break;
       case 'Account Open Date':  h4.textContent = regDate; break;
-      case 'Account Type':       h4.textContent = 'International Premium Banking'; break;
+      case 'Account Type':       h4.textContent = u.isJoint ? 'Joint Account' : 'Individual Account'; break;
       case 'Address':
       case 'Residential Address': h4.textContent = address; break;
     }
@@ -19047,6 +19382,9 @@ function applyUserToDOM() {
 
   // Profile photo
   applyPhoto(u.photoUrl || '');
+
+  // Joint account details (card hidden for individual accounts)
+  applyJointToDOM(u);
 
   // Me Hero — verified status pill
   const mePills = qAll('#mePage .status-pill');
@@ -20611,6 +20949,7 @@ function navigateTo(pageId) {
   if (pageId === 'statementPage') { renderStatements(allTransactions); }
   if (pageId === 'homePage') renderRecentTransactions();
   if (pageId === 'rewardsPage') renderRewards();
+  if (pageId === 'signatoriesPage') refreshSignatoryFaces();
 
   closeMenu();
   window.scrollTo(0,0);
@@ -20774,6 +21113,118 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadTransactions();
   await loadNotifications();
   populateYearFilters();
+  refreshSignatoryFaces();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   MULTI-SIGNATORY FACE STACK (topbar)
+   Account has more than the primary owner as signatory -> show the
+   stacked faces of everyone on the account and hide the single avatar.
+═══════════════════════════════════════════════════════════ */
+/* Top card: stacked faces, names and signatory count follow the live signatory list */
+function updateJointBanner(list) {
+  const esc = escapeHtmlText, u = currentUser || {}, role = _srRole();
+  const faces = document.getElementById('jbFaces');
+  if (faces) faces.innerHTML = list.slice(0, 4).map(s => s.photoUrl
+    ? '<img class="jb-face" src="' + esc(s.photoUrl) + '" title="' + esc(s.name) + '" alt="">'
+    : '<span class="jb-face" title="' + esc(s.name) + '"><i class="fa-solid fa-user"></i></span>').join('');
+  const names = list.map(s => s.name).filter(Boolean);
+  const t = document.getElementById('jbTitle');
+  if (t) t.textContent = names.length > 2 ? names[0] + ' & ' + (names.length - 1) + ' others' : names.join(' & ');
+  const me = role === 'joint' && u.jointHolder ? u.jointHolder.name : (role === 'primary' ? u.name : '');
+  const st = document.getElementById('jbSub');
+  if (st) st.textContent = (list.length > 2 || !u.isJoint ? 'Shared account · ' + list.length + ' signatories' : 'Joint account') +
+    (me ? ' · signed in as ' + me : '');
+  const mm = document.getElementById('jbMode');
+  if (mm) mm.textContent = u.operatingMode || 'Either to sign';
+}
+
+function openManageSignatories() {
+  if (_srRole() === 'primary') location.href = 'jointaccountmanage.html';
+  else navigateTo('signatoriesPage');
+}
+
+async function refreshSignatoryFaces() {
+  const d = await api({ action: 'getSignatories', uid: _uid });
+  if (!d || !d.status) return;
+  const list = (d.signatories || []).filter(s => s.status !== 'Invited' && s.status !== 'Pending Authorization');
+  const multi = list.length > 1;
+  document.body.classList.toggle('multi-sig', multi);
+  window._extraSigs = list.filter(x => x.role === 'Signatory' && x.status === 'Authorized');
+  if (currentUser) renderSignatories(currentUser, _srRole());   // keep the Signatories page in sync
+  if (multi) updateJointBanner(list);
+  const dual = document.getElementById('topbarDual');
+  if (!dual || !multi) return;
+  dual.innerHTML = list.slice(0, 4).map(s => s.photoUrl
+    ? '<img src="' + escapeHtmlText(s.photoUrl) + '" title="' + escapeHtmlText(s.name) + '" alt="">'
+    : '<span title="' + escapeHtmlText(s.name) + '"><i class="fa-solid fa-user"></i></span>').join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SIGNATORY REQUESTS — popup for the primary holder to authorize
+═══════════════════════════════════════════════════════════ */
+let _srQueue = [], _srCurrent = null, _srSnoozed = {};
+const _srRole = () => sessionStorage.getItem('custodia_role') || localStorage.getItem('custodia_role') || 'primary';
+const _srEsc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+async function checkSignatoryRequests() {
+  if (_srRole() !== 'primary') return;
+  const modal = document.getElementById('sigReqModal');
+  if (!modal || modal.classList.contains('show')) return;
+  const d = await api({ action: 'getSignatories', uid: _uid });
+  if (!d.status) return;
+  _srQueue = (d.pending || []).filter(p => !_srSnoozed[p.id]);
+  if (_srQueue.length) srShow(_srQueue[0]);
+}
+
+function srShow(p) {
+  _srCurrent = p;
+  const ini = (p.name || '?').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  document.getElementById('srPhoto').innerHTML = p.photoUrl ? '<img src="' + _srEsc(p.photoUrl) + '" alt="">' : _srEsc(ini);
+  document.getElementById('srTitle').textContent = p.name + ' signed up';
+  document.getElementById('srDetails').innerHTML =
+    [['Name', p.name], ['Email', p.email], ['Phone', p.phone], ['Relationship', p.relationship], ['Address', p.address], ['Submitted', p.date]]
+      .filter(r => r[1]).map(r => '<div><span>' + r[0] + '</span><strong>' + _srEsc(r[1]) + '</strong></div>').join('');
+  document.getElementById('srPin').value = '';
+  document.getElementById('srMsg').textContent = '';
+  document.getElementById('srCount').textContent = _srQueue.length > 1 ? (_srQueue.length - 1) + ' more request' + (_srQueue.length > 2 ? 's' : '') + ' waiting' : '';
+  document.getElementById('sigReqModal').classList.add('show');
+}
+
+function srZoom() {
+  if (!_srCurrent || !_srCurrent.photoUrl) return;
+  const lb = document.getElementById('sigLightbox'), im = document.getElementById('sigLightboxImg');
+  if (lb && im) { im.src = _srCurrent.photoUrl; lb.classList.add('open'); lb.style.zIndex = 100001; }
+}
+
+function srLater() {
+  if (_srCurrent) _srSnoozed[_srCurrent.id] = true;
+  document.getElementById('sigReqModal').classList.remove('show');
+}
+
+async function srDecide(decision) {
+  if (!_srCurrent) return;
+  const pin = document.getElementById('srPin').value.trim();
+  const msg = document.getElementById('srMsg');
+  if (decision === 'approve' && !/^\d{4}$/.test(pin)) { msg.textContent = 'Enter your 4-digit PIN to authorize.'; return; }
+  if (decision === 'decline' && !confirm('Decline ' + _srCurrent.name + "'s request?")) return;
+  const ok = document.getElementById('srOk'), no = document.getElementById('srNo');
+  ok.disabled = no.disabled = true; msg.textContent = '';
+  const d = await api({ action: 'decideSignatory', uid: _uid, sigId: _srCurrent.id, decision: decision, pin: pin });
+  ok.disabled = no.disabled = false;
+  if (!d.status) { msg.textContent = d.message || 'Something went wrong. Please try again.'; return; }
+  document.getElementById('sigReqModal').classList.remove('show');
+  _srCurrent = null;
+  loadNotifications();
+  refreshSignatoryFaces();
+  setTimeout(checkSignatoryRequests, 400);   // show the next pending request, if any
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setInterval(refreshSignatoryFaces, 60000);
+  if (_srRole() !== 'primary') { const c = document.getElementById('jointAcctCard'); if (c) c.style.display = 'none'; return; }
+  setTimeout(checkSignatoryRequests, 1500);
+  setInterval(checkSignatoryRequests, 60000);
 });
 
 /* ═══════════════════════════════════════════════════════════
@@ -20830,8 +21281,11 @@ function openPhotoModal() {
   const overlay = document.getElementById('photoModalOverlay');
   if (!overlay) return;
   // Pre-fill preview with current photo if any
-  if (currentUser && currentUser.photoUrl) {
-    showModalPreview(currentUser.photoUrl, true);
+  const _myPhoto = (currentUser && currentUser.isJoint && currentUser.jointHolder &&
+    (sessionStorage.getItem('custodia_role') || localStorage.getItem('custodia_role')) === 'joint')
+    ? currentUser.jointHolder.photoUrl : (currentUser && currentUser.photoUrl);
+  if (_myPhoto) {
+    showModalPreview(_myPhoto, true);
     document.getElementById('photoUploadBtn').disabled = false;
   } else {
     clearModalPreview();
@@ -20920,11 +21374,13 @@ async function doUploadPhoto() {
 
     /* 2 — Save the returned URL to the Google Sheet via the backend */
     const photoUrl = cdnData.secure_url;
-    const res = await api({ action: 'savePhotoUrl', uid: _uid, photoUrl: photoUrl });
+    const _role = sessionStorage.getItem('custodia_role') || localStorage.getItem('custodia_role') || 'primary';
+    const res = await api({ action: 'savePhotoUrl', uid: _uid, photoUrl: photoUrl, role: _role });
 
     if (res.status) {
-      currentUser.photoUrl = photoUrl;
-      applyPhoto(photoUrl);
+      if (_role === 'joint' && currentUser.jointHolder) currentUser.jointHolder.photoUrl = photoUrl;
+      else currentUser.photoUrl = photoUrl;
+      applyUserToDOM();
       setPhotoMsg('Photo saved!', 'success');
       setTimeout(closePhotoModal, 1200);
     } else {
