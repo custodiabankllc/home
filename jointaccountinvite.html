@@ -491,7 +491,7 @@ const val = id => $(id).value.trim();
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[\d\s\+\-\(\)]{7,}$/;
 const qs = new URLSearchParams(location.search);
-const CODE = qs.get('code') || '', INV = qs.get('inv') || '';
+const CODE = qs.get('code') || '', INV = qs.get('inv') || '', TOK = qs.get('tok') || '';
 let photoUrl = '', primaryName = '', lockedEmail = '';
 
 async function api(payload) {
@@ -578,7 +578,7 @@ async function submitForm() {
   btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Submitting…';
   $('formError').style.display = 'none';
   const d = await api({
-    action: 'submitSignatory', code: CODE, inv: INV,
+    action: 'submitSignatory', code: CODE, inv: INV, tok: TOK,
     name: val('name'), email: val('email'), phone: val('phone'), relationship: $('rel').value,
     address: val('addr'), photoUrl: photoUrl, password: $('pass').value.trim()
   });
@@ -587,7 +587,11 @@ async function submitForm() {
     $('formError').textContent = d.message || 'Something went wrong. Please try again.'; $('formError').style.display = 'block';
     return;
   }
-  $('doneMsg').textContent = 'Thank you, ' + val('name').split(' ')[0] + '. ' + primaryName + ' has been notified and will review your request. You\'ll receive an email once you\'re authorized, and you can then sign in with the email and password you just chose.';
+  const first = val('name').split(' ')[0];
+  $('doneMsg').textContent = d.authorized
+    ? 'Thank you, ' + first + '. You are now an authorized signatory on ' + primaryName + '\'s account. This invite link has been used and can\'t be opened again. Sign in with the email and password you just chose.'
+    : 'Thank you, ' + first + '. ' + primaryName + ' has been notified and will review your request. This invite link has now been used and can\'t be opened again. You\'ll receive an email once you\'re authorized, and you can then sign in with the email and password you just chose.';
+  $('stDone').querySelector('h2').textContent = d.authorized ? 'You\'re authorized' : 'Request submitted';
   panel('done');
 }
 
@@ -602,7 +606,7 @@ function renderAccount(a) {
 
 (async function init() {
   if (!CODE) { $('badMsg').textContent = 'This invite link is incomplete. Please use the full link you were sent.'; return panel('stBad'); }
-  const d = await api({ action: 'getInviteInfo', code: CODE, inv: INV });
+  const d = await api({ action: 'getInviteInfo', code: CODE, inv: INV, tok: TOK });
   if (!d.status) { $('badMsg').textContent = d.message || 'This invite link is not valid.'; return panel('stBad'); }
   primaryName = d.primaryName || 'the account holder';
   document.querySelectorAll('.pname').forEach(e => e.textContent = primaryName);
