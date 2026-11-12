@@ -711,6 +711,24 @@ function showMsg(id, text) {
   el.style.display = 'block';
 }
 
+/* ── SAVE SESSION (who exactly signed in: primary, joint holder or a specific signatory) ── */
+function saveSession(storage, user) {
+  const role = user.loggedInAs || 'primary';
+  [sessionStorage, localStorage].forEach(st => {
+    ['custodia_sigid','custodia_email'].forEach(k => st.removeItem(k));
+  });
+  storage.setItem('custodia_uid',  user.uid);
+  storage.setItem('custodia_role', role);
+  if (role === 'signatory' && user.signatory) {
+    // user.name / user.email belong to the account owner here, so keep the signatory's own details
+    storage.setItem('custodia_name',  user.signatory.name  || user.name);
+    storage.setItem('custodia_email', user.signatory.email || '');
+    storage.setItem('custodia_sigid', user.signatory.id    || '');
+  } else {
+    storage.setItem('custodia_name', user.name);
+  }
+}
+
 /* ── LOGIN ── */
 async function doLogin() {
   clearMessages();
@@ -730,9 +748,7 @@ async function doLogin() {
 
     if (data.status) {
       const storage = remember ? localStorage : sessionStorage;
-      storage.setItem('custodia_uid',  data.user.uid);
-      storage.setItem('custodia_name', data.user.name);
-      storage.setItem('custodia_role', data.user.loggedInAs || 'primary');
+      saveSession(storage, data.user);
       showMsg('loginSuccess', 'Login successful! Redirecting…');
       setTimeout(() => { window.location.href = DASHBOARD; }, 800);
     } else {
@@ -1085,9 +1101,7 @@ async function doSignup() {
       setTimeout(async () => {
         const login = await api({ action: 'login', email, password });
         if (login.status) {
-          sessionStorage.setItem('custodia_uid',  login.user.uid);
-          sessionStorage.setItem('custodia_name', login.user.name);
-          sessionStorage.setItem('custodia_role', login.user.loggedInAs || 'primary');
+          saveSession(sessionStorage, login.user);
           window.location.href = DASHBOARD;
         } else {
           switchTab('login');
