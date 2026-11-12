@@ -11401,25 +11401,28 @@ html.dark-mode {
 body.joint-mode .joint-only{display:flex !important;}
 body.joint-mode .menu a.joint-only{display:flex !important;}
 
-body.joint-mode{background:linear-gradient(180deg,#f5f3ff 0%,#f8fafc 320px) !important;}
-body.joint-mode .menu a:hover,
-body.joint-mode .menu a.active{background:#ede9fe;color:#6d28d9;}
-body.joint-mode .sidebar .logo{border-bottom:3px solid #7c3aed !important;}
-body.joint-mode .topbar{box-shadow:0 8px 28px rgba(109,40,217,.12);border:1px solid #ddd6fe;}
-body.joint-mode .me-badge{background:#ede9fe !important;color:#6d28d9 !important;}
+/* profile tag: small, quiet pill on the dark profile header */
+body.joint-mode .me-badge{padding:6px 12px 6px 10px;gap:8px;align-items:center;font-size:12px;font-weight:600;letter-spacing:.2px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);margin-bottom:14px;}
+body.joint-mode .me-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#38bdf8;}
 
-.joint-banner{margin:12px 0 4px;border-radius:20px;padding:14px 18px;color:#fff;align-items:center;gap:16px;flex-wrap:wrap;
-  background:linear-gradient(135deg,#5b21b6,#7c3aed 55%,#2563eb);box-shadow:0 12px 30px rgba(91,33,182,.25);}
+/* dashboard tag: one slim line, flat, uses the site's blue palette */
+.joint-banner{margin:0 0 14px;width:fit-content;max-width:100%;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:5px 6px 5px 8px;background:#fff;border:1px solid #dbe5f3;border-radius:10px;color:#0f172a;box-shadow:0 1px 2px rgba(15,23,42,.04);}
 .joint-banner .jb-faces{display:flex;}
-.joint-banner .jb-faces .jb-face{width:44px;height:44px;border-radius:50%;border:3px solid #fff;object-fit:cover;background:#c4b5fd;
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;}
-.joint-banner .jb-faces .jb-face + .jb-face{margin-left:-14px;}
-.joint-banner .jb-text{flex:1;min-width:200px;}
-.joint-banner .jb-text strong{display:block;font-size:15px;letter-spacing:.2px;}
-.joint-banner .jb-text span{font-size:12.5px;opacity:.85;}
-.joint-banner .jb-chip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);padding:7px 14px;border-radius:999px;font-size:12px;font-weight:700;
-  display:inline-flex;align-items:center;gap:7px;}
-.joint-banner .jb-btn{background:#fff;color:#6d28d9;border:none;border-radius:12px;padding:9px 16px;font-weight:800;font-size:12.5px;cursor:pointer;}
+.joint-banner .jb-faces .jb-face{width:22px;height:22px;border-radius:50%;border:2px solid #fff;object-fit:cover;background:#dbeafe;
+  display:flex;align-items:center;justify-content:center;color:#2563eb;font-size:10px;box-shadow:0 0 0 1px #dbe5f3;}
+.joint-banner .jb-faces .jb-face + .jb-face{margin-left:-7px;}
+.joint-banner .jb-text{display:flex;align-items:baseline;gap:8px;min-width:0;}
+.joint-banner .jb-text strong{font-size:13px;font-weight:700;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px;}
+.joint-banner .jb-text span{font-size:12px;color:#64748b;white-space:nowrap;}
+.joint-banner .jb-chip{background:#eff6ff;color:#1d4ed8;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:600;
+  display:inline-flex;align-items:center;gap:6px;}
+.joint-banner .jb-chip i{font-size:10px;}
+.joint-banner .jb-btn{background:none;color:#2563eb;border:1px solid #dbe5f3;border-radius:7px;padding:3px 10px;font-weight:600;font-size:12px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;transition:background .2s,border-color .2s;}
+.joint-banner .jb-btn:hover{background:#eff6ff;border-color:#bfdbfe;}
+@media (max-width:640px){.joint-banner .jb-text span{display:none;}}
 
 /* topbar: stacked faces of both holders next to the name */
 .topbar-dual{display:none;margin-right:-6px;}
@@ -11427,29 +11430,29 @@ body.joint-mode .topbar-dual,body.multi-sig .topbar-dual{display:flex;}
 body.multi-sig .menu a.sig-nav,body.multi-sig .joint-banner{display:flex !important;}
 /* with more than one signatory, only the stacked faces show (not the single profile avatar) */
 body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !important;}
-.topbar-dual img,.topbar-dual span{width:30px;height:30px;border-radius:50%;border:2px solid #fff;object-fit:cover;background:#ddd6fe;
-  display:flex;align-items:center;justify-content:center;font-size:13px;color:#6d28d9;}
+.topbar-dual img,.topbar-dual span{width:30px;height:30px;border-radius:50%;border:2px solid #fff;object-fit:cover;background:#bfdbfe;
+  display:flex;align-items:center;justify-content:center;font-size:13px;color:#1d4ed8;}
 .topbar-dual img + img,.topbar-dual span + img,.topbar-dual img + span{margin-left:-10px;}
 
 /* signatories page */
 .sig-wrap{padding:6px 2px 40px;}
 .sig-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin:8px 0 20px;}
-.sig-head small{color:#7c3aed;font-weight:800;letter-spacing:.08em;font-size:11px;text-transform:uppercase;}
+.sig-head small{color:#2563eb;font-weight:800;letter-spacing:.08em;font-size:11px;text-transform:uppercase;}
 .sig-head h1{font-size:30px;color:#0f172a;margin-top:4px;}
 .sig-head p{color:#64748b;font-size:14px;max-width:560px;line-height:1.7;margin-top:6px;}
 .sig-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:22px;}
-.sig-stat{background:#fff;border:1px solid #ede9fe;border-radius:18px;padding:16px 18px;}
+.sig-stat{background:#fff;border:1px solid #dbeafe;border-radius:18px;padding:16px 18px;}
 .sig-stat span{display:block;font-size:11.5px;color:#64748b;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
 .sig-stat h4{font-size:16px;color:#0f172a;word-break:break-word;}
 .sig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
-.sig-card{background:#fff;border:1px solid #ede9fe;border-radius:28px;overflow:hidden;box-shadow:0 14px 36px rgba(91,33,182,.08);position:relative;}
-.sig-card.is-you{border:2px solid #7c3aed;}
-.sig-top{background:linear-gradient(135deg,#ede9fe,#dbeafe);padding:26px 20px 56px;text-align:center;position:relative;}
-.sig-role{display:inline-flex;gap:6px;align-items:center;background:#fff;color:#6d28d9;font-size:11.5px;font-weight:800;letter-spacing:.06em;
+.sig-card{background:#fff;border:1px solid #dbeafe;border-radius:28px;overflow:hidden;box-shadow:0 14px 36px rgba(30,64,175,.08);position:relative;}
+.sig-card.is-you{border:2px solid #2563eb;}
+.sig-top{background:linear-gradient(135deg,#dbeafe,#dbeafe);padding:26px 20px 56px;text-align:center;position:relative;}
+.sig-role{display:inline-flex;gap:6px;align-items:center;background:#fff;color:#1d4ed8;font-size:11.5px;font-weight:800;letter-spacing:.06em;
   padding:6px 12px;border-radius:999px;text-transform:uppercase;}
-.sig-you{position:absolute;top:14px;right:14px;background:#7c3aed;color:#fff;font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;}
+.sig-you{position:absolute;top:14px;right:14px;background:#2563eb;color:#fff;font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;}
 .sig-photo{width:132px;height:132px;border-radius:34px;border:5px solid #fff;object-fit:cover;background:#e9d5ff;margin:-70px auto 0;display:flex;
-  align-items:center;justify-content:center;font-size:44px;color:#7c3aed;box-shadow:0 12px 26px rgba(15,23,42,.15);position:relative;z-index:1;}
+  align-items:center;justify-content:center;font-size:44px;color:#2563eb;box-shadow:0 12px 26px rgba(15,23,42,.15);position:relative;z-index:1;}
 .sig-body{padding:14px 22px 24px;text-align:center;}
 .sig-body h3{font-size:21px;color:#0f172a;margin-bottom:4px;}
 .sig-rel{color:#64748b;font-size:13px;margin-bottom:12px;}
@@ -11457,12 +11460,12 @@ body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !impor
 .sig-id.missing{background:#fef3c7;color:#b45309;}
 .sig-rows{text-align:left;border-top:1px solid #f1f5f9;}
 .sig-row{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #f1f5f9;font-size:13.5px;}
-.sig-row i{color:#7c3aed;width:18px;margin-top:2px;}
+.sig-row i{color:#2563eb;width:18px;margin-top:2px;}
 .sig-row small{display:block;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
 .sig-row b{color:#0f172a;font-weight:600;word-break:break-word;}
 .sig-photo-btn{cursor:zoom-in;}
 .sig-rule{margin-top:22px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:20px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;}
-.sig-rule i{color:#7c3aed;font-size:22px;margin-top:2px;}
+.sig-rule i{color:#2563eb;font-size:22px;margin-top:2px;}
 .sig-rule h4{color:#4c1d95;margin-bottom:4px;}
 .sig-rule p{color:#6b21a8;font-size:13.5px;line-height:1.7;}
 .sig-lightbox{position:fixed;inset:0;background:rgba(15,23,42,.8);display:none;align-items:center;justify-content:center;z-index:99999;padding:24px;}
@@ -11754,17 +11757,6 @@ body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !impor
 
         </div>
 
-        <!-- JOINT ACCOUNT BANNER (joint accounts only) -->
-        <div class="joint-banner joint-only" id="jointBanner">
-            <div class="jb-faces" id="jbFaces"></div>
-            <div class="jb-text">
-                <strong id="jbTitle">Joint Account</strong>
-                <span id="jbSub">Shared account</span>
-            </div>
-            <span class="jb-chip"><i class="fa-solid fa-pen-nib"></i> <span id="jbMode">Either to sign</span></span>
-            <button class="jb-btn" id="jbManageBtn" onclick="openManageSignatories()"><i class="fa-solid fa-users-gear"></i> Manage signatories</button>
-        </div>
-
         <!-- =========================
         ACCOUNT RESTRICTION NOTICE (shown only when status !== Active)
         ========================= -->
@@ -11781,6 +11773,17 @@ body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !impor
         ========================= -->
 
         <section id="homePage" class="page-view active-page">
+
+            <!-- JOINT ACCOUNT TAG (joint accounts only, dashboard only) -->
+            <div class="joint-banner joint-only" id="jointBanner">
+                <div class="jb-faces" id="jbFaces"></div>
+                <div class="jb-text">
+                    <strong id="jbTitle">Joint Account</strong>
+                    <span id="jbSub">Shared account</span>
+                </div>
+                <span class="jb-chip"><i class="fa-solid fa-pen-nib"></i> <span id="jbMode">Either to sign</span></span>
+                <button class="jb-btn" id="jbManageBtn" onclick="openManageSignatories()">Manage</button>
+            </div>
 
 
             
@@ -19033,8 +19036,8 @@ async function loadUser() {
     // stays up until this succeeds, so we must not give up silently.
     loadUser._retryCount = (loadUser._retryCount || 0) + 1;
     const delay = Math.min(1500 * loadUser._retryCount, 10000);
-    setTimeout(loadUser, delay);
-    return;
+    await new Promise(r => setTimeout(r, delay));
+    return loadUser();
   }
   loadUser._retryCount = 0;
   currentUser = data.user;
@@ -19106,8 +19109,6 @@ function applyJointToDOM(u) {
   qAll('[data-greeting]').forEach(el => el.textContent = 'Welcome back, ' + first);
   qAll('.me-user-info h1').forEach(el => el.textContent = u.name + ' & ' + j.name);
   applyPhoto(me.photo || '');
-  const sub = document.getElementById('topbarSubtitle');
-  if (sub) sub.textContent = 'Joint Account · ' + (role === 'joint' ? 'Joint holder' : 'Primary holder');
   qAll('.me-badge').forEach(el => el.textContent = 'Joint Account');
 
   // ── Face stack in topbar + banner ──
@@ -19401,7 +19402,7 @@ function applyUserToDOM() {
   // Account status note in me hero
   const meBadge = q('#mePage .me-badge');
   if (meBadge) {
-    meBadge.textContent = status === 'Active' ? 'Premium Banking Client' : status + ' Account';
+    meBadge.textContent = status === 'Active' ? (u.isJoint ? 'Joint Account' : 'Premium Banking Client') : status + ' Account';
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -19584,8 +19585,9 @@ function applyUserToDOM() {
   } catch (err) {
     console.error('applyUserToDOM error:', err);
   }
-
-  hidePageSkeleton();
+  // NOTE: the skeleton is NOT hidden here. It stays up until user,
+  // transactions, notifications AND signatories have all loaded, so the
+  // whole page (including the joint account tag) appears at once.
 }
 
 /* ── PAGE LOAD SKELETON OVERLAY ──────────────────────────── */
@@ -19599,12 +19601,13 @@ function hidePageSkeleton() {
 // If applyUserToDOM() hasn't run yet (e.g. backend fetch still failing/
 // retrying), keep the skeleton visible rather than revealing an empty
 // or stale dashboard. Poll instead of giving up after a fixed delay.
+let _initialLoadDone = false;
 const _skeletonSafetyNet = setInterval(() => {
-  if (currentUser) {
+  if (_initialLoadDone) {
     hidePageSkeleton();
     clearInterval(_skeletonSafetyNet);
   }
-}, 500);
+}, 100);
 
 
 
@@ -21110,11 +21113,18 @@ document.addEventListener('DOMContentLoaded', () => {
 ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', async () => {
   if (!_uid) return;
-  await loadUser();
-  await loadTransactions();
-  await loadNotifications();
+  // Fetch everything in parallel. Signatories depend on the user object,
+  // so they chain after loadUser. The skeleton is only lifted once ALL of
+  // it is ready, so every element (joint tag included) shows together.
+  await Promise.all([
+    loadUser().then(() => refreshSignatoryFaces()),
+    loadTransactions(),
+    loadNotifications()
+  ]);
   populateYearFilters();
-  refreshSignatoryFaces();
+  renderRewards();   // needs both user + transactions
+  _initialLoadDone = true;
+  hidePageSkeleton();
 });
 
 /* ═══════════════════════════════════════════════════════════
