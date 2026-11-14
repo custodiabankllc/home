@@ -12308,6 +12308,32 @@ button[class*="-back-btn"] i{font-size:13px !important;}
 #cardsPage .quick-action p{font-size:12px !important;line-height:1.45 !important;}
 }
 </style>
+
+<style id="dashBalanceCompact">
+/* ═══ DASHBOARD — compact balance card, joint banner under it, superscript signee tag on mobile ═══ */
+#homePage .balance-card{padding:16px 18px !important;gap:6px !important;margin-bottom:12px !important;border-radius:14px !important;}
+#homePage .balance-card::before{width:220px !important;height:220px !important;right:-70px !important;top:-110px !important;}
+#homePage .balance-card small{font-size:12px;}
+#homePage .balance-card h2{font-size:21px !important;line-height:1.2;}
+#homePage .balance-top-row{gap:10px !important;}
+#homePage .balance-visibility-btn{width:28px !important;height:28px !important;min-width:28px !important;}
+#homePage .balance-card .card-number{font-size:13px;letter-spacing:2px !important;margin:0 !important;}
+#homePage .acct-details-toggle{margin-top:4px !important;}
+#homePage .balance-card > div:last-child{margin-top:6px !important;}
+#homePage .balance-card > div:last-child img{height:24px !important;width:auto;}
+#homePage .balance-card > div:last-child p{font-size:17px !important;}
+#homePage .joint-banner{margin:0 0 16px !important;}
+@media(max-width:700px){
+  #homePage .balance-card{padding:14px 16px !important;}
+  #homePage .balance-card h2{font-size:19px !important;}
+  #homePage .joint-banner{width:100% !important;padding:0 !important;background:none !important;border:none !important;box-shadow:none !important;}
+  #homePage .joint-banner .jb-faces,#homePage .joint-banner .jb-text,#homePage .joint-banner .jb-chip{display:none !important;}
+  #homePage .joint-banner .jb-btn{width:100%;justify-content:center;height:34px;font-size:12.5px;background:#fff;border-radius:10px;}
+  [data-greeting]{white-space:nowrap;}
+  [data-greeting] .signee-tag{position:relative;top:-7px;vertical-align:baseline;margin-left:3px;padding:1px 5px;font-size:8.5px;line-height:1.2;border-radius:5px;}
+  [data-greeting] .signee-tag i{display:none;}
+}
+</style>
 </head>
 
 <body>
@@ -12609,25 +12635,6 @@ button[class*="-back-btn"] i{font-size:13px !important;}
 
         <section id="homePage" class="page-view active-page">
 
-            <!-- JOINT ACCOUNT TAG (joint accounts only, dashboard only) -->
-            <div class="joint-banner joint-only" id="jointBanner">
-                <div class="jb-faces" id="jbFaces"></div>
-                <div class="jb-text">
-                    <strong id="jbTitle">Joint Account</strong>
-                    <span id="jbSub">Shared account</span>
-                </div>
-                <span class="jb-chip"><i class="fa-solid fa-pen-nib"></i> <span id="jbMode">Either to sign</span></span>
-                <button class="jb-btn" id="jbManageBtn" onclick="openManageSignatories()">Manage</button>
-            </div>
-
-
-            
-
-
-
-
-
-
             <div style="display: flex;width: 100%;gap: 4px;margin: 30px 0px 24px 0px; justify-content: space-between;align-items: center;">
                 <div  style="display: flex;width: 100%;flex-direction: column;gap: 4px;">
                     <h4 style="margin: 0px;font-size: 18px;" data-greeting>&nbsp;</h4>
@@ -12719,6 +12726,26 @@ button[class*="-back-btn"] i{font-size:13px !important;}
                     </div>
 
                 </div>
+
+            <!-- JOINT ACCOUNT TAG (joint accounts only, sits right under the balance card) -->
+            <div class="joint-banner joint-only" id="jointBanner">
+                <div class="jb-faces" id="jbFaces"></div>
+                <div class="jb-text">
+                    <strong id="jbTitle">Joint Account</strong>
+                    <span id="jbSub">Shared account</span>
+                </div>
+                <span class="jb-chip"><i class="fa-solid fa-pen-nib"></i> <span id="jbMode">Either to sign</span></span>
+                <button class="jb-btn" id="jbManageBtn" onclick="openManageSignatories()">Manage</button>
+            </div>
+
+
+            
+
+
+
+
+
+
 
 <!-- =========================
 ACCOUNT NOTICE
@@ -20479,7 +20506,8 @@ function applyUserToDOM() {
      CARDS PAGE — dynamic fields
   ══════════════════════════════════════════════════════════ */
   const last4El = q('#cardLastFour');
-  if (last4El) last4El.textContent = last4;
+  const realAcc = (u.accountNumber != null ? String(u.accountNumber).replace(/\s+/g,'') : '');
+  if (last4El) last4El.textContent = realAcc ? realAcc.slice(-4) : '••••';   // masked: only the last four digits of the real account number
 
   const fullNumEl = q('#cardFullNumber');
   if (fullNumEl) fullNumEl.textContent = '•••• •••• •••• ' + last4;
