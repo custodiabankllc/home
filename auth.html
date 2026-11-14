@@ -298,6 +298,23 @@ body::before{
   .form-side.signup-mode .lang-row{display:none;}
   .form-side.signup-mode .auth-tabs{margin:12px 20px 10px;}
 }
+
+/* ── MOBILE TOP BAR: brand (left) + language (right), brand links home ── */
+.m-brand{display:none;}
+@media(max-width:900px){
+  .lang-row{justify-content:space-between !important;align-items:center;gap:12px;}
+  .m-brand{display:flex;align-items:center;gap:8px;min-width:0;text-decoration:none;color:#0f172a;-webkit-tap-highlight-color:transparent;}
+  .m-brand img{height:30px;width:auto;flex:none;display:block;}
+  .m-brand span{font-size:15px;font-weight:800;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .m-brand:active{opacity:.7;}
+  /* sign-up keeps the brand link; only the language picker is hidden there to save space */
+  .form-side.signup-mode .lang-row{display:flex;margin:10px 20px 0 !important;}
+  .form-side.signup-mode .lang-box{display:none;}
+}
+
+/* first / last name side by side (stays two columns on mobile; stacks only on very narrow screens) */
+.name-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:340px){.name-row{grid-template-columns:1fr;gap:0;}}
 </style>
 </head>
 <body>
@@ -332,7 +349,12 @@ body::before{
 
     <!-- LANGUAGE SELECTOR -->
     <div class="lang-row" style="display:flex;justify-content:flex-end;margin-bottom:14px;">
-      <div style="min-width:70px;padding:9px 12px;background:#fff;border-radius:5px;width:fit-content;border:1px solid #ececec;">
+      <!-- mobile only: logo + name at the top left (the hero panel that normally shows them is hidden on mobile) -->
+      <a href="index.html" class="m-brand" aria-label="Custodia Bank home">
+        <img src="icon/custodia_logo.png" alt="">
+        <span>Custodia Bank</span>
+      </a>
+      <div class="lang-box" style="min-width:70px;padding:9px 12px;background:#fff;border-radius:5px;width:fit-content;border:1px solid #ececec;">
         <div class="gtranslate_wrapper"></div>
         <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"detect_browser_language":true,"languages":["en","fr","zh-CN","ja","es"],"wrapper_selector":".gtranslate_wrapper","flag_size":16,"flag_style":"3d","alt_flags":{"en":"usa"}}</script>
         <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
@@ -422,13 +444,23 @@ body::before{
           <i class="fa-solid fa-circle-info"></i> Joint accounts are opened on a dedicated page where you add both holders' details.
         </div>
         <div id="individualFields">
-        <div class="form-group">
-          <label>Full Name</label>
-          <div class="input-wrap" id="wrap-signupName">
-            <input type="text" id="signupName" placeholder="Your full legal name"
-              oninput="liveCheck1()">
+        <div class="name-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <div class="input-wrap" id="wrap-signupFirstName">
+              <input type="text" id="signupFirstName" placeholder="First name" autocomplete="given-name"
+                oninput="liveCheck1()">
+            </div>
+            <p class="field-error" id="err-signupFirstName"><i class="fa fa-circle-exclamation"></i><span></span></p>
           </div>
-          <p class="field-error" id="err-signupName"><i class="fa fa-circle-exclamation"></i><span></span></p>
+          <div class="form-group">
+            <label>Last Name</label>
+            <div class="input-wrap" id="wrap-signupLastName">
+              <input type="text" id="signupLastName" placeholder="Last name" autocomplete="family-name"
+                oninput="liveCheck1()">
+            </div>
+            <p class="field-error" id="err-signupLastName"><i class="fa fa-circle-exclamation"></i><span></span></p>
+          </div>
         </div>
         <div class="form-group">
           <label>Country of Residence</label>
@@ -467,6 +499,18 @@ body::before{
           </div>
           <p class="field-error" id="err-signupCountry"><i class="fa fa-circle-exclamation"></i><span></span></p>
         </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="input-wrap" id="wrap-signupGender">
+            <select id="signupGender" onchange="liveCheck1()">
+              <option value="">Select your gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <p class="field-error" id="err-signupGender"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
         </div><!-- /individualFields -->
         <div class="wizard-nav">
           <div></div>
@@ -503,6 +547,30 @@ body::before{
               oninput="liveCheck2()">
           </div>
           <p class="field-error" id="err-signupAddress"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="form-group">
+          <label>Next of Kin <span class="label-hint">(optional)</span></label>
+          <div class="input-wrap" id="wrap-kinName">
+            <input type="text" id="kinName" placeholder="Full name" oninput="liveCheck2()">
+          </div>
+          <p class="field-error" id="err-kinName"><i class="fa fa-circle-exclamation"></i><span></span></p>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <div class="input-wrap" id="wrap-kinRelationship">
+              <select id="kinRelationship" onchange="liveCheck2()">
+                <option value="">Relationship</option>
+                <option>Spouse</option><option>Parent</option><option>Child</option>
+                <option>Sibling</option><option>Relative</option><option>Friend</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-wrap" id="wrap-kinPhone">
+              <input type="tel" id="kinPhone" placeholder="Phone number" oninput="liveCheck2()">
+            </div>
+            <p class="field-error" id="err-kinPhone"><i class="fa fa-circle-exclamation"></i><span></span></p>
+          </div>
         </div>
         <div class="wizard-nav">
           <button class="nav-btn back-btn" onclick="goStep(1)"><i class="fa fa-arrow-left"></i> Back</button>
@@ -653,7 +721,7 @@ function switchTab(tab) {
   document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
   if (tab === 'signup' && currentStep !== 1) {
     // reset all field error states
-    ['signupName','signupCountry','signupEmail','signupPhone','signupAddress','signupPassword','signupConfirm'].forEach(id => clearFieldError(id));
+    ['signupFirstName','signupLastName','signupCountry','signupEmail','signupPhone','signupAddress','signupPassword','signupConfirm'].forEach(id => clearFieldError(id));
     setPinError('');
     _signupPhotoFile = null;
     const img = document.getElementById('signupPhotoPreviewImg');
@@ -687,7 +755,31 @@ function togglePwd(inputId, btn) {
 }
 
 /* ── API CALL ── */
+/* ── TEXT NORMALISATION ──────────────────────────────────────────────────────
+   Free-text values are sent to the backend in Title Case ("12 marina road" -> "12 Marina Road"), so the sheet
+   never ends up with mixed letter cases. Passwords, PINs, emails, codes, tokens, ids, URLs and fixed dropdown
+   values (country, gender, type...) are never touched: only the keys listed below are converted. */
+const TITLE_CASE_KEYS = ['name', 'firstName', 'lastName', 'address', 'relationship', 'notes', 'note', 'recipient', 'bank',
+                         'nextOfKinName', 'nextOfKinRelationship'];
+function toTitleCase(value) {
+  return String(value == null ? '' : value)
+    .replace(/\s+/g, ' ').trim().toLowerCase()
+    .replace(/(^|[\s\-\/(.])(\p{L})/gu, function (m, p, c) { return p + c.toUpperCase(); })      // each word
+    .replace(/(^|[\s\-])(\p{L})'(\p{L})/gu, function (m, p, a, b) { return p + a + "'" + b.toUpperCase(); }); // O'Brien
+}
+function normalizeOutgoing(x, key) {
+  if (Array.isArray(x)) return x.map(function (i) { return normalizeOutgoing(i, key); });
+  if (x && typeof x === 'object') {
+    const out = {};
+    Object.keys(x).forEach(function (k) { out[k] = normalizeOutgoing(x[k], k); });
+    return out;
+  }
+  if (typeof x === 'string' && TITLE_CASE_KEYS.indexOf(key) !== -1) return toTitleCase(x);
+  return x;
+}
+
 async function api(payload) {
+  payload = normalizeOutgoing(payload);
   const res = await fetch(API_URL, {
     method: 'POST',
     body: JSON.stringify(payload)
@@ -801,18 +893,19 @@ function setPinError(msg) {
 }
 
 /* ── Live check: Step 1 ── */
+const NAME_PATTERN = /^[\p{L}][\p{L}\s'.\-]*$/u;
 function liveCheck1() {
-  const name    = document.getElementById('signupName').value.trim();
   const country = document.getElementById('signupCountry').value;
   let ok = true;
 
-  if (name.length > 0 && name.length < 2) {
-    setFieldError('signupName', 'Name must be at least 2 characters.'); ok = false;
-  } else if (name.length === 0) {
-    clearFieldError('signupName'); ok = false;
-  } else {
-    setFieldError('signupName', '');
-  }
+  ['signupFirstName', 'signupLastName'].forEach(function (id) {
+    const v = document.getElementById(id).value.trim();
+    const label = id === 'signupFirstName' ? 'First' : 'Last';
+    if (v.length === 0) { clearFieldError(id); ok = false; }
+    else if (v.length < 2) { setFieldError(id, label + ' name must be at least 2 characters.'); ok = false; }
+    else if (!NAME_PATTERN.test(v)) { setFieldError(id, 'Use letters only (hyphens and apostrophes are fine).'); ok = false; }
+    else { setFieldError(id, ''); }
+  });
 
   if (!country) {
     clearFieldError('signupCountry'); ok = false;
@@ -820,7 +913,42 @@ function liveCheck1() {
     setFieldError('signupCountry', '');
   }
 
+  if (!document.getElementById('signupGender').value) {
+    clearFieldError('signupGender'); ok = false;
+  } else {
+    setFieldError('signupGender', '');
+  }
+
   document.getElementById('next1').disabled = acctType === 'joint' ? false : !ok;
+}
+
+/* Next of kin is optional: it only blocks Continue when something was typed but is incomplete or invalid.
+   showErrors=true also flags a missing name when only relationship/phone were given. */
+function kinCheck(showErrors) {
+  const name  = document.getElementById('kinName').value.trim();
+  const rel   = document.getElementById('kinRelationship').value;
+  const phone = document.getElementById('kinPhone').value.trim();
+  let ok = true;
+
+  if (!name && (rel || phone)) {
+    if (showErrors) setFieldError('kinName', "Enter your next of kin's name.");
+    ok = false;
+  } else if (name && name.length < 2) {
+    setFieldError('kinName', 'Name must be at least 2 characters.'); ok = false;
+  } else if (name) {
+    setFieldError('kinName', '');
+  } else {
+    clearFieldError('kinName');
+  }
+
+  if (phone && !/^[\d\s\+\-\(\)]{7,}$/.test(phone)) {
+    setFieldError('kinPhone', 'Enter a valid phone number.'); ok = false;
+  } else if (phone) {
+    setFieldError('kinPhone', '');
+  } else {
+    clearFieldError('kinPhone');
+  }
+  return ok;
 }
 
 /* ── Live check: Step 2 ── */
@@ -856,6 +984,8 @@ function liveCheck2() {
   } else {
     setFieldError('signupAddress', '');
   }
+
+  if (!kinCheck(false)) ok = false;
 
   document.getElementById('next2').disabled = !ok;
 }
@@ -933,11 +1063,16 @@ function goStep(n) {
 /* Hard validation (called on goStep, shows errors explicitly for any missed fields) */
 function runValidation(step) {
   if (step === 1) {
-    const name    = document.getElementById('signupName').value.trim();
+    const first   = document.getElementById('signupFirstName').value.trim();
+    const last    = document.getElementById('signupLastName').value.trim();
     const country = document.getElementById('signupCountry').value;
     let ok = true;
-    if (!name) { setFieldError('signupName', 'Full name is required.'); ok = false; }
+    if (!first) { setFieldError('signupFirstName', 'First name is required.'); ok = false; }
+    else if (!NAME_PATTERN.test(first)) { setFieldError('signupFirstName', 'Use letters only (hyphens and apostrophes are fine).'); ok = false; }
+    if (!last)  { setFieldError('signupLastName', 'Last name is required.'); ok = false; }
+    else if (!NAME_PATTERN.test(last))  { setFieldError('signupLastName', 'Use letters only (hyphens and apostrophes are fine).'); ok = false; }
     if (!country) { setFieldError('signupCountry', 'Please select your country.'); ok = false; }
+    if (!document.getElementById('signupGender').value) { setFieldError('signupGender', 'Please select your gender.'); ok = false; }
     return ok;
   }
   if (step === 2) {
@@ -951,6 +1086,7 @@ function runValidation(step) {
     else if (!/^[\d\s\+\-\(\)]{7,}$/.test(phone)) { setFieldError('signupPhone', 'Enter a valid phone number.'); ok = false; }
     if (!addr)  { setFieldError('signupAddress', 'Residential address is required.'); ok = false; }
     else if (addr.length < 5) { setFieldError('signupAddress', 'Enter your full address.'); ok = false; }
+    if (!kinCheck(true)) ok = false;
     return ok;
   }
   if (step === 3) {
@@ -975,13 +1111,25 @@ function getPinValue() {
   return ['pin0','pin1','pin2','pin3'].map(id => document.getElementById(id).value).join('');
 }
 
+function kinSummary() {
+  const esc = t => t.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const name  = toTitleCase(document.getElementById('kinName').value);
+  const rel   = document.getElementById('kinRelationship').value;
+  const phone = document.getElementById('kinPhone').value.trim();
+  if (!name) return '';
+  return esc(name) + (rel ? ' (' + esc(rel) + ')' : '') + (phone ? ' \u00b7 ' + esc(phone) : '');
+}
+
 function buildReviewCard() {
   const rows = [
-    ['Full Name',    document.getElementById('signupName').value.trim(),    1],
+    ['First Name',   toTitleCase(document.getElementById('signupFirstName').value),    1],
+    ['Last Name',    toTitleCase(document.getElementById('signupLastName').value),     1],
     ['Country',      document.getElementById('signupCountry').value,         1],
+    ['Gender',       document.getElementById('signupGender').value,          1],
     ['Email',        document.getElementById('signupEmail').value.trim(),    2],
     ['Phone',        document.getElementById('signupPhone').value.trim(),    2],
-    ['Address',      document.getElementById('signupAddress').value.trim(),  2],
+    ['Address',      toTitleCase(document.getElementById('signupAddress').value),  2],
+    ['Next of Kin',  kinSummary(),                                           2],
     ['Password',     '••••••••',                                             3],
     ['PIN',          '••••',                                                  3],
   ];
@@ -1052,6 +1200,12 @@ function skipPhotoStep() {
 }
 
 /* ── SIGNUP ── */
+/* text fields are tidied to Title Case as the user leaves them (what you see is what gets saved) */
+['signupFirstName', 'signupLastName', 'signupAddress', 'kinName', 'signupNotes'].forEach(function (id) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('blur', function () { if (el.value.trim()) el.value = toTitleCase(el.value); });
+});
+
 async function doSignup() {
   clearMessages();
   if (!document.getElementById('signupTerms').checked) {
@@ -1059,7 +1213,9 @@ async function doSignup() {
     return;
   }
 
-  const name     = document.getElementById('signupName').value.trim();
+  const firstName = toTitleCase(document.getElementById('signupFirstName').value);
+  const lastName  = toTitleCase(document.getElementById('signupLastName').value);
+  const name      = firstName + ' ' + lastName;     // always "First Last", never the other way round
   const country  = document.getElementById('signupCountry').value;
   const email    = document.getElementById('signupEmail').value.trim();
   const phone    = document.getElementById('signupPhone').value.trim();
@@ -1067,11 +1223,15 @@ async function doSignup() {
   const password = document.getElementById('signupPassword').value;
   const pin      = getPinValue();
   const notes    = document.getElementById('signupNotes').value.trim();
+  const gender   = document.getElementById('signupGender').value;
+  const nextOfKinName         = document.getElementById('kinName').value.trim();
+  const nextOfKinRelationship = document.getElementById('kinRelationship').value;
+  const nextOfKinPhone        = document.getElementById('kinPhone').value.trim();
 
   setLoading('signupBtn', true, '<i class="fa fa-shield-halved"></i> Create My Account');
 
   try {
-    const data = await api({ action: 'register', name, email, password, country, phone, address, pin, notes });
+    const data = await api({ action: 'register', firstName, lastName, name, email, password, country, phone, address, pin, notes, gender, nextOfKinName, nextOfKinRelationship, nextOfKinPhone });
 
     if (data.status) {
       const uid = data.uid;

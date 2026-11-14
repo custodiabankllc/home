@@ -11232,30 +11232,7 @@ NOTIFICATION MODAL
 </style>
 
 
-<style>
-/* =========================
-   DARK MODE
-   ========================= */
 
-html.dark-mode {
-    filter: invert(1) hue-rotate(180deg);
-    background: #fff;
-}
-
-html.dark-mode img,
-html.dark-mode video,
-html.dark-mode iframe,
-html.dark-mode .fa-solid,
-html.dark-mode .fa-regular,
-html.dark-mode .fa-brands,
-html.dark-mode i[class*="fa-"] {
-    filter: invert(1) hue-rotate(180deg);
-}
-
-html.dark-mode {
-    transition: background-color .3s ease;
-}
-</style>
 
 <style>
 /* =========================
@@ -12336,6 +12313,338 @@ button[class*="-back-btn"] i{font-size:13px !important;}
   [data-greeting] .signee-tag i{display:none;}
 }
 </style>
+<!-- ═══ DARK THEME ═══ switched by the Dark Mode toggle in Settings (saved on this device) -->
+<script id="darkModeBoot">
+/* apply the saved theme before first paint so there is no white flash */
+try { if (localStorage.getItem('custodia_theme') === 'dark') document.documentElement.classList.add('dark-mode'); } catch (e) {}
+</script>
+<style id="darkModeBase">
+html.dark-mode{color-scheme:dark;background:#0b111d;}
+html.dark-mode body{background:#0b111d;color:#e6ecf5;}
+html.dark-mode ::selection{background:#2563eb;color:#fff;}
+html.dark-mode ::-webkit-scrollbar{width:10px;height:10px;}
+html.dark-mode ::-webkit-scrollbar-track{background:#0b111d;}
+html.dark-mode ::-webkit-scrollbar-thumb{background:#2a374f;border-radius:8px;}
+html.dark-mode ::placeholder{color:#7f8ea6 !important;opacity:1;}
+html.dark-mode img{filter:none;}
+html.dark-mode .overlay-page{background:#0b111d !important;}
+html.dark-mode [class*="-btn-disabled"]{background:#2a374f !important;color:#a3b1c6 !important;}
+</style>
+<script id="darkModeEngine">
+(function () {
+  'use strict';
+  var KEY = 'custodia_theme', GEN_ID = 'darkModeGenerated';
+  var root = document.documentElement;
+
+  /* ---------- colour helpers ---------- */
+  function parseColor(str) {
+    str = String(str).trim().toLowerCase();
+    if (str === 'white') return { r: 255, g: 255, b: 255, a: 1 };
+    if (str === 'black') return { r: 0, g: 0, b: 0, a: 1 };
+    var m = str.match(/^rgba?\(([^)]+)\)$/);
+    if (m) {
+      var p = m[1].split(/[\s,\/]+/).filter(Boolean);
+      var a = p[3] === undefined ? 1 : (p[3].indexOf('%') > -1 ? parseFloat(p[3]) / 100 : parseFloat(p[3]));
+      var c = { r: +p[0], g: +p[1], b: +p[2], a: isNaN(a) ? 1 : a };
+      return (isNaN(c.r) || isNaN(c.g) || isNaN(c.b)) ? null : c;
+    }
+    m = str.match(/^#([0-9a-f]{3,8})$/);
+    if (m) {
+      var h = m[1];
+      if (h.length === 3 || h.length === 4) h = h.split('').map(function (x) { return x + x; }).join('');
+      if (h.length !== 6 && h.length !== 8) return null;
+      return { r: parseInt(h.substr(0, 2), 16), g: parseInt(h.substr(2, 2), 16), b: parseInt(h.substr(4, 2), 16),
+               a: h.length === 8 ? parseInt(h.substr(6, 2), 16) / 255 : 1 };
+    }
+    return null;
+  }
+  function hex2(n) { n = Math.max(0, Math.min(255, Math.round(n))); return (n < 16 ? '0' : '') + n.toString(16); }
+  function hexOf(c) { return '#' + hex2(c.r) + hex2(c.g) + hex2(c.b); }
+  function fmt(c) {
+    if (c.a < 1) return 'rgba(' + Math.round(c.r) + ',' + Math.round(c.g) + ',' + Math.round(c.b) + ',' + (+c.a.toFixed(3)) + ')';
+    return hexOf(c);
+  }
+  function toHsl(c) {
+    var r = c.r / 255, g = c.g / 255, b = c.b / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+    var h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+    if (d) {
+      s = d / (1 - Math.abs(2 * l - 1));
+      if (mx === r) h = ((g - b) / d) % 6; else if (mx === g) h = (b - r) / d + 2; else h = (r - g) / d + 4;
+      h *= 60; if (h < 0) h += 360;
+    }
+    return { h: h, s: s, l: l };
+  }
+  function fromHsl(h, s, l, a) {
+    var c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs((h / 60) % 2 - 1)), m = l - c / 2, r = 0, g = 0, b = 0;
+    if (h < 60) { r = c; g = x; } else if (h < 120) { r = x; g = c; } else if (h < 180) { g = c; b = x; }
+    else if (h < 240) { g = x; b = c; } else if (h < 300) { r = x; b = c; } else { r = c; b = x; }
+    return { r: (r + m) * 255, g: (g + m) * 255, b: (b + m) * 255, a: a === undefined ? 1 : a };
+  }
+  function lum(c) {
+    function f(v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+    return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b);
+  }
+  function isSlate(k) { return k.s < 0.6 && k.h >= 195 && k.h <= 260; }   // blue-grey 'slate' family counts as neutral
+  function clamp(x, a, b) { return Math.min(b, Math.max(a, x)); }
+
+  /* ---------- palette ---------- */
+  var CARD = '#121b2e', PAGE = '#0b111d', INSET = '#182339', RAISED = '#1d2940', TRACK = '#2a374f', TRACK2 = '#3b4963';
+  var BG_TABLE = { 'ffffff': CARD, 'fafafa': CARD, 'fdfdfd': CARD, 'fcfcfd': CARD, 'f4f7fb': PAGE,
+                   'f8fafc': INSET, 'f9fafb': INSET, 'f1f5f9': RAISED, 'f3f4f6': RAISED,
+                   'e2e8f0': TRACK, 'e5e7eb': TRACK, 'cbd5e1': TRACK2 };
+
+  /* ---------- role mappers: return a new colour string, or null to leave it alone ---------- */
+  function mapBg(c, btnLike, keepWhite) {
+    if (c.a === 0) return null;
+    if (c.a < 1) {
+      if (c.r >= 235 && c.g >= 235 && c.b >= 235) return c.a >= 0.5 ? fmt({ r: 18, g: 27, b: 46, a: c.a }) : null;   // light glass -> dark glass
+      if (c.r < 70 && c.g < 70 && c.b < 90 && c.a >= 0.3) return fmt({ r: 0, g: 0, b: 0, a: Math.min(0.85, c.a * 1.1) }); // backdrops
+      return null;
+    }
+    var key = hexOf(c).slice(1);
+    if (keepWhite && key === 'ffffff') return null;
+    if (BG_TABLE[key]) return BG_TABLE[key];
+    var k = toHsl(c);
+    if (k.s < 0.18 || (isSlate(k) && k.l < 0.8)) {
+      if (k.l >= 0.985) return CARD;
+      if (k.l >= 0.96) return INSET;
+      if (k.l >= 0.92) return RAISED;
+      if (k.l >= 0.86) return TRACK;
+      if (k.l >= 0.78) return TRACK2;
+      if (k.l < 0.25 && btnLike) return '#2f3e5c';
+      if (btnLike && k.l >= 0.55 && k.l < 0.8) return TRACK;
+      return null;
+    }
+    if (k.l >= 0.78) {                                               // pale tints (blue/green/red/amber chips)
+      return fmt(fromHsl(k.h, clamp(k.s * 0.6, 0.25, 0.55), clamp(0.2 - (k.l - 0.8) * 0.25, 0.14, 0.22)));
+    }
+    return null;
+  }
+  function mapText(c) {
+    if (c.a === 0) return null;
+    if (c.a < 1) {
+      if (c.r >= 235 && c.g >= 235 && c.b >= 235) return null;      // translucent white text stays
+      if (c.r < 90 && c.g < 90 && c.b < 110) return fmt({ r: 226, g: 232, b: 240, a: c.a });
+      return null;
+    }
+    var k = toHsl(c);
+    if (k.s < 0.2 || isSlate(k)) {
+      if (k.l < 0.55) return fmt(fromHsl(k.h || 215, Math.min(k.s, 0.25), 0.97 - 0.7 * k.l));
+      return null;
+    }
+    if (k.l < 0.62) return fmt(fromHsl(k.h, Math.min(k.s, 0.85), k.l < 0.3 ? 0.78 : 0.68));
+    return null;
+  }
+  function mapBorder(c) {
+    if (c.a === 0) return null;
+    if (c.a < 1) {
+      if (c.r < 70 && c.g < 70 && c.b < 90) return fmt({ r: 255, g: 255, b: 255, a: Math.min(0.14, c.a * 1.6) });
+      return null;
+    }
+    var key = hexOf(c).slice(1);
+    if (key === 'ffffff') return CARD;
+    var k = toHsl(c);
+    if (k.s < 0.2 || isSlate(k)) {
+      if (k.l >= 0.93) return '#1f2a3f';
+      if (k.l >= 0.8) return '#2a364d';
+      if (k.l < 0.25) return '#334155';
+      return null;
+    }
+    if (k.l >= 0.8) return fmt(fromHsl(k.h, 0.35, 0.28));
+    return null;
+  }
+  function mapShadow(c) {
+    if (c.a < 1 && c.r < 90 && c.g < 90 && c.b < 110) return fmt({ r: 0, g: 0, b: 0, a: Math.min(0.55, c.a * 3.2) });
+    return null;
+  }
+
+  var COLOR_RE = /#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)|\bwhite\b|\bblack\b/g;
+  function mapValue(val, fn) {
+    var changed = false;
+    var out = String(val).replace(COLOR_RE, function (tok) {
+      var c = parseColor(tok); if (!c) return tok;
+      var n = fn(c); if (n == null) return tok;
+      changed = true; return n;
+    });
+    return { value: out, changed: changed };
+  }
+  function firstColor(val) {
+    var m = String(val).match(COLOR_RE); return m ? parseColor(m[0]) : null;
+  }
+
+  var BORDER_PROPS = ['border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color', 'outline-color', 'text-decoration-color'];
+  var TEXT_PROPS = ['color', 'fill', 'stroke', 'caret-color'];
+  var KNOB_RE = /::?(before|after)|knob|thumb|handle|slider|dot\b|indicator|\bpin\b/i;
+  var BTN_RE = /btn|button|chip|pill|badge|\btag\b|switch|toggle|step-|stepper|upload/i;
+
+  /* identity=true (stylesheet rules) also re-emits unchanged colours so source order between rules is preserved */
+  function mapDecl(style, sel, identity) {
+    var out = [], keepWhite = KNOB_RE.test(sel || ''), btnLike = BTN_RE.test(sel || ''), P = function (p) { return style.getPropertyValue(p); };
+    var pr = function (p) { return style.getPropertyPriority(p) ? '!important' : ''; };
+    var ownBgLum = -1, i, v, r;
+
+    var bgc = P('background-color'), bgi = P('background-image');
+    var hasShort = !!P('background');
+    if (bgc && bgc !== 'initial') {
+      r = mapValue(bgc, function (c) { return mapBg(c, btnLike, keepWhite); });
+      var cc = parseColor(r.value); if (cc && cc.a > 0.5) ownBgLum = lum(cc);
+      if (r.changed || identity) out.push('background-color:' + r.value + pr('background-color'));
+    }
+    if (bgi && bgi !== 'initial' && bgi !== 'none') {
+      r = mapValue(bgi, function (c) { return mapBg(c, btnLike, keepWhite); });
+      var fc = firstColor(r.value); if (fc && fc.a > 0.5 && ownBgLum < 0) ownBgLum = lum(fc);
+      if (r.changed || identity) out.push('background-image:' + r.value + pr('background-image'));
+    } else if (identity && hasShort && (bgi === 'initial' || bgi === 'none')) {
+      out.push('background-image:none' + pr('background-image'));
+    }
+
+    var keepText = ownBgLum > 0.35;                       // text sits on a bright colour that stays bright -> keep its dark text
+    for (i = 0; i < TEXT_PROPS.length; i++) {
+      v = P(TEXT_PROPS[i]); if (!v || v === 'initial' || v === 'inherit' || v === 'none' || v === 'currentcolor') continue;
+      r = keepText ? { value: v, changed: false } : mapValue(v, mapText);
+      if (r.changed || identity) out.push(TEXT_PROPS[i] + ':' + r.value + pr(TEXT_PROPS[i]));
+    }
+    for (i = 0; i < BORDER_PROPS.length; i++) {
+      v = P(BORDER_PROPS[i]); if (!v || v === 'initial' || v === 'currentcolor' || v === 'inherit') continue;
+      r = mapValue(v, mapBorder);
+      if (r.changed || identity) out.push(BORDER_PROPS[i] + ':' + r.value + pr(BORDER_PROPS[i]));
+    }
+    v = P('box-shadow');
+    if (v && v !== 'none' && v !== 'initial') {
+      r = mapValue(v, mapShadow);
+      if (r.changed || identity) out.push('box-shadow:' + r.value + pr('box-shadow'));
+    }
+    return out;
+  }
+
+  /* ---------- stylesheet pass ---------- */
+  function splitSelectors(text) {
+    var parts = [], depth = 0, cur = '';
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (ch === '(' || ch === '[') depth++; else if (ch === ')' || ch === ']') depth--;
+      if (ch === ',' && depth === 0) { parts.push(cur); cur = ''; } else cur += ch;
+    }
+    if (cur.trim()) parts.push(cur);
+    return parts;
+  }
+  function prefix(selText) {
+    return splitSelectors(selText).map(function (s) {
+      s = s.trim();
+      if (/^html\b/.test(s)) return 'html.dark-mode' + s.slice(4);
+      if (/^:root\b/.test(s)) return 'html.dark-mode' + s.slice(5);
+      return 'html.dark-mode ' + s;
+    }).join(',');
+  }
+  function walk(rules, out) {
+    for (var i = 0; i < rules.length; i++) {
+      var rule = rules[i];
+      try {
+        if (rule.type === 1) {
+          if (!rule.selectorText || /dark-mode/.test(rule.selectorText)) continue;
+          var d = mapDecl(rule.style, rule.selectorText, true);
+          if (d.length) out.push(prefix(rule.selectorText) + '{' + d.join(';') + '}');
+        } else if (rule.type === 4) {
+          var inner = []; walk(rule.cssRules, inner);
+          if (inner.length) out.push('@media ' + rule.media.mediaText + '{' + inner.join('\n') + '}');
+        } else if (rule.type === 12) {
+          var inner2 = []; walk(rule.cssRules, inner2);
+          if (inner2.length) out.push('@supports ' + rule.conditionText + '{' + inner2.join('\n') + '}');
+        }
+      } catch (e) { /* ignore a single bad rule */ }
+    }
+  }
+  function build() {
+    var out = [], sheets = document.styleSheets;
+    for (var i = 0; i < sheets.length; i++) {
+      var sh = sheets[i], rules;
+      if (sh.ownerNode && (sh.ownerNode.id === GEN_ID || sh.ownerNode.id === 'darkModeBase')) continue;
+      try { rules = sh.cssRules; } catch (e) { continue; }   // cross-origin sheets (fonts, icon font) are skipped
+      if (rules) walk(rules, out);
+    }
+    var el = document.getElementById(GEN_ID);
+    if (!el) { el = document.createElement('style'); el.id = GEN_ID; document.head.appendChild(el); }
+    el.textContent = out.join('\n');
+  }
+
+  /* ---------- inline style pass (elements styled with style="" or by script) ---------- */
+  var observer = null;
+  function darkifyEl(el) {
+    if (!el || el.nodeType !== 1 || !el.hasAttribute('style')) return;
+    var cur = el.getAttribute('style');
+    if (el.__dkApplied === cur) return;
+    var orig = cur, d = mapDecl(el.style, '', false);
+    if (!d.length) { el.__dkApplied = null; return; }
+    el.__dkOrig = orig;
+    var tmp = document.createElement('div'); tmp.style.cssText = d.join(';');
+    for (var i = 0; i < tmp.style.length; i++) {
+      var p = tmp.style[i];
+      el.style.setProperty(p, tmp.style.getPropertyValue(p), 'important');
+    }
+    el.setAttribute('data-dk', '1');
+    el.__dkApplied = el.getAttribute('style');
+  }
+  function darkifyTree(node) {
+    if (!node || node.nodeType !== 1) return;
+    darkifyEl(node);
+    var list = node.querySelectorAll('[style]');
+    for (var i = 0; i < list.length; i++) darkifyEl(list[i]);
+  }
+  function restoreInline() {
+    var list = document.querySelectorAll('[data-dk]');
+    for (var i = 0; i < list.length; i++) {
+      var el = list[i];
+      if (el.__dkOrig != null) el.setAttribute('style', el.__dkOrig);
+      el.removeAttribute('data-dk'); el.__dkApplied = null; el.__dkOrig = null;
+    }
+  }
+  function startObserver() {
+    if (observer || !window.MutationObserver) return;
+    observer = new MutationObserver(function (recs) {
+      for (var i = 0; i < recs.length; i++) {
+        var r = recs[i];
+        if (r.type === 'attributes') darkifyEl(r.target);
+        else for (var j = 0; j < r.addedNodes.length; j++) darkifyTree(r.addedNodes[j]);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+  }
+  function stopObserver() { if (observer) { observer.disconnect(); observer = null; } }
+
+  /* ---------- on / off ---------- */
+  function syncToggle() {
+    var t = document.getElementById('darkModeToggle');
+    if (t) t.checked = root.classList.contains('dark-mode');
+  }
+  function activate() {
+    build();
+    if (document.body) { darkifyTree(document.body); startObserver(); }
+  }
+  function setTheme(dark, save) {
+    root.classList.toggle('dark-mode', dark);
+    if (save) { try { localStorage.setItem(KEY, dark ? 'dark' : 'light'); } catch (e) {} }
+    if (dark) activate();
+    else {
+      stopObserver(); restoreInline();
+      var g = document.getElementById(GEN_ID); if (g) g.textContent = '';
+    }
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', dark ? '#0b111d' : '#f4f7fb');
+    syncToggle();
+  }
+  window.setCustodiaTheme = function (dark) { setTheme(!!dark, true); };
+
+  function init() {
+    var t = document.getElementById('darkModeToggle');
+    if (t && !t.__dkBound) { t.__dkBound = true; t.addEventListener('change', function () { setTheme(t.checked, true); }); }
+    if (root.classList.contains('dark-mode')) activate();
+    syncToggle();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  /* styles that arrive late (icon font, last <style> blocks) */
+  window.addEventListener('load', function () { if (root.classList.contains('dark-mode')) { build(); darkifyTree(document.body); } });
+})();
+</script>
 </head>
 
 <body>
