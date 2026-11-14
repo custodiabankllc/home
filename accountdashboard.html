@@ -11536,6 +11536,778 @@ body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !impor
   #mePage .me-card,#mePage .me-side-card{padding:14px;}
 }
 </style>
+
+<style>
+/* ═══ REWARDS + FINANCE — compact sizing & calm icon colours (blue = key, gray = secondary) ═══ */
+#rewardsPage .rewards-hero,#financePage .finance-hero{padding:24px 26px;border-radius:22px;gap:20px;margin-bottom:16px;}
+#rewardsPage .rewards-tag,#financePage .finance-badge{padding:6px 13px;font-size:11.5px;margin-bottom:14px;}
+#rewardsPage .rewards-hero h1,#financePage .finance-hero h1{font-size:28px;line-height:1.15;margin-bottom:10px;}
+#rewardsPage .rewards-hero p,#financePage .finance-hero p{font-size:13px;line-height:1.65;}
+#rewardsPage .rewards-points-box{margin-top:18px;padding:14px 16px;border-radius:16px;gap:12px;max-width:380px;}
+#rewardsPage .rewards-points-box small{font-size:12px;}
+#rewardsPage .rewards-points-box h2{margin-top:4px;font-size:26px;}
+#rewardsPage .rewards-level{padding:7px 13px;font-size:12px;}
+#rewardsPage .reward-circle{width:104px;height:104px;}
+#rewardsPage .reward-circle i{font-size:42px;color:#93c5fd;}
+#financePage .finance-hero-actions{gap:10px;margin-top:18px;}
+#financePage .finance-primary-btn,#financePage .finance-secondary-btn{height:38px;padding:0 16px;border-radius:12px;font-size:12.5px;}
+#financePage .finance-hero-card{min-width:240px;padding:18px 20px;border-radius:18px;}
+#financePage .finance-hero-card small{font-size:12px;}
+#financePage .finance-hero-card h2{margin:8px 0;font-size:22px;}
+#financePage .finance-growth{font-size:12.5px;gap:7px;}
+
+/* stat tiles */
+#rewardsPage .reward-stats-grid,#financePage .finance-stats-grid{gap:12px;margin-bottom:16px;}
+#rewardsPage .reward-stat-card,#financePage .finance-stat-card{padding:16px;border-radius:18px;}
+#rewardsPage .reward-stat-icon,#financePage .finance-stat-icon{width:38px;height:38px;border-radius:11px;margin-bottom:10px;}
+#rewardsPage .reward-stat-icon i,#financePage .finance-stat-icon i{font-size:15px;}
+#rewardsPage .reward-stat-card small,#financePage .finance-stat-card small{font-size:12px;}
+#rewardsPage .reward-stat-card h3,#financePage .finance-stat-card h3{margin:6px 0;font-size:21px;}
+#rewardsPage .reward-stat-card span,#financePage .finance-stat-card span{font-size:12px;}
+
+/* grids + cards */
+#rewardsPage .rewards-grid,#financePage .finance-grid{gap:16px;}
+#rewardsPage .rewards-left,#rewardsPage .rewards-right,#financePage .finance-left,#financePage .finance-right{gap:16px;}
+#rewardsPage .rewards-card,#rewardsPage .rewards-side-card,#financePage .finance-card,#financePage .finance-side-card{padding:18px;border-radius:20px;}
+#rewardsPage .rewards-card-header,#financePage .finance-card-header{margin-bottom:14px;}
+#rewardsPage .rewards-card-header small,#financePage .finance-card-header small{font-size:11.5px;}
+#rewardsPage .rewards-card-header h2,#financePage .finance-card-header h2{margin-top:3px;font-size:19px;}
+#financePage .finance-action-btn{height:34px;padding:0 14px;border-radius:11px;font-size:12px;}
+
+/* rewards: programs, side cards */
+#rewardsPage .reward-program-grid{gap:12px;}
+#rewardsPage .reward-program-card{padding:16px;border-radius:16px;}
+#rewardsPage .program-icon{width:38px;height:38px;border-radius:11px;margin-bottom:10px;}
+#rewardsPage .program-icon i{font-size:15px;}
+#rewardsPage .reward-program-card h3{font-size:15px;margin-bottom:5px;}
+#rewardsPage .reward-program-card p{font-size:12.5px;line-height:1.55;margin-bottom:10px;}
+#rewardsPage .reward-program-card span{font-size:12px;}
+#rewardsPage .side-reward-icon{width:44px;height:44px;border-radius:13px;margin-bottom:12px;}
+#rewardsPage .side-reward-icon i{font-size:18px;}
+#rewardsPage .rewards-side-card h3{font-size:18px;margin-bottom:6px;}
+#rewardsPage .rewards-side-card p{font-size:12.5px;line-height:1.6;}
+#rewardsPage .redeem-list{margin-top:14px !important;gap:10px;}
+#rewardsPage .redeem-item{padding:11px 13px;border-radius:13px;}
+#rewardsPage .redeem-item span{font-size:13px;}
+#rewardsPage .redeem-item small{font-size:12px;}
+#rewardsPage .redeem-btn{height:42px;border-radius:13px;font-size:13px;margin-top:14px !important;}
+#rewardsPage .benefit-reward-list{margin-top:14px;gap:10px;}
+#rewardsPage .benefit-reward-item{gap:10px;font-size:13px;}
+#rewardsPage .benefit-reward-item i{width:22px;height:22px;min-width:22px;font-size:10px;}
+#rewardsPage .rewards-table th{padding:10px 12px;font-size:11px;}
+#rewardsPage .rewards-table td{padding:10px 12px;font-size:12.5px;}
+#rewardsPage .rw-icon{width:30px;height:30px;border-radius:9px;}
+#rewardsPage .rw-icon i{font-size:12px;}
+
+/* finance: overview, activity, side */
+#financePage .finance-overview-grid{gap:12px;}
+#financePage .finance-overview-item{padding:16px;border-radius:16px;}
+#financePage .overview-top{margin-bottom:12px;}
+#financePage .overview-top span{font-size:15px;}
+#financePage .overview-icon{width:38px;height:38px;border-radius:11px;}
+#financePage .overview-icon i{font-size:15px;}
+#financePage .finance-overview-item h4{font-size:14.5px;margin-bottom:4px;}
+#financePage .finance-overview-item p{font-size:12.5px;line-height:1.55;}
+#financePage .finance-activity-list{gap:10px;}
+#financePage .finance-activity-item{padding:12px 14px;border-radius:15px;gap:12px;}
+#financePage .activity-finance-icon{width:38px;height:38px;border-radius:11px;}
+#financePage .activity-finance-icon i{font-size:15px;}
+#financePage .finance-activity-content h4{font-size:14px;margin-bottom:3px;}
+#financePage .finance-activity-content p{font-size:12px;}
+#financePage .finance-activity-item > span{font-size:13px;}
+#financePage .finance-health-circle{width:124px;height:124px;border-width:9px;margin-bottom:14px;}
+#financePage .finance-health-circle h2{font-size:30px;}
+#financePage .finance-health-circle span{font-size:12px;}
+#financePage .finance-side-card h3{font-size:17px;margin-bottom:8px;}
+#financePage .finance-side-card p{font-size:12.5px;line-height:1.6;}
+#financePage .finance-side-icon{width:44px;height:44px;border-radius:13px;margin-bottom:10px;}
+#financePage .finance-side-icon i{font-size:18px;}
+#financePage .quick-finance-list{gap:10px;margin-top:14px;}
+#financePage .quick-finance-btn{height:42px;border-radius:13px;gap:10px;padding:0 14px;font-size:13px;}
+#financePage .finance-insight-list{margin-top:14px;gap:12px;}
+#financePage .finance-insight-item{gap:10px;}
+#financePage .finance-insight-item i{width:22px;height:22px;min-width:22px;font-size:10px;}
+
+/* icon colours: blue = higher importance, gray = everything else */
+#rewardsPage .reward-stat-icon.blue,#rewardsPage .program-icon.blue,#rewardsPage .side-reward-icon.blue,
+#financePage .finance-stat-icon.blue,#financePage .overview-icon.blue,#financePage .activity-finance-icon.blue,#financePage .finance-side-icon.blue{background:#dbeafe;}
+#rewardsPage .reward-stat-icon.blue i,#rewardsPage .program-icon.blue i,#rewardsPage .side-reward-icon.blue i,
+#financePage .finance-stat-icon.blue i,#financePage .overview-icon.blue i,#financePage .activity-finance-icon.blue i,#financePage .finance-side-icon.blue i{color:#2563eb;}
+#rewardsPage .reward-stat-icon.gray,#rewardsPage .program-icon.gray,#rewardsPage .side-reward-icon.gray,
+#financePage .finance-stat-icon.gray,#financePage .overview-icon.gray,#financePage .activity-finance-icon.gray,#financePage .finance-side-icon.gray{background:#f1f5f9;}
+#rewardsPage .reward-stat-icon.gray i,#rewardsPage .program-icon.gray i,#rewardsPage .side-reward-icon.gray i,
+#financePage .finance-stat-icon.gray i,#financePage .overview-icon.gray i,#financePage .activity-finance-icon.gray i,#financePage .finance-side-icon.gray i{color:#64748b;}
+#rewardsPage .benefit-reward-item i,#financePage .finance-insight-item i{background:#f1f5f9;color:#64748b;}
+#financePage .quick-finance-btn i{color:#64748b;}
+#financePage .finance-health-circle{border-color:#dbeafe;}
+#financePage .finance-health-circle h2{color:#2563eb;}
+
+@media(max-width:900px){
+  #rewardsPage .rewards-hero,#financePage .finance-hero{flex-direction:column;align-items:flex-start;}
+  #rewardsPage .rewards-hero-right{display:none;}
+  #financePage .finance-hero-card{min-width:0;width:100%;}
+}
+@media(max-width:520px){
+  #rewardsPage .rewards-hero,#financePage .finance-hero{padding:18px;}
+  #rewardsPage .rewards-hero h1,#financePage .finance-hero h1{font-size:21px;}
+  #rewardsPage .reward-program-grid,#financePage .finance-overview-grid{grid-template-columns:1fr;}
+  #rewardsPage .rewards-card,#rewardsPage .rewards-side-card,#financePage .finance-card,#financePage .finance-side-card{padding:14px;}
+}
+</style>
+
+<style id="compactAllPages">
+/* ═══ ALL OTHER PAGES — compact sizing (auto-generated pass) ═══ */
+@media(min-width:901px){
+#homePage .balance-card{margin-bottom:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+:is(#homePage,#cardsPage,#accountsPage) h2{font-size:18px}
+#homePage .actions{margin-bottom:20px}
+#homePage .action-card.nav-control{border-radius:17px}
+#homePage .action-icon{border-radius:11px;height:36px;min-width:36px;width:36px}
+#homePage .action-icon i{font-size:15px}
+#homePage .action-card{border-radius:17px}
+#homePage .grid{column-gap:17px;row-gap:17px}
+#homePage .card{border-radius:17px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#homePage .card-header{margin-bottom:16px}
+#cardsPage .cards-wrapper{column-gap:17px;row-gap:17px}
+#cardsPage .bank-card-section{border-radius:20px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#cardsPage .card-topbar{margin-bottom:19px}
+#cardsPage .card-display-area{column-gap:19px;row-gap:19px}
+#cardsPage .realistic-card{border-radius:20px;padding-bottom:17px;padding-left:17px;padding-right:17px;padding-top:17px}
+#cardsPage .chip-wrap{margin-top:16px}
+
+#cardsPage .red{border-radius:31px}
+#cardsPage .yellow{border-radius:31px}
+#cardsPage .quick-action{border-radius:16px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#cardsPage .quick-icon{border-radius:11px;height:36px;min-width:36px;width:36px}
+#cardsPage .quick-icon i{font-size:15px}
+#signatoriesPage .sig-wrap{padding-bottom:24px}
+#signatoriesPage .sig-head{margin-bottom:16px}
+#signatoriesPage h1{font-size:20px}
+#signatoriesPage .sig-summary{margin-bottom:17px}
+#signatoriesPage .sig-grid{column-gap:16px;row-gap:16px}
+#signatoriesPage .sig-card{border-radius:20px}
+#signatoriesPage .sig-top{padding-bottom:34px;padding-left:16px;padding-right:16px;padding-top:20px}
+#signatoriesPage .sig-photo{border-radius:21px;font-size:26px}
+#signatoriesPage .sig-body{padding-bottom:19px;padding-left:17px;padding-right:17px}
+#signatoriesPage .sig-rule{margin-top:17px;padding-left:17px;padding-right:17px}
+#accountsPage .accounts-wrapper{column-gap:19px;row-gap:19px}
+:is(#accountsPage,#withdrawPage) .withdraw-topbar{border-radius:17px;margin-bottom:17px}
+#accountsPage .accounts-hero{border-radius:20px;column-gap:19px;padding-bottom:23px;padding-left:23px;padding-right:23px;padding-top:23px;row-gap:19px}
+#accountsPage h1{font-size:23px}
+#accountsPage .total-balance-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#accountsPage .accounts-grid{column-gap:17px;row-gap:17px}
+#accountsPage .account-box{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#accountsPage .account-top{margin-bottom:16px}
+#accountsPage .account-icon{border-radius:11px;height:38px;min-width:38px;width:38px}
+#accountsPage .account-icon i{font-size:16px}
+#accountsPage .account-balance{font-size:23px}
+#accountsPage .account-actions-grid{column-gap:16px;row-gap:16px}
+#accountsPage .account-action{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#accountsPage .account-action-icon{border-radius:11px;height:37px;min-width:37px;width:37px}
+#accountsPage .account-action-icon i{font-size:16px}
+#accountsPage .accounts-table-wrap{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#accountsPage .accounts-table-header{margin-bottom:16px}
+#accountsPage .table-icon{border-radius:9px;height:30px;min-width:30px;width:30px}
+#accountsPage .table-icon i{font-size:13px}
+:is(#withdrawPage,#transferPage,#openSavingsPage,#loanPage) h2{font-size:22px}
+#withdrawPage .withdraw-grid{column-gap:19px;row-gap:19px}
+#withdrawPage .withdraw-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#withdrawPage .withdraw-card-header{column-gap:16px;margin-bottom:20px;row-gap:16px}
+#withdrawPage .withdraw-form{column-gap:16px;row-gap:16px}
+:is(#withdrawPage,#transferPage) .txn-pin-box{font-size:18px;height:47px;min-width:47px;width:47px}
+:is(#withdrawPage,#transferPage) .txn-pin-eye{height:47px;min-width:47px;width:47px}
+#withdrawPage .withdraw-btn{height:48px}
+#withdrawPage .withdraw-right{column-gap:19px;row-gap:19px}
+#withdrawPage .withdraw-info-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+:is(#withdrawPage,#transferPage) .info-icon.blue{border-radius:12px;height:40px;min-width:40px;width:40px}
+:is(#withdrawPage,#transferPage) .info-icon.blue i{font-size:17px}
+#withdrawPage .status-progress{margin-top:19px}
+#withdrawPage .status-dot{border-radius:31px}
+#withdrawPage .status-dot.pending{border-radius:31px}
+:is(#withdrawPage,#transferPage) .info-icon.green{border-radius:12px;height:40px;min-width:40px;width:40px}
+:is(#withdrawPage,#transferPage) .info-icon.green i{font-size:17px}
+#withdrawPage .withdraw-detail-list{margin-top:17px}
+#transferPage .transfer-topbar{border-radius:17px;margin-bottom:17px}
+#transferPage .transfer-grid{column-gap:19px;row-gap:19px}
+#transferPage .transfer-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#transferPage .transfer-card-header{column-gap:16px;margin-bottom:20px;row-gap:16px}
+#transferPage .transfer-form{column-gap:16px;row-gap:16px}
+#transferPage .transfer-btn-active{height:48px}
+#transferPage .transfer-toast{padding-left:16px;padding-right:16px}
+#transferPage .transfer-right{column-gap:19px;row-gap:19px}
+#transferPage .transfer-info-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#transferPage .transfer-progress{margin-top:19px}
+#transferPage .progress-dot{border-radius:31px}
+#transferPage .progress-dot.pending{border-radius:31px}
+#transferPage .transfer-detail-list{margin-top:17px}
+#investmentPage .investment-topbar{border-radius:17px;margin-bottom:17px}
+#investmentPage h2{font-size:21px}
+#investmentPage .portfolio-summary{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#investmentPage .portfolio-card.large{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#investmentPage .portfolio-card{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#investmentPage .portfolio-icon.blue{border-radius:11px;height:38px;min-width:38px;width:38px}
+#investmentPage .portfolio-icon.blue i{font-size:16px}
+#investmentPage .portfolio-icon.green{border-radius:11px;height:38px;min-width:38px;width:38px}
+#investmentPage .portfolio-icon.green i{font-size:16px}
+#investmentPage .portfolio-icon.gold{border-radius:11px;height:38px;min-width:38px;width:38px}
+#investmentPage .portfolio-icon.gold i{font-size:16px}
+#investmentPage .investment-grid{column-gap:19px;row-gap:19px}
+#investmentPage .investment-left{column-gap:19px;row-gap:19px}
+#investmentPage .investment-section-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#investmentPage .section-header{margin-bottom:19px}
+#investmentPage .section-icon.blue{border-radius:11px;height:37px;min-width:37px;width:37px}
+#investmentPage .section-icon.blue i{font-size:16px}
+:is(#investmentPage,#openSavingsPage,#loanPage) h3{font-size:18px}
+#investmentPage .investment-item{padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#investmentPage .section-icon.green{border-radius:11px;height:37px;min-width:37px;width:37px}
+#investmentPage .section-icon.green i{font-size:16px}
+#investmentPage .section-icon.gold{border-radius:11px;height:37px;min-width:37px;width:37px}
+#investmentPage .section-icon.gold i{font-size:16px}
+#investmentPage .forex-card{border-radius:16px;padding-bottom:17px;padding-left:17px;padding-right:17px;padding-top:17px}
+#investmentPage .investment-right{column-gap:19px;row-gap:19px}
+#investmentPage .investment-side-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+:is(#investmentPage,#openSavingsPage) .side-icon.blue{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+:is(#investmentPage,#openSavingsPage) .side-icon.blue i{font-size:18px}
+#investmentPage .market-list{margin-top:19px}
+#openSavingsPage .savings-topbar{border-radius:17px;margin-bottom:17px}
+#openSavingsPage .savings-type-grid{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#openSavingsPage .savings-type-card{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#openSavingsPage .type-icon.blue{border-radius:11px;height:38px;min-width:38px;width:38px}
+#openSavingsPage .type-icon.blue i{font-size:16px}
+#openSavingsPage .type-icon.green{border-radius:11px;height:38px;min-width:38px;width:38px}
+#openSavingsPage .type-icon.green i{font-size:16px}
+#openSavingsPage .type-icon.gold{border-radius:11px;height:38px;min-width:38px;width:38px}
+#openSavingsPage .type-icon.gold i{font-size:16px}
+#openSavingsPage .savings-grid{column-gap:19px;row-gap:19px}
+#openSavingsPage .savings-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#openSavingsPage .savings-card-header{column-gap:16px;margin-bottom:20px;row-gap:16px}
+#openSavingsPage .savings-form{column-gap:16px;row-gap:16px}
+#openSavingsPage .savings-btn-disabled{height:48px}
+#openSavingsPage .savings-right{column-gap:19px;row-gap:19px}
+#openSavingsPage .savings-side-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#openSavingsPage .side-icon.red{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#openSavingsPage .side-icon.red i{font-size:18px}
+#openSavingsPage .verification-progress{margin-top:19px}
+#openSavingsPage .verification-dot{border-radius:31px}
+#openSavingsPage .verification-dot.pending{border-radius:31px}
+#openSavingsPage .benefit-list{margin-top:19px}
+#loanPage .loan-topbar{border-radius:17px;margin-bottom:17px}
+#loanPage .loan-type-grid{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#loanPage .loan-type-card{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#loanPage .loan-type-icon.blue{border-radius:11px;height:38px;min-width:38px;width:38px}
+#loanPage .loan-type-icon.blue i{font-size:16px}
+#loanPage .loan-type-icon.green{border-radius:11px;height:38px;min-width:38px;width:38px}
+#loanPage .loan-type-icon.green i{font-size:16px}
+#loanPage .loan-type-icon.gold{border-radius:11px;height:38px;min-width:38px;width:38px}
+#loanPage .loan-type-icon.gold i{font-size:16px}
+#loanPage .loan-grid{column-gap:19px;row-gap:19px}
+#loanPage .loan-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#loanPage .loan-card-header{column-gap:16px;margin-bottom:20px;row-gap:16px}
+#loanPage .loan-form{column-gap:16px;row-gap:16px}
+#loanPage .loan-btn-disabled{height:48px}
+#loanPage .loan-right{column-gap:19px;row-gap:19px}
+#loanPage .loan-side-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#loanPage .loan-side-icon.red{border-radius:12px;height:40px;min-width:40px;width:40px}
+#loanPage .loan-side-icon.red i{font-size:17px}
+#loanPage .loan-progress{margin-top:19px}
+#loanPage .loan-progress-dot{border-radius:31px}
+#loanPage .loan-progress-dot.pending{border-radius:31px}
+#loanPage .loan-side-icon.blue{border-radius:12px;height:40px;min-width:40px;width:40px}
+#loanPage .loan-side-icon.blue i{font-size:17px}
+#loanPage .loan-feature-list{margin-top:19px}
+#statementPage .statement-topbar{border-radius:17px;margin-bottom:17px}
+:is(#statementPage,#securityPage,#addFundsPage,#settingsPage,#helpCenterPage,#transactionHistoryPage,#ownershipProcedurePage) h2{font-size:20px}
+#statementPage .statement-summary{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#statementPage .statement-summary-card{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#statementPage .statement-filter-bar{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#statementPage .statement-table-wrapper{border-radius:19px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#securityPage .security-topbar{border-radius:17px;margin-bottom:17px}
+#securityPage .security-status-banner{border-radius:19px;column-gap:16px;margin-bottom:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px;row-gap:16px}
+#securityPage .security-status-left{column-gap:16px;row-gap:16px}
+#securityPage .security-shield{border-radius:15px;height:50px;min-width:50px;width:50px}
+#securityPage .security-shield i{font-size:21px}
+:is(#securityPage,#addFundsPage,#settingsPage,#helpCenterPage) h3{font-size:19px}
+#securityPage .security-grid{column-gap:19px;row-gap:19px}
+#securityPage .security-left{column-gap:19px;row-gap:19px}
+#securityPage .security-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#securityPage .security-card-header{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#securityPage .security-setting{border-radius:16px;column-gap:16px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px;row-gap:16px}
+#securityPage .setting-icon.blue{border-radius:11px;height:37px;min-width:37px;width:37px}
+#securityPage .setting-icon.blue i{font-size:16px}
+#securityPage .setting-icon.green{border-radius:11px;height:37px;min-width:37px;width:37px}
+#securityPage .setting-icon.green i{font-size:16px}
+#securityPage .setting-icon.gold{border-radius:11px;height:37px;min-width:37px;width:37px}
+#securityPage .setting-icon.gold i{font-size:16px}
+#securityPage .activity-dot.green{border-radius:31px}
+#securityPage .activity-dot.blue{border-radius:31px}
+#securityPage .activity-dot.gold{border-radius:31px}
+#securityPage .security-right{column-gap:19px;row-gap:19px}
+#securityPage .security-side-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#securityPage .side-security-icon.red{border-radius:13px;height:42px;margin-bottom:16px;min-width:42px;width:42px}
+#securityPage .side-security-icon.red i{font-size:18px}
+#securityPage .security-feature-list{margin-top:19px}
+#securityPage .side-security-icon.blue{border-radius:13px;height:42px;margin-bottom:16px;min-width:42px;width:42px}
+#securityPage .side-security-icon.blue i{font-size:18px}
+#securityPage .tips-list{margin-top:19px}
+#addFundsPage .addfunds-topbar{border-radius:17px;margin-bottom:17px}
+#addFundsPage .addfunds-hero{border-radius:21px;column-gap:20px;margin-bottom:19px;padding-bottom:24px;padding-left:24px;padding-right:24px;padding-top:24px;row-gap:20px}
+#addFundsPage .addfunds-badge{margin-bottom:17px}
+:is(#addFundsPage,#settingsPage,#helpCenterPage,#transactionHistoryPage) h1{font-size:28px}
+#addFundsPage .addfunds-balance-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#addFundsPage .addfunds-grid{column-gap:19px;row-gap:19px}
+#addFundsPage .addfunds-left{column-gap:19px;row-gap:19px}
+#addFundsPage .addfunds-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#addFundsPage .addfunds-card-header{margin-bottom:19px}
+#addFundsPage .addfunds-form-grid{column-gap:16px;row-gap:16px}
+#addFundsPage .submit-addfunds-btn{height:47px;margin-top:20px}
+#addFundsPage .funding-method-grid{column-gap:16px;row-gap:16px}
+#addFundsPage .funding-method-card{border-radius:17px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#addFundsPage .funding-icon.blue{border-radius:11px;height:37px;min-width:37px;width:37px}
+#addFundsPage .funding-icon.blue i{font-size:16px}
+#addFundsPage .funding-icon.green{border-radius:11px;height:37px;min-width:37px;width:37px}
+#addFundsPage .funding-icon.green i{font-size:16px}
+#addFundsPage .funding-icon.gold{border-radius:11px;height:37px;min-width:37px;width:37px}
+#addFundsPage .funding-icon.gold i{font-size:16px}
+#addFundsPage .addfunds-right{column-gap:19px;row-gap:19px}
+#addFundsPage .addfunds-side-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#addFundsPage .side-addfunds-icon.green{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#addFundsPage .side-addfunds-icon.green i{font-size:18px}
+#addFundsPage .secure-list{margin-top:19px}
+#addFundsPage .side-addfunds-icon.red{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#addFundsPage .side-addfunds-icon.red i{font-size:18px}
+#addFundsPage .account-status-box{margin-top:19px}
+#settingsPage .settings-topbar{border-radius:17px;margin-bottom:17px}
+#settingsPage .settings-hero{border-radius:21px;column-gap:20px;margin-bottom:19px;padding-bottom:24px;padding-left:24px;padding-right:24px;padding-top:24px;row-gap:20px}
+#settingsPage .settings-badge{margin-bottom:17px}
+#settingsPage .settings-status-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#settingsPage .settings-grid{column-gap:19px;row-gap:19px}
+#settingsPage .settings-left{column-gap:19px;row-gap:19px}
+#settingsPage .settings-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#settingsPage .settings-card-header{margin-bottom:19px}
+#settingsPage .settings-item{border-radius:17px;column-gap:16px;padding-bottom:17px;padding-left:17px;padding-right:17px;padding-top:17px;row-gap:16px}
+#settingsPage .settings-icon.blue{border-radius:11px;height:37px;min-width:37px;width:37px}
+#settingsPage .settings-icon.blue i{font-size:16px}
+#settingsPage .settings-icon.green{border-radius:11px;height:37px;min-width:37px;width:37px}
+#settingsPage .settings-icon.green i{font-size:16px}
+#settingsPage .settings-icon.gold{border-radius:11px;height:37px;min-width:37px;width:37px}
+#settingsPage .settings-icon.gold i{font-size:16px}
+#settingsPage .settings-icon.red{border-radius:11px;height:37px;min-width:37px;width:37px}
+#settingsPage .settings-icon.red i{font-size:16px}
+#settingsPage .settings-right{column-gap:19px;row-gap:19px}
+#settingsPage .settings-side-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#settingsPage .settings-side-icon.red{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#settingsPage .settings-side-icon.red i{font-size:18px}
+#settingsPage .settings-status-list{margin-top:19px}
+#settingsPage .settings-side-icon.blue{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#settingsPage .settings-side-icon.blue i{font-size:18px}
+#settingsPage .trusted-device-list{margin-top:19px}
+:is(#helpCenterPage,#ownershipProcedurePage) .help-topbar{border-radius:17px;margin-bottom:17px}
+#helpCenterPage .help-hero{border-radius:21px;column-gap:20px;margin-bottom:19px;padding-bottom:24px;padding-left:24px;padding-right:24px;padding-top:24px;row-gap:20px}
+#helpCenterPage .help-badge{margin-bottom:17px}
+#helpCenterPage .resolve-btn.nav-control{height:45px;padding-left:19px;padding-right:19px}
+#helpCenterPage .help-status-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#helpCenterPage .help-grid{column-gap:19px;row-gap:19px}
+#helpCenterPage .help-left{column-gap:19px;row-gap:19px}
+#helpCenterPage .help-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#helpCenterPage .help-card-header{margin-bottom:19px}
+#helpCenterPage .support-grid{column-gap:16px;row-gap:16px}
+#helpCenterPage .support-option-card{border-radius:17px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#helpCenterPage .support-icon.blue{border-radius:11px;height:37px;min-width:37px;width:37px}
+#helpCenterPage .support-icon.blue i{font-size:16px}
+#helpCenterPage .support-icon.green{border-radius:11px;height:37px;min-width:37px;width:37px}
+#helpCenterPage .support-icon.green i{font-size:16px}
+#helpCenterPage .support-icon.gold{border-radius:11px;height:37px;min-width:37px;width:37px}
+#helpCenterPage .support-icon.gold i{font-size:16px}
+#helpCenterPage .help-right{column-gap:19px;row-gap:19px}
+#helpCenterPage .help-side-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#helpCenterPage .help-side-icon.red{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#helpCenterPage .help-side-icon.red i{font-size:18px}
+#helpCenterPage .help-status-list{margin-top:19px}
+#helpCenterPage .help-side-icon.blue{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#helpCenterPage .help-side-icon.blue i{font-size:18px}
+#helpCenterPage .quick-help-list{margin-top:19px}
+#transactionHistoryPage .transaction-topbar{border-radius:17px;margin-bottom:17px}
+#transactionHistoryPage .transaction-hero{border-radius:21px;column-gap:20px;margin-bottom:19px;padding-bottom:24px;padding-left:24px;padding-right:24px;padding-top:24px;row-gap:20px}
+#transactionHistoryPage .transaction-badge{margin-bottom:17px}
+#transactionHistoryPage .transaction-stat-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#transactionHistoryPage .transaction-filter-bar{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#transactionHistoryPage .transaction-search-box{padding-left:16px;padding-right:16px}
+#transactionHistoryPage .transaction-table-wrapper{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#ownershipProcedurePage .ownership-box{border-radius:21px;padding-bottom:30px;padding-left:30px;padding-right:30px;padding-top:30px}
+#ownershipProcedurePage .ownership-icon{border-radius:19px;height:62px;margin-bottom:19px;min-width:62px;width:62px}
+#ownershipProcedurePage .ownership-icon i{font-size:26px}
+#ownershipProcedurePage .ownership-badge{margin-bottom:19px}
+#ownershipProcedurePage h1{font-size:29px}
+#ownershipProcedurePage .ownership-alert{border-radius:17px;margin-top:23px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#ownershipProcedurePage .ownership-steps{column-gap:19px;margin-top:24px;row-gap:19px}
+#ownershipProcedurePage .ownership-step{border-radius:17px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#ownershipProcedurePage .step-number{border-radius:10px;font-size:18px;height:33px;min-width:33px;width:33px}
+}
+@media(max-width:900px){
+#homePage .balance-card{margin-bottom:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+:is(#homePage,#cardsPage,#accountsPage,#withdrawPage,#transferPage,#investmentPage,#openSavingsPage,#loanPage,#statementPage,#securityPage) h2{font-size:18px}
+#homePage .actions{margin-bottom:20px}
+#homePage .action-card.nav-control{border-radius:17px}
+#homePage .action-icon{border-radius:11px;height:36px;min-width:36px;width:36px}
+#homePage .action-icon i{font-size:15px}
+#homePage .action-card{border-radius:17px}
+#homePage .grid{column-gap:17px;row-gap:17px}
+#homePage .card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#homePage .card-header{margin-bottom:16px}
+#cardsPage .cards-wrapper{column-gap:17px;row-gap:17px}
+#cardsPage .bank-card-section{border-radius:16px}
+#cardsPage .card-topbar{margin-bottom:19px}
+#cardsPage .card-display-area{column-gap:19px;row-gap:19px}
+#cardsPage .chip-wrap{margin-top:16px}
+#cardsPage .red{border-radius:31px}
+#cardsPage .yellow{border-radius:31px}
+#cardsPage .quick-action{border-radius:16px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#cardsPage .quick-icon{border-radius:11px;height:36px;min-width:36px;width:36px}
+#cardsPage .quick-icon i{font-size:15px}
+#signatoriesPage .sig-wrap{padding-bottom:24px}
+#signatoriesPage .sig-head{margin-bottom:16px}
+#signatoriesPage h1{font-size:19px}
+#signatoriesPage .sig-summary{margin-bottom:17px}
+#signatoriesPage .sig-grid{column-gap:16px;row-gap:16px}
+#signatoriesPage .sig-card{border-radius:20px}
+#signatoriesPage .sig-top{padding-bottom:34px;padding-left:16px;padding-right:16px;padding-top:20px}
+#signatoriesPage .sig-photo{border-radius:21px;font-size:26px}
+#signatoriesPage .sig-body{padding-bottom:19px;padding-left:17px;padding-right:17px}
+#signatoriesPage .sig-rule{margin-top:17px;padding-left:17px;padding-right:17px}
+#accountsPage .accounts-wrapper{column-gap:19px;row-gap:19px}
+#accountsPage .accounts-hero{border-radius:17px;column-gap:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px;row-gap:19px}
+#accountsPage h1{font-size:21px}
+#accountsPage .total-balance-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#accountsPage .accounts-grid{column-gap:17px;row-gap:17px}
+#accountsPage .account-box{border-radius:16px}
+#accountsPage .account-top{margin-bottom:16px}
+#accountsPage .account-icon{border-radius:11px;height:38px;min-width:38px;width:38px}
+#accountsPage .account-icon i{font-size:16px}
+#accountsPage .account-balance{font-size:23px}
+#accountsPage .account-actions-grid{column-gap:16px;row-gap:16px}
+#accountsPage .account-action{border-radius:16px}
+#accountsPage .account-action-icon{border-radius:11px;height:37px;min-width:37px;width:37px}
+#accountsPage .account-action-icon i{font-size:16px}
+#accountsPage .accounts-table-wrap{border-radius:16px}
+#accountsPage .accounts-table-header{margin-bottom:16px}
+#withdrawPage .withdraw-grid{column-gap:19px;row-gap:19px}
+#withdrawPage .withdraw-card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#withdrawPage .withdraw-card-header{column-gap:16px;margin-bottom:20px;row-gap:16px}
+#withdrawPage .withdraw-form{column-gap:16px;row-gap:16px}
+#withdrawPage .withdraw-btn{height:48px}
+#withdrawPage .withdraw-right{column-gap:19px;row-gap:19px}
+#withdrawPage .withdraw-info-card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+:is(#withdrawPage,#transferPage) .info-icon.blue{border-radius:12px;height:40px;min-width:40px;width:40px}
+:is(#withdrawPage,#transferPage) .info-icon.blue i{font-size:17px}
+#withdrawPage .status-progress{margin-top:19px}
+#withdrawPage .status-dot{border-radius:31px}
+#withdrawPage .status-dot.pending{border-radius:31px}
+:is(#withdrawPage,#transferPage) .info-icon.green{border-radius:12px;height:40px;min-width:40px;width:40px}
+:is(#withdrawPage,#transferPage) .info-icon.green i{font-size:17px}
+#withdrawPage .withdraw-detail-list{margin-top:17px}
+#transferPage .transfer-grid{column-gap:19px;row-gap:19px}
+#transferPage .transfer-card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#transferPage .transfer-card-header{column-gap:16px;margin-bottom:20px;row-gap:16px}
+#transferPage .transfer-form{column-gap:16px;row-gap:16px}
+#transferPage .transfer-btn-active{height:48px}
+#transferPage .transfer-toast{padding-left:16px;padding-right:16px}
+#transferPage .transfer-right{column-gap:19px;row-gap:19px}
+#transferPage .transfer-info-card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#transferPage .transfer-progress{margin-top:19px}
+#transferPage .progress-dot{border-radius:31px}
+#transferPage .progress-dot.pending{border-radius:31px}
+#transferPage .transfer-detail-list{margin-top:17px}
+#investmentPage .portfolio-summary{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#investmentPage .portfolio-card.large{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#investmentPage .portfolio-card{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#investmentPage .portfolio-icon.blue{border-radius:11px;height:38px;min-width:38px;width:38px}
+#investmentPage .portfolio-icon.blue i{font-size:16px}
+#investmentPage .portfolio-icon.green{border-radius:11px;height:38px;min-width:38px;width:38px}
+#investmentPage .portfolio-icon.green i{font-size:16px}
+#investmentPage .portfolio-icon.gold{border-radius:11px;height:38px;min-width:38px;width:38px}
+#investmentPage .portfolio-icon.gold i{font-size:16px}
+#investmentPage .investment-grid{column-gap:19px;row-gap:19px}
+#investmentPage .investment-left{column-gap:19px;row-gap:19px}
+#investmentPage .investment-section-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#investmentPage .section-header{margin-bottom:19px}
+:is(#investmentPage,#openSavingsPage,#loanPage) h3{font-size:18px}
+#investmentPage .investment-item{padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#investmentPage .forex-card{border-radius:16px;padding-bottom:17px;padding-left:17px;padding-right:17px;padding-top:17px}
+#investmentPage .investment-right{column-gap:19px;row-gap:19px}
+#investmentPage .investment-side-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+:is(#investmentPage,#openSavingsPage) .side-icon.blue{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+:is(#investmentPage,#openSavingsPage) .side-icon.blue i{font-size:18px}
+#investmentPage .market-list{margin-top:19px}
+#openSavingsPage .savings-type-grid{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#openSavingsPage .savings-type-card{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#openSavingsPage .type-icon.blue{border-radius:11px;height:38px;min-width:38px;width:38px}
+#openSavingsPage .type-icon.blue i{font-size:16px}
+#openSavingsPage .type-icon.green{border-radius:11px;height:38px;min-width:38px;width:38px}
+#openSavingsPage .type-icon.green i{font-size:16px}
+#openSavingsPage .type-icon.gold{border-radius:11px;height:38px;min-width:38px;width:38px}
+#openSavingsPage .type-icon.gold i{font-size:16px}
+#openSavingsPage .savings-grid{column-gap:19px;row-gap:19px}
+#openSavingsPage .savings-card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#openSavingsPage .savings-card-header{column-gap:16px;margin-bottom:20px;row-gap:16px}
+#openSavingsPage .savings-form{column-gap:16px;row-gap:16px}
+#openSavingsPage .savings-btn-disabled{height:48px}
+#openSavingsPage .savings-right{column-gap:19px;row-gap:19px}
+#openSavingsPage .savings-side-card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#openSavingsPage .side-icon.red{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#openSavingsPage .side-icon.red i{font-size:18px}
+#openSavingsPage .verification-progress{margin-top:19px}
+#openSavingsPage .verification-dot{border-radius:31px}
+#openSavingsPage .verification-dot.pending{border-radius:31px}
+#openSavingsPage .benefit-list{margin-top:19px}
+#loanPage .loan-type-grid{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#loanPage .loan-type-card{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#loanPage .loan-type-icon.blue{border-radius:11px;height:38px;min-width:38px;width:38px}
+#loanPage .loan-type-icon.blue i{font-size:16px}
+#loanPage .loan-type-icon.green{border-radius:11px;height:38px;min-width:38px;width:38px}
+#loanPage .loan-type-icon.green i{font-size:16px}
+#loanPage .loan-type-icon.gold{border-radius:11px;height:38px;min-width:38px;width:38px}
+#loanPage .loan-type-icon.gold i{font-size:16px}
+#loanPage .loan-grid{column-gap:19px;row-gap:19px}
+#loanPage .loan-card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#loanPage .loan-card-header{column-gap:16px;margin-bottom:20px;row-gap:16px}
+#loanPage .loan-form{column-gap:16px;row-gap:16px}
+#loanPage .loan-btn-disabled{height:48px}
+#loanPage .loan-right{column-gap:19px;row-gap:19px}
+#loanPage .loan-side-card{border-radius:17px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#loanPage .loan-side-icon.red{border-radius:12px;height:40px;min-width:40px;width:40px}
+#loanPage .loan-side-icon.red i{font-size:17px}
+#loanPage .loan-progress{margin-top:19px}
+#loanPage .loan-progress-dot{border-radius:31px}
+#loanPage .loan-progress-dot.pending{border-radius:31px}
+#loanPage .loan-side-icon.blue{border-radius:12px;height:40px;min-width:40px;width:40px}
+#loanPage .loan-side-icon.blue i{font-size:17px}
+#loanPage .loan-feature-list{margin-top:19px}
+#statementPage .statement-summary{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#statementPage .statement-summary-card{border-radius:20px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#statementPage .statement-filter-bar{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#statementPage .statement-table-wrapper{border-radius:19px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px}
+#securityPage .security-status-banner{border-radius:19px;column-gap:16px;margin-bottom:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px;row-gap:16px}
+#securityPage .security-status-left{column-gap:16px;row-gap:16px}
+#securityPage .security-shield{border-radius:15px;height:50px;min-width:50px;width:50px}
+#securityPage .security-shield i{font-size:21px}
+:is(#securityPage,#addFundsPage,#settingsPage,#helpCenterPage) h3{font-size:19px}
+#securityPage .security-grid{column-gap:19px;row-gap:19px}
+#securityPage .security-left{column-gap:19px;row-gap:19px}
+#securityPage .security-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#securityPage .security-card-header{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#securityPage .security-setting{border-radius:16px;column-gap:16px;padding-bottom:16px;padding-left:16px;padding-right:16px;padding-top:16px;row-gap:16px}
+#securityPage .setting-icon.blue{border-radius:11px;height:37px;min-width:37px;width:37px}
+#securityPage .setting-icon.blue i{font-size:16px}
+#securityPage .setting-icon.gold{border-radius:11px;height:36px;min-width:36px;width:36px}
+#securityPage .setting-icon.gold i{font-size:15px}
+#securityPage .activity-dot.green{border-radius:31px}
+#securityPage .activity-dot.blue{border-radius:31px}
+#securityPage .activity-dot.gold{border-radius:31px}
+#securityPage .security-right{column-gap:19px;row-gap:19px}
+#securityPage .security-side-card{border-radius:19px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#securityPage .side-security-icon.red{border-radius:13px;height:42px;margin-bottom:16px;min-width:42px;width:42px}
+#securityPage .side-security-icon.red i{font-size:18px}
+#securityPage .security-feature-list{margin-top:19px}
+#securityPage .side-security-icon.blue{border-radius:13px;height:42px;margin-bottom:16px;min-width:42px;width:42px}
+#securityPage .side-security-icon.blue i{font-size:18px}
+#securityPage .tips-list{margin-top:19px}
+:is(#addFundsPage,#settingsPage,#helpCenterPage,#transactionHistoryPage,#ownershipProcedurePage) h2{font-size:20px}
+#addFundsPage .addfunds-hero{border-radius:21px;column-gap:20px;margin-bottom:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px;row-gap:20px}
+#addFundsPage .addfunds-badge{margin-bottom:17px}
+:is(#addFundsPage,#settingsPage,#helpCenterPage,#transactionHistoryPage,#ownershipProcedurePage) h1{font-size:20px}
+#addFundsPage .addfunds-balance-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#addFundsPage .addfunds-grid{column-gap:19px;row-gap:19px}
+#addFundsPage .addfunds-left{column-gap:19px;row-gap:19px}
+#addFundsPage .addfunds-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#addFundsPage .addfunds-card-header{margin-bottom:19px}
+#addFundsPage .addfunds-form-grid{column-gap:16px;row-gap:16px}
+#addFundsPage .submit-addfunds-btn{height:47px;margin-top:20px}
+#addFundsPage .funding-method-grid{column-gap:16px;row-gap:16px}
+#addFundsPage .funding-method-card{border-radius:17px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#addFundsPage .funding-icon.blue{border-radius:11px;height:37px;min-width:37px;width:37px}
+#addFundsPage .funding-icon.blue i{font-size:16px}
+#addFundsPage .funding-icon.green{border-radius:11px;height:37px;min-width:37px;width:37px}
+#addFundsPage .funding-icon.green i{font-size:16px}
+#addFundsPage .funding-icon.gold{border-radius:11px;height:37px;min-width:37px;width:37px}
+#addFundsPage .funding-icon.gold i{font-size:16px}
+#addFundsPage .addfunds-right{column-gap:19px;row-gap:19px}
+#addFundsPage .addfunds-side-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#addFundsPage .side-addfunds-icon.green{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#addFundsPage .side-addfunds-icon.green i{font-size:18px}
+#addFundsPage .secure-list{margin-top:19px}
+#addFundsPage .side-addfunds-icon.red{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#addFundsPage .side-addfunds-icon.red i{font-size:18px}
+#addFundsPage .account-status-box{margin-top:19px}
+#settingsPage .settings-hero{border-radius:21px;column-gap:20px;margin-bottom:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px;row-gap:20px}
+#settingsPage .settings-badge{margin-bottom:17px}
+#settingsPage .settings-status-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#settingsPage .settings-grid{column-gap:19px;row-gap:19px}
+#settingsPage .settings-left{column-gap:19px;row-gap:19px}
+#settingsPage .settings-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#settingsPage .settings-card-header{margin-bottom:19px}
+#settingsPage .settings-item{border-radius:17px;column-gap:16px;padding-bottom:17px;padding-left:17px;padding-right:17px;padding-top:17px;row-gap:16px}
+#settingsPage .settings-icon.green{border-radius:11px;height:36px;min-width:36px;width:36px}
+#settingsPage .settings-icon.green i{font-size:15px}
+#settingsPage .settings-icon.red{border-radius:11px;height:36px;min-width:36px;width:36px}
+#settingsPage .settings-icon.red i{font-size:15px}
+#settingsPage .settings-right{column-gap:19px;row-gap:19px}
+#settingsPage .settings-side-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#settingsPage .settings-side-icon.red{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#settingsPage .settings-side-icon.red i{font-size:18px}
+#settingsPage .settings-status-list{margin-top:19px}
+#settingsPage .settings-side-icon.blue{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#settingsPage .settings-side-icon.blue i{font-size:18px}
+#settingsPage .trusted-device-list{margin-top:19px}
+#helpCenterPage .help-hero{border-radius:21px;column-gap:20px;margin-bottom:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px;row-gap:20px}
+#helpCenterPage .help-badge{margin-bottom:17px}
+#helpCenterPage .resolve-btn.nav-control{height:45px;padding-left:19px;padding-right:19px}
+#helpCenterPage .help-status-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#helpCenterPage .help-grid{column-gap:19px;row-gap:19px}
+#helpCenterPage .help-left{column-gap:19px;row-gap:19px}
+#helpCenterPage .help-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#helpCenterPage .help-card-header{margin-bottom:19px}
+#helpCenterPage .support-grid{column-gap:16px;row-gap:16px}
+#helpCenterPage .support-option-card{border-radius:17px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#helpCenterPage .support-icon.blue{border-radius:11px;height:37px;min-width:37px;width:37px}
+#helpCenterPage .support-icon.blue i{font-size:16px}
+#helpCenterPage .support-icon.green{border-radius:11px;height:37px;min-width:37px;width:37px}
+#helpCenterPage .support-icon.green i{font-size:16px}
+#helpCenterPage .support-icon.gold{border-radius:11px;height:37px;min-width:37px;width:37px}
+#helpCenterPage .support-icon.gold i{font-size:16px}
+#helpCenterPage .help-right{column-gap:19px;row-gap:19px}
+#helpCenterPage .help-side-card{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#helpCenterPage .help-side-icon.red{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#helpCenterPage .help-side-icon.red i{font-size:18px}
+#helpCenterPage .help-status-list{margin-top:19px}
+#helpCenterPage .help-side-icon.blue{border-radius:13px;height:43px;margin-bottom:16px;min-width:43px;width:43px}
+#helpCenterPage .help-side-icon.blue i{font-size:18px}
+#helpCenterPage .quick-help-list{margin-top:19px}
+#transactionHistoryPage .transaction-hero{border-radius:21px;column-gap:20px;margin-bottom:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px;row-gap:20px}
+#transactionHistoryPage .transaction-badge{margin-bottom:17px}
+#transactionHistoryPage .transaction-stat-card{border-radius:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#transactionHistoryPage .transaction-filter-bar{column-gap:16px;margin-bottom:19px;row-gap:16px}
+#transactionHistoryPage .transaction-search-box{padding-left:16px;padding-right:16px}
+#transactionHistoryPage .transaction-table-wrapper{border-radius:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#ownershipProcedurePage .ownership-box{border-radius:21px;padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:20px}
+#ownershipProcedurePage .ownership-icon{border-radius:19px;height:62px;margin-bottom:19px;min-width:62px;width:62px}
+#ownershipProcedurePage .ownership-icon i{font-size:26px}
+#ownershipProcedurePage .ownership-badge{margin-bottom:19px}
+#ownershipProcedurePage .ownership-alert{border-radius:17px;margin-top:23px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#ownershipProcedurePage .ownership-steps{column-gap:19px;margin-top:24px;row-gap:19px}
+#ownershipProcedurePage .ownership-step{border-radius:17px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px}
+#ownershipProcedurePage .step-number{border-radius:10px;font-size:18px;height:33px;min-width:33px;width:33px}
+}
+/* layout: use the width better on desktop */
+@media(min-width:1100px){
+  #rewardsPage .reward-stats-grid,#financePage .finance-stats-grid{grid-template-columns:repeat(4,1fr);}
+}
+</style>
+
+<style id="iconPalette">
+/* ═══ ICON PALETTE — gray by default, blue for higher-importance icons (all pages) ═══ */
+[class*="-icon"]:is(.green,.gold,.yellow,.orange,.purple,.pink,.teal,.amber):not(.logout-modal-icon){background:#f1f5f9 !important;}
+[class*="-icon"]:is(.green,.gold,.yellow,.orange,.purple,.pink,.teal,.amber):not(.logout-modal-icon) i{color:#64748b !important;}
+[class*="-icon"]:is(.red):not(.logout-modal-icon){background:#dbeafe !important;}
+[class*="-icon"]:is(.red):not(.logout-modal-icon) i{color:#2563eb !important;}
+.ownership-icon,.security-shield{background:#dbeafe !important;}
+.ownership-icon i,.security-shield i{color:#2563eb !important;}
+.benefit-item > i,.loan-feature-item > i,.security-feature > i,.secure-item > i,.quick-help-item > i,.verified-label > i{color:#64748b !important;}
+.benefit-item > i,.loan-feature-item > i,.security-feature > i,.secure-item > i,.quick-help-item > i{background:#f1f5f9 !important;}
+.savings-warning > i,.loan-warning > i{color:#64748b !important;}
+</style>
+
+<style id="compactControls">
+/* ═══ BUTTONS & SWITCHES — smaller ═══ */
+/* back buttons on every full-screen page */
+button[class$="-back-btn"],button[class*="-back-btn "]{width:36px !important;height:36px !important;min-width:36px !important;border-radius:11px !important;font-size:13px !important;}
+button[class*="-back-btn"] i{font-size:13px !important;}
+/* big full-width submit buttons */
+.withdraw-btn,.transfer-btn,.transfer-btn-active,.transfer-btn-disabled,.savings-btn,.savings-btn-active,.savings-btn-disabled,
+.loan-btn,.loan-btn-active,.loan-btn-disabled,.submit-addfunds-btn,.redeem-btn,.resolve-btn{
+  height:40px !important;min-height:0 !important;padding:0 16px !important;font-size:13.5px !important;border-radius:12px !important;}
+.resolve-btn{height:38px !important;font-size:13px !important;}
+/* medium action buttons */
+.card-btn,.settings-action-btn,.security-btn,.me-edit-btn,.finance-action-btn,.add-funds-btn,.acct-details-toggle,.jb-btn,
+#accountsPage button:not([class]),#mePage button:not([class]){
+  height:34px !important;min-height:0 !important;padding:0 13px !important;font-size:12px !important;border-radius:10px !important;}
+.acct-details-toggle{height:36px !important;}
+.add-funds-btn i,.acct-details-toggle i{font-size:12px !important;}
+.finance-primary-btn,.finance-secondary-btn{height:34px !important;padding:0 14px !important;font-size:12px !important;border-radius:10px !important;}
+.quick-finance-btn{height:38px !important;font-size:12.5px !important;border-radius:11px !important;}
+/* PIN eye */
+.txn-pin-eye{width:36px !important;height:36px !important;min-width:36px !important;border-radius:10px !important;font-size:14px !important;}
+/* switches */
+.toggle-switch{width:40px !important;height:22px !important;}
+.toggle-switch::before{width:16px !important;height:16px !important;top:3px !important;left:3px !important;}
+.toggle-switch.active{background:#2563eb !important;}
+.toggle-switch.active::before{left:21px !important;}
+.settings-switch{width:40px !important;height:22px !important;}
+.settings-slider::before{width:16px !important;height:16px !important;left:3px !important;top:3px !important;}
+.settings-switch input:checked + .settings-slider::before{transform:translateX(18px) !important;}
+/* modal buttons */
+.sigreq-no,.sigreq-ok,.logout-cancel-btn,.logout-confirm-btn,.photo-upload-btn{height:40px !important;min-height:0 !important;font-size:13px !important;border-radius:11px !important;}
+</style>
+
+<style id="compactBalanceCard">
+/* ═══ HOME BALANCE CARD — desktop: less empty space ═══ */
+@media(min-width:901px){
+  #homePage > div[style*="margin: 30px 0px 24px 0px"]{margin:16px 0 14px !important;}
+  #homePage .balance-card{padding:16px 20px !important;gap:6px !important;margin-bottom:16px !important;border-radius:16px !important;}
+  #homePage .balance-card::before{width:200px !important;height:200px !important;right:-60px !important;top:-110px !important;}
+  #homePage .balance-card .balance-top-row small{font-size:12.5px;}
+  #homePage .balance-card h2{font-size:22px !important;margin:0 !important;}
+  #homePage .balance-card > div[style*="align-items: center;gap: 20px"]{gap:10px !important;}
+  #homePage .balance-visibility-btn{width:26px !important;height:26px !important;border-radius:9px !important;font-size:12px !important;}
+  #homePage .card-number{margin:0 !important;font-size:13px !important;letter-spacing:2.5px !important;}
+  #homePage .acct-details-toggle{margin-top:8px !important;height:34px !important;border-radius:11px !important;}
+  #homePage .acct-details-panel.active{margin-top:8px !important;}
+  #homePage .balance-card > div[style*="margin-top:18px"]{margin-top:2px !important;}
+  #homePage .balance-card > div[style*="margin-top:18px"] img{height:24px !important;width:auto !important;}
+  #homePage .balance-card > div[style*="margin-top:18px"] p{font-size:17px !important;margin:0 !important;}
+  #homePage .actions{gap:12px !important;margin-bottom:16px !important;}
+}
+</style>
+
+<style id="compactCardView">
+/* ═══ CARDS PAGE — compact debit card view ═══ */
+@media(min-width:901px){
+#cardsPage .cards-wrapper{gap:14px !important;}
+#cardsPage .bank-card-section{padding:16px !important;border-radius:20px !important;}
+#cardsPage .card-topbar{margin-bottom:14px !important;gap:10px !important;align-items:center !important;}
+#cardsPage .card-topbar-left h2{font-size:18px !important;}
+#cardsPage .card-topbar-left p{font-size:12.5px !important;margin-top:3px !important;line-height:1.5 !important;}
+#cardsPage .card-actions{gap:8px !important;}
+#cardsPage .card-display-area{grid-template-columns:380px 1fr !important;gap:16px !important;align-items:stretch !important;}
+#cardsPage .realistic-card{height:240px !important;border-radius:18px !important;padding:18px !important;}
+#cardsPage .realistic-card:hover{transform:none !important;}
+#cardsPage .bank-brand h3{font-size:14px !important;}
+#cardsPage .bank-brand p{font-size:8.5px !important;}
+#cardsPage .chip-wrap{margin-top:14px !important;}
+#cardsPage .chip{width:40px !important;height:30px !important;border-radius:8px !important;}
+#cardsPage .card-number-big{font-size:16px !important;margin-top:6px !important;letter-spacing:1.6px !important;}
+#cardsPage .card-bottom{margin-top:auto !important;}
+#cardsPage .card-holder h4,#cardsPage .expiry h4{font-size:12px !important;}
+#cardsPage .mastercard{width:40px !important;height:24px !important;}
+#cardsPage .mastercard span{width:21px !important;height:21px !important;}
+#cardsPage .card-details{gap:10px !important;}
+#cardsPage .details-grid{grid-template-columns:repeat(3,1fr) !important;gap:10px !important;}
+#cardsPage .detail-box{padding:10px 12px !important;border-radius:12px !important;}
+#cardsPage .detail-box.full{grid-column:span 3 !important;}
+#cardsPage .detail-box small{font-size:10.5px !important;margin-bottom:3px !important;}
+#cardsPage .detail-box h4{font-size:13px !important;line-height:1.35 !important;}
+#cardsPage .status-pill{padding:5px 11px !important;font-size:12px !important;}
+#cardsPage .detail-box .status-pill{height:24px !important;min-height:0 !important;display:inline-flex !important;width:fit-content !important;padding:3px 10px !important;font-size:11.5px !important;gap:6px !important;}
+#cardsPage .detail-box.full:nth-last-child(2){grid-column:span 2 !important;}
+#cardsPage .detail-box.full:last-child{grid-column:span 1 !important;}
+#cardsPage .quick-card-actions{gap:10px !important;}
+#cardsPage .quick-action{display:grid !important;grid-template-columns:34px 1fr;column-gap:10px;align-items:start;padding:12px 14px !important;border-radius:14px !important;}
+#cardsPage .quick-action:hover{transform:none !important;}
+#cardsPage .quick-icon{grid-row:span 2;width:34px !important;height:34px !important;min-width:34px !important;border-radius:10px !important;margin:0 !important;}
+#cardsPage .quick-icon i{font-size:14px !important;}
+#cardsPage .quick-action h3{font-size:13.5px !important;margin:0 0 2px !important;}
+#cardsPage .quick-action p{font-size:12px !important;line-height:1.45 !important;}
+}
+</style>
 </head>
 
 <body>
@@ -12276,21 +13048,21 @@ ACCOUNT NOTICE
                 </div>
 
                 <div class="reward-stat-card">
-                    <div class="reward-stat-icon green"><i class="fa-solid fa-arrow-down"></i></div>
+                    <div class="reward-stat-icon gray"><i class="fa-solid fa-arrow-down"></i></div>
                     <small>Total Deposited</small>
                     <h3 id="rewardsDeposited">0.00</h3>
                     <span>All-Time Deposits</span>
                 </div>
 
                 <div class="reward-stat-card">
-                    <div class="reward-stat-icon gold"><i class="fa-solid fa-star"></i></div>
+                    <div class="reward-stat-icon blue"><i class="fa-solid fa-star"></i></div>
                     <small>VIP Status</small>
                     <h3 id="rewardsTierStat">Bronze</h3>
                     <span>Membership Level</span>
                 </div>
 
                 <div class="reward-stat-card">
-                    <div class="reward-stat-icon red"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="reward-stat-icon gray"><i class="fa-solid fa-trophy"></i></div>
                     <small>Transactions</small>
                     <h3 id="rewardsTxCount">0</h3>
                     <span>Total Activity</span>
@@ -12327,21 +13099,21 @@ ACCOUNT NOTICE
                             </div>
 
                             <div class="reward-program-card">
-                                <div class="program-icon green"><i class="fa-solid fa-chart-line"></i></div>
+                                <div class="program-icon gray"><i class="fa-solid fa-chart-line"></i></div>
                                 <h3>Investment Rewards</h3>
                                 <p>Receive bonus earnings and premium investment loyalty incentives.</p>
                                 <span>Exclusive Bonuses</span>
                             </div>
 
                             <div class="reward-program-card">
-                                <div class="program-icon gold"><i class="fa-solid fa-plane-departure"></i></div>
+                                <div class="program-icon gray"><i class="fa-solid fa-plane-departure"></i></div>
                                 <h3>Travel Benefits</h3>
                                 <p>Luxury airport lounges, premium travel miles, and elite flight upgrades.</p>
                                 <span>VIP Travel Access</span>
                             </div>
 
                             <div class="reward-program-card">
-                                <div class="program-icon red"><i class="fa-solid fa-crown"></i></div>
+                                <div class="program-icon blue"><i class="fa-solid fa-crown"></i></div>
                                 <h3>Elite Membership</h3>
                                 <p>Personalized banking, concierge support, and luxury financial privileges.</p>
                                 <span>Priority Banking</span>
@@ -12488,7 +13260,7 @@ ACCOUNT NOTICE
 
                     <div class="rewards-side-card">
 
-                        <div class="side-reward-icon gold">
+                        <div class="side-reward-icon gray">
                             <i class="fa-solid fa-shield"></i>
                         </div>
 
@@ -12600,7 +13372,7 @@ ACCOUNT NOTICE
 
                 <div class="finance-stat-card">
 
-                    <div class="finance-stat-icon green">
+                    <div class="finance-stat-icon blue">
                         <i class="fa-solid fa-chart-pie"></i>
                     </div>
 
@@ -12616,7 +13388,7 @@ ACCOUNT NOTICE
 
                 <div class="finance-stat-card">
 
-                    <div class="finance-stat-icon gold">
+                    <div class="finance-stat-icon gray">
                         <i class="fa-solid fa-building-columns"></i>
                     </div>
 
@@ -12632,7 +13404,7 @@ ACCOUNT NOTICE
 
                 <div class="finance-stat-card">
 
-                    <div class="finance-stat-icon red">
+                    <div class="finance-stat-icon gray">
                         <i class="fa-solid fa-sack-dollar"></i>
                     </div>
 
@@ -12700,7 +13472,7 @@ ACCOUNT NOTICE
 
                                 <div class="overview-top">
 
-                                    <div class="overview-icon green">
+                                    <div class="overview-icon blue">
                                         <i class="fa-solid fa-chart-line"></i>
                                     </div>
 
@@ -12721,7 +13493,7 @@ ACCOUNT NOTICE
 
                                 <div class="overview-top">
 
-                                    <div class="overview-icon gold">
+                                    <div class="overview-icon gray">
                                         <i class="fa-solid fa-piggy-bank"></i>
                                     </div>
 
@@ -12742,7 +13514,7 @@ ACCOUNT NOTICE
 
                                 <div class="overview-top">
 
-                                    <div class="overview-icon red">
+                                    <div class="overview-icon gray">
                                         <i class="fa-solid fa-briefcase"></i>
                                     </div>
 
@@ -12780,7 +13552,7 @@ ACCOUNT NOTICE
 
                             <div class="finance-activity-item">
 
-                                <div class="activity-finance-icon green">
+                                <div class="activity-finance-icon blue">
                                     <i class="fa-solid fa-arrow-down"></i>
                                 </div>
 
@@ -12802,7 +13574,7 @@ ACCOUNT NOTICE
 
                             <div class="finance-activity-item">
 
-                                <div class="activity-finance-icon blue">
+                                <div class="activity-finance-icon gray">
                                     <i class="fa-solid fa-building-columns"></i>
                                 </div>
 
@@ -12824,7 +13596,7 @@ ACCOUNT NOTICE
 
                             <div class="finance-activity-item">
 
-                                <div class="activity-finance-icon red">
+                                <div class="activity-finance-icon blue">
                                     <i class="fa-solid fa-arrow-up"></i>
                                 </div>
 
@@ -12846,7 +13618,7 @@ ACCOUNT NOTICE
 
                             <div class="finance-activity-item">
 
-                                <div class="activity-finance-icon gold">
+                                <div class="activity-finance-icon gray">
                                     <i class="fa-solid fa-chart-column"></i>
                                 </div>
 
@@ -12944,7 +13716,7 @@ ACCOUNT NOTICE
 
                         <div class="finance-side-header">
 
-                            <div class="finance-side-icon gold">
+                            <div class="finance-side-icon gray">
                                 <i class="fa-solid fa-lightbulb"></i>
                             </div>
 
@@ -19898,11 +20670,11 @@ function txRowStatus(status) {
   return { label: status || 'Failed', cls: 'failed' };
 }
 function txIcon(type, status) {
-  if (status === 'Pending') return { icon:'fa-clock', bg:'#fef9c3', color:'#ca8a04' };
-  if (type === 'Deposit' || type === 'Credit') return { icon:'fa-arrow-down-left', bg:'#dcfce7', color:'#16a34a' };
-  if (type === 'Withdrawal') return { icon:'fa-money-bill-wave', bg:'#fef3c7', color:'#d97706' };
+  if (status === 'Pending') return { icon:'fa-clock', bg:'#f1f5f9', color:'#64748b' };
+  if (type === 'Deposit' || type === 'Credit') return { icon:'fa-arrow-down-left', bg:'#dbeafe', color:'#2563eb' };
+  if (type === 'Withdrawal') return { icon:'fa-money-bill-wave', bg:'#f1f5f9', color:'#64748b' };
   if (type === 'Transfer')   return { icon:'fa-paper-plane', bg:'#dbeafe', color:'#2563eb' };
-  return { icon:'fa-arrow-up-right', bg:'#fee2e2', color:'#dc2626' };
+  return { icon:'fa-arrow-up-right', bg:'#f1f5f9', color:'#64748b' };
 }
 
 /* Shared helpers for sender/recipient display — backend returns senderName/receiverName */
@@ -20087,10 +20859,10 @@ async function loadNotifications() {
 
 /* ── Notification type config ── */
 const NOTIF_TYPE_CFG = {
-  alert:       { label:'Alert',       bg:'#fee2e2', color:'#dc2626', icon:'fa-triangle-exclamation', avatarBg:'#fee2e2', avatarColor:'#dc2626' },
-  transaction: { label:'Transaction', bg:'#dcfce7', color:'#16a34a', icon:'fa-arrow-right-arrow-left', avatarBg:'#dcfce7', avatarColor:'#16a34a' },
-  security:    { label:'Security',    bg:'#fef3c7', color:'#d97706', icon:'fa-shield-halved', avatarBg:'#fef3c7', avatarColor:'#d97706' },
-  update:      { label:'Update',      bg:'#dbeafe', color:'#2563eb', icon:'fa-circle-info', avatarBg:'#dbeafe', avatarColor:'#2563eb' },
+  alert:       { label:'Alert',       bg:'#dbeafe', color:'#2563eb', icon:'fa-triangle-exclamation', avatarBg:'#dbeafe', avatarColor:'#2563eb' },
+  transaction: { label:'Transaction', bg:'#f1f5f9', color:'#64748b', icon:'fa-arrow-right-arrow-left', avatarBg:'#f1f5f9', avatarColor:'#64748b' },
+  security:    { label:'Security',    bg:'#dbeafe', color:'#2563eb', icon:'fa-shield-halved', avatarBg:'#dbeafe', avatarColor:'#2563eb' },
+  update:      { label:'Update',      bg:'#f1f5f9', color:'#64748b', icon:'fa-circle-info', avatarBg:'#f1f5f9', avatarColor:'#64748b' },
   default:     { label:'Notice',      bg:'#f1f5f9', color:'#64748b', icon:'fa-bell', avatarBg:'#f1f5f9', avatarColor:'#64748b' },
 };
 
@@ -21325,9 +22097,9 @@ function renderRewards(filterType, searchStr) {
   }
 
   const iconMap = {
-    'Deposit':    { bg:'#dcfce7', color:'#16a34a', icon:'fa-arrow-down'         },
-    'Credit':     { bg:'#dcfce7', color:'#16a34a', icon:'fa-circle-check'       },
-    'Withdrawal': { bg:'#fef3c7', color:'#d97706', icon:'fa-money-bill-wave'    },
+    'Deposit':    { bg:'#dbeafe', color:'#2563eb', icon:'fa-arrow-down'         },
+    'Credit':     { bg:'#f1f5f9', color:'#64748b', icon:'fa-circle-check'       },
+    'Withdrawal': { bg:'#f1f5f9', color:'#64748b', icon:'fa-money-bill-wave'    },
     'Transfer':   { bg:'#dbeafe', color:'#2563eb', icon:'fa-paper-plane'        },
   };
 
