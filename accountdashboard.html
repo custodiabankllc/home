@@ -12662,6 +12662,9 @@ html.dark-mode [class*="-btn-disabled"]{background:#2a374f !important;color:#a3b
 .card-apply-box strong{display:block;font-size:14px;color:#0f172a;}
 .card-apply-box p{margin:4px 0 0;font-size:12.5px;color:#64748b;max-width:520px;}
 </style>
+<style id="cardDetailsToggleStyle">
+#cardDetailsGrid[hidden]{display:none !important;}
+</style>
 </head>
 
 <body>
@@ -14223,7 +14226,7 @@ ACCOUNT NOTICE
 
                                 <div class="card-number-big">
                                     <span id="cardFullNumber">•••• •••• •••• ——</span>
-                                    <i id="cardNumToggle" class="fa-solid fa-eye" title="Show card number" style="font-size:13px;color:rgba(255,255,255,.7);cursor:pointer;margin-left:10px;vertical-align:middle;"></i>
+                                    <i id="cardNumToggle" class="fa-solid fa-eye-slash" title="Show card number and details" style="font-size:13px;color:rgba(255,255,255,.7);cursor:pointer;margin-left:10px;vertical-align:middle;"></i>
                                 </div>
 
                                 <div class="card-bottom">
@@ -14265,7 +14268,7 @@ ACCOUNT NOTICE
 
                         <div class="card-details">
 
-                            <div class="details-grid">
+                            <div class="details-grid" id="cardDetailsGrid" hidden>
 
                                 <div class="detail-box">
                                     <small>Card Type</small>
@@ -14281,7 +14284,7 @@ ACCOUNT NOTICE
                                     <small>CVV</small>
                                     <h4 style="display:flex;align-items:center;gap:8px;">
                                         <span id="cardCvvDisplay">•••</span>
-                                        <i id="cardCvvToggle" class="fa-solid fa-eye" style="font-size:13px;color:#94a3b8;cursor:pointer;" title="Reveal CVV"></i>
+                                        <i id="cardCvvToggle" class="fa-solid fa-eye-slash" style="font-size:13px;color:#94a3b8;cursor:pointer;" title="Reveal CVV"></i>
                                     </h4>
                                 </div>
 
@@ -14299,7 +14302,7 @@ ACCOUNT NOTICE
                                     <small>Card PIN</small>
                                     <h4 style="display:flex;align-items:center;gap:8px;">
                                         <span id="cardPinDisplay">••••</span>
-                                        <i id="cardPinToggle" class="fa-solid fa-eye" style="font-size:13px;color:#94a3b8;cursor:pointer;" title="Reveal PIN"></i>
+                                        <i id="cardPinToggle" class="fa-solid fa-eye-slash" style="font-size:13px;color:#94a3b8;cursor:pointer;" title="Reveal PIN"></i>
                                     </h4>
                                 </div>
 
@@ -20945,11 +20948,11 @@ function applyUserToDOM() {
       if (!shown) {
         // Reveal masked: we never expose plain PIN in frontend — just show asterisks
         pinDisplay.textContent = '****';
-        pinToggle.className    = 'fa-solid fa-eye-slash';
+        pinToggle.className    = 'fa-solid fa-eye';
         shown = true;
       } else {
         pinDisplay.textContent = '••••';
-        pinToggle.className    = 'fa-solid fa-eye';
+        pinToggle.className    = 'fa-solid fa-eye-slash';
         shown = false;
       }
     });
@@ -22509,10 +22512,17 @@ document.addEventListener('click', function(e) {
   if (!el) return;
   const on = el.dataset.revealed !== '1';
   el.dataset.revealed = on ? '1' : '0';
-  t.classList.toggle('fa-eye', !on); t.classList.toggle('fa-eye-slash', on);
+  t.classList.toggle('fa-eye', on); t.classList.toggle('fa-eye-slash', !on);
   if (isNum) {
     const d = el.dataset.digits || '';
     if (d.length === 16) el.textContent = on ? d.replace(/(\d{4})(?=\d)/g, '$1 ') : '•••• •••• •••• ' + d.slice(-4);
+    // the same toggle also shows / hides the card details section below the card
+    const grid = document.getElementById('cardDetailsGrid');
+    if (grid) { if (on) grid.removeAttribute('hidden'); else grid.setAttribute('hidden', ''); }
+    if (!on) {   // hiding re-masks the CVV too
+      const cvv = document.getElementById('cardCvvDisplay');
+      if (cvv && cvv.dataset.revealed === '1') { cvv.dataset.revealed = '0'; cvv.textContent = '•••'; const ci = document.getElementById('cardCvvToggle'); if (ci) { ci.classList.add('fa-eye-slash'); ci.classList.remove('fa-eye'); } }
+    }
   } else {
     el.textContent = on && el.dataset.cvv ? el.dataset.cvv : '•••';
   }
