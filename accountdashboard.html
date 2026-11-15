@@ -12645,6 +12645,23 @@ html.dark-mode [class*="-btn-disabled"]{background:#2a374f !important;color:#a3b
   window.addEventListener('load', function () { if (root.classList.contains('dark-mode')) { build(); darkifyTree(document.body); } });
 })();
 </script>
+<style id="tierUpgradeStyle">
+.tier-upgrade-row span{font-size:12px !important;}
+.tier-upgrade-btn{border:1px solid #2563eb;background:#2563eb;color:#fff;font-size:12px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.tier-upgrade-btn:disabled{background:transparent;color:#64748b;border-color:#cbd5e1;cursor:default;}
+</style>
+<style id="cardChipLogo">
+.chip{background:none !important;overflow:visible !important;display:block;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35));}
+.chip::before,.chip::after{display:none !important;}
+.mastercard{width:48px;height:30px;}
+#cardsPage .mastercard{width:44px !important;height:27px !important;}
+.mastercard svg{display:block;}
+</style>
+<style id="cardApplyStyle">
+.card-apply-box{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:14px 0;padding:14px 16px;border:1px solid #e2e8f0;border-radius:14px;background:#f8fafc;}
+.card-apply-box strong{display:block;font-size:14px;color:#0f172a;}
+.card-apply-box p{margin:4px 0 0;font-size:12.5px;color:#64748b;max-width:520px;}
+</style>
 </head>
 
 <body>
@@ -14170,7 +14187,31 @@ ACCOUNT NOTICE
 
                                 <div class="chip-wrap">
 
-                                    <div class="chip"></div>
+                                    <svg class="chip" viewBox="0 0 48 36" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EMV chip">
+                                        <defs>
+                                            <linearGradient id="chipGold" x1="0" y1="0" x2="1" y2="1">
+                                                <stop offset="0" stop-color="#f6e19a"/>
+                                                <stop offset=".28" stop-color="#d9ab45"/>
+                                                <stop offset=".55" stop-color="#b98320"/>
+                                                <stop offset=".8" stop-color="#e8c466"/>
+                                                <stop offset="1" stop-color="#b17a1a"/>
+                                            </linearGradient>
+                                            <linearGradient id="chipShine" x1="0" y1="0" x2="1" y2="0">
+                                                <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+                                                <stop offset=".45" stop-color="#fff" stop-opacity=".38"/>
+                                                <stop offset=".6" stop-color="#fff" stop-opacity="0"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <rect x=".6" y=".6" width="46.8" height="34.8" rx="6.5" fill="url(#chipGold)" stroke="#8c5d12" stroke-width="1"/>
+                                        <g fill="none" stroke="#7a500f" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round" opacity=".8">
+                                            <path d="M.6 12.5H15M.6 23.5H15M33 12.5H47.4M33 23.5H47.4"/>
+                                            <path d="M24 .6V9M24 27V35.4"/>
+                                            <rect x="15" y="9" width="18" height="18" rx="4.5"/>
+                                            <path d="M15 18H33"/>
+                                            <path d="M20 9V27M28 9V27" opacity=".55"/>
+                                        </g>
+                                        <rect x=".6" y=".6" width="46.8" height="34.8" rx="6.5" fill="url(#chipShine)"/>
+                                    </svg>
 
                                     <div class="contactless">
                                         <i class="fa-solid fa-wifi"></i>
@@ -14182,29 +14223,42 @@ ACCOUNT NOTICE
 
                                 <div class="card-number-big">
                                     <span id="cardFullNumber">•••• •••• •••• ——</span>
+                                    <i id="cardNumToggle" class="fa-solid fa-eye" title="Show card number" style="font-size:13px;color:rgba(255,255,255,.7);cursor:pointer;margin-left:10px;vertical-align:middle;"></i>
                                 </div>
 
                                 <div class="card-bottom">
 
                                     <div class="card-holder">
                                         <small>CARD HOLDER</small>
-                                        <h4 data-user-name>—</h4>
+                                        <h4 id="cardHolderName">—</h4>
                                     </div>
 
                                     <div class="expiry">
                                         <small>VALID THRU</small>
-                                        <h4>08/29</h4>
+                                        <h4 id="cardExpiry">——/——</h4>
                                     </div>
 
-                                    <div class="mastercard">
-                                        <span class="red"></span>
-                                        <span class="yellow"></span>
+                                    <div class="mastercard" role="img" aria-label="Mastercard">
+                                        <svg viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                                            <circle cx="15" cy="15" r="15" fill="#EB001B"/>
+                                            <circle cx="33" cy="15" r="15" fill="#F79E1B"/>
+                                            <path d="M24 2.9A15 15 0 0 1 24 27.1A15 15 0 0 1 24 2.9Z" fill="#FF5F00"/>
+                                        </svg>
                                     </div>
 
                                 </div>
 
                             </div>
 
+                        </div>
+
+                        <!-- CARD APPLICATION (shown only while the account has no card) -->
+                        <div id="cardApplyBox" class="card-apply-box" style="display:none;">
+                            <div>
+                                <strong>You don't have a card yet</strong>
+                                <p>Apply for your Mastercard debit card. Your card details are created once, and the card is activated after approval.</p>
+                            </div>
+                            <button type="button" class="tier-upgrade-btn" id="cardApplyBtn" onclick="applyForCard()">Apply for card</button>
                         </div>
 
                         <!-- DETAILS -->
@@ -14215,7 +14269,7 @@ ACCOUNT NOTICE
 
                                 <div class="detail-box">
                                     <small>Card Type</small>
-                                    <h4>MasterCard Infinite Debit</h4>
+                                    <h4 id="cardTypeText">—</h4>
                                 </div>
 
                                 <div class="detail-box">
@@ -14225,7 +14279,10 @@ ACCOUNT NOTICE
 
                                 <div class="detail-box">
                                     <small>CVV</small>
-                                    <h4>482</h4>
+                                    <h4 style="display:flex;align-items:center;gap:8px;">
+                                        <span id="cardCvvDisplay">•••</span>
+                                        <i id="cardCvvToggle" class="fa-solid fa-eye" style="font-size:13px;color:#94a3b8;cursor:pointer;" title="Reveal CVV"></i>
+                                    </h4>
                                 </div>
 
                                 <div class="detail-box">
@@ -14257,7 +14314,7 @@ ACCOUNT NOTICE
 
                                     <div class="status-pill">
                                         <i class="fa-solid fa-circle-check"></i>
-                                        Not Activited
+                                        <span id="cardStatusText">—</span>
                                     </div>
                                 </div>
 
@@ -14601,9 +14658,25 @@ SIGNATORIES PAGE (joint accounts)
 
                     <div class="me-info-item">
 
-                        <span>Full Name</span>
+                        <span>First Name</span>
 
-                        <h4 data-user-name>—</h4>
+                        <h4 id="meFirstName">—</h4>
+
+                    </div>
+
+                    <div class="me-info-item">
+
+                        <span>Last Name</span>
+
+                        <h4 id="meLastName">—</h4>
+
+                    </div>
+
+                    <div class="me-info-item">
+
+                        <span>Gender</span>
+
+                        <h4 id="meGender">—</h4>
 
                     </div>
 
@@ -14927,7 +15000,15 @@ SIGNATORIES PAGE (joint accounts)
 
                         <span>Client Tier</span>
 
-                        <strong>Platinum Elite</strong>
+                        <strong id="meClientTier">Bronze</strong>
+
+                    </div>
+
+                    <div class="banking-info-item tier-upgrade-row" id="meTierUpgradeRow">
+
+                        <span id="meTierUpgradeText">Next tier: Silver</span>
+
+                        <button type="button" class="tier-upgrade-btn" id="meTierUpgradeBtn" onclick="applyTierUpgrade()">Apply for upgrade</button>
 
                     </div>
 
@@ -15448,7 +15529,7 @@ RESPONSIVE
                                 <i class="fa-solid fa-wallet"></i>
                             </div>
 
-                            <div class="account-status">
+                            <div class="account-status" id="accCheckingStatus">
                                 Active
                             </div>
 
@@ -15466,12 +15547,12 @@ RESPONSIVE
 
                             <div class="meta-box">
                                 <small>Currency</small>
-                                <h4>USD</h4>
+                                <h4 id="accCheckingCurrency">USD</h4>
                             </div>
 
                             <div class="meta-box">
                                 <small>Type</small>
-                                <h4>Premium</h4>
+                                <h4 id="accCheckingType">—</h4>
                             </div>
 
                         </div>
@@ -15486,7 +15567,7 @@ RESPONSIVE
                                 <i class="fa-solid fa-piggy-bank"></i>
                             </div>
 
-                            <div class="account-status">
+                            <div class="account-status" id="accSavingsStatus">
                                 Active
                             </div>
 
@@ -15495,7 +15576,7 @@ RESPONSIVE
                         <h3>Savings Account</h3>
 
                         <div class="account-number">
-                            **** **** 2245
+                            **** **** <span id="accSavingsLast4">——</span>
                         </div>
 
                         <div class="account-balance" id="accountSavingsBal">0.00</div>
@@ -15504,12 +15585,12 @@ RESPONSIVE
 
                             <div class="meta-box">
                                 <small>Interest</small>
-                                <h4>4.8% APY</h4>
+                                <h4 id="accSavingsInterest">—</h4>
                             </div>
 
                             <div class="meta-box">
                                 <small>Status</small>
-                                <h4>Secured</h4>
+                                <h4 id="accSavingsFeature">—</h4>
                             </div>
 
                         </div>
@@ -15524,7 +15605,7 @@ RESPONSIVE
                                 <i class="fa-solid fa-briefcase"></i>
                             </div>
 
-                            <div class="account-status">
+                            <div class="account-status" id="accBusinessStatus">
                                 Active
                             </div>
 
@@ -15533,7 +15614,7 @@ RESPONSIVE
                         <h3>Business Account</h3>
 
                         <div class="account-number">
-                            **** **** 7814
+                            **** **** <span id="accBusinessLast4">——</span>
                         </div>
 
                         <div class="account-balance" id="accountBusinessBal">0.00</div>
@@ -15542,12 +15623,12 @@ RESPONSIVE
 
                             <div class="meta-box">
                                 <small>Currency</small>
-                                <h4>Multi-Currency</h4>
+                                <h4 id="accBusinessCurrency">—</h4>
                             </div>
 
                             <div class="meta-box">
                                 <small>Transfers</small>
-                                <h4>Unlimited</h4>
+                                <h4 id="accBusinessFeature">—</h4>
                             </div>
 
                         </div>
@@ -15668,14 +15749,14 @@ RESPONSIVE
 
                                     </td>
 
-                                    <td>****9082</td>
-                                    <td>USD</td>
+                                    <td id="accTblCheckingNo">—</td>
+                                    <td id="accTblCheckingCurrency">—</td>
                                     <td class="balance-positive" id="accTblChecking">0.00</td>
 
                                     <td>
                                         <div class="table-status">
                                             <i class="fa-solid fa-circle-check"></i>
-                                            Active
+                                            <span id="accTblCheckingStatus">Active</span>
                                         </div>
                                     </td>
 
@@ -15699,14 +15780,14 @@ RESPONSIVE
 
                                     </td>
 
-                                    <td>****2245</td>
-                                    <td>USD</td>
+                                    <td id="accTblSavingsNo">—</td>
+                                    <td id="accTblSavingsCurrency">—</td>
                                     <td class="balance-positive" id="accTblSavings">0.00</td>
 
                                     <td>
                                         <div class="table-status">
                                             <i class="fa-solid fa-circle-check"></i>
-                                            Active
+                                            <span id="accTblSavingsStatus">Active</span>
                                         </div>
                                     </td>
 
@@ -15730,14 +15811,14 @@ RESPONSIVE
 
                                     </td>
 
-                                    <td>****7814</td>
+                                    <td id="accTblBusinessNo">—</td>
                                     <td id="accTblBusinessCurrency">—</td>
                                     <td class="balance-positive" id="accTblBusiness">0.00</td>
 
                                     <td>
                                         <div class="table-status">
                                             <i class="fa-solid fa-circle-check"></i>
-                                            Active
+                                            <span id="accTblBusinessStatus">Active</span>
                                         </div>
                                     </td>
 
@@ -20415,6 +20496,14 @@ function applyMePage(who, roster) {
   const posItem = document.getElementById('mePositionItem');
   if (posItem) { posItem.style.display = multi || who.kind !== 'primary' ? '' : 'none'; }
   set('mePositionValue', position);
+  {
+    // first / last name + gender of the signed-in person (gender is only stored for the account owner)
+    const parts = (who.name || '').trim().split(/\s+/).filter(Boolean);
+    const isOwner = who.kind === 'primary';
+    set('meFirstName', isOwner ? (u.firstName || parts[0]) : parts[0]);
+    set('meLastName',  isOwner ? (u.lastName  || parts.slice(1).join(' ')) : parts.slice(1).join(' '));
+    set('meGender',    isOwner ? u.gender : '');
+  }
   if (!who.unresolved) {
     qAll('#meDetailsCard .me-info-item').forEach(item => {
       const lbl = ((item.querySelector('span') || {}).textContent || '').trim();
@@ -20623,9 +20712,8 @@ function applyUserToDOM() {
   [
     '#balanceAmount','#homeTotalSavings','#financeTotalAssets','#financeTotalBalance',
     '#financeSavings','#meBalance','#withdrawAvailableBalance','#transferAvailableBalance',
-    '#addFundsBalance','#statementBalance','#accountsTotalAssets',
-    '#accountCheckingBal','#accountSavingsBal','#accountBusinessBal',
-    '#accTblChecking','#accTblSavings','#accTblBusiness'
+    '#addFundsBalance','#statementBalance',
+    '#accountCheckingBal','#accTblChecking'
   ].forEach(id => { const el = q(id); if (el) el.textContent = balFmt; });
   qAll('[data-balance]').forEach(el => el.textContent = balFmt);
 
@@ -20684,6 +20772,7 @@ function applyUserToDOM() {
 
   // Me page: currency & region
   q('#meCurrencyDisplay') && (q('#meCurrencyDisplay').textContent = code + ' (' + sym + ')');
+  renderClientTier();
   q('#meRegion')          && (q('#meRegion').textContent          = region);
 
   // Banking Since — use registration year
@@ -20816,12 +20905,28 @@ function applyUserToDOM() {
   /* ══════════════════════════════════════════════════════════
      CARDS PAGE — dynamic fields
   ══════════════════════════════════════════════════════════ */
-  const last4El = q('#cardLastFour');
+  // Card details come from the Cards sheet (linked to this account by UID) — nothing is hard-coded here
+  const card = u.card || {};
+  const cardDigits = String(card.cardNumber || '').replace(/\D/g, '');
   const realAcc = (u.accountNumber != null ? String(u.accountNumber).replace(/\s+/g,'') : '');
-  if (last4El) last4El.textContent = realAcc ? realAcc.slice(-4) : '••••';   // masked: only the last four digits of the real account number
+  const last4El = q('#cardLastFour');
+  if (last4El) last4El.textContent = cardDigits ? cardDigits.slice(-4) : '••••';   // masked: only the last four digits of the card (none until the customer has applied)
 
   const fullNumEl = q('#cardFullNumber');
-  if (fullNumEl) fullNumEl.textContent = '•••• •••• •••• ' + last4;
+  if (fullNumEl) {
+    fullNumEl.dataset.digits = cardDigits;
+    const shown = fullNumEl.dataset.revealed === '1' && cardDigits.length === 16;
+    fullNumEl.textContent = cardDigits.length === 16
+      ? (shown ? cardDigits.replace(/(\d{4})(?=\d)/g, '$1 ') : '•••• •••• •••• ' + cardDigits.slice(-4))
+      : '•••• •••• •••• ••••';
+  }
+  q('#cardHolderName') && (q('#cardHolderName').textContent = u.card ? (card.holder || u.name || '—') : (u.name || '—'));
+  q('#cardExpiry')     && (q('#cardExpiry').textContent     = card.expiry || '——/——');
+  q('#cardTypeText')   && (q('#cardTypeText').textContent   = card.cardType || '—');
+  q('#cardStatusText') && (q('#cardStatusText').textContent = u.card ? (card.status === 'Not Activated' ? 'Not Activated · awaiting approval' : card.status) : 'No card yet');
+  const applyBox = q('#cardApplyBox'); if (applyBox) applyBox.style.display = u.card ? 'none' : 'flex';
+  const cvvEl = q('#cardCvvDisplay');
+  if (cvvEl) { cvvEl.dataset.cvv = card.cvv || ''; cvvEl.textContent = cvvEl.dataset.revealed === '1' && card.cvv ? card.cvv : '•••'; }
 
   const linked4 = q('#cardLinkedAccLast4');
   if (linked4) linked4.textContent = last4;
@@ -20855,8 +20960,6 @@ function applyUserToDOM() {
   ══════════════════════════════════════════════════════════ */
   const accLast4 = q('#accCheckingLast4');
   if (accLast4) accLast4.textContent = last4;
-  q('#accTblBusinessCurrency') && (q('#accTblBusinessCurrency').textContent = code + ' / EUR / GBP');
-
   qAll('.meta-box').forEach(box => {
     const small = box.querySelector('small');
     const h4    = box.querySelector('h4');
@@ -20864,6 +20967,45 @@ function applyUserToDOM() {
       h4.textContent = code;
     }
   });
+
+  // Checking = the main account; Savings / Business come from the Accounts sheet (linked to this account by UID)
+  (function() {
+    const set = (id, v) => { const el = q('#' + id); if (el) el.textContent = (v === undefined || v === null || v === '') ? '—' : v; };
+    const accs = Array.isArray(u.accounts) ? u.accounts : [];
+    const byType = t => accs.find(a => String(a.type).toLowerCase() === t) || null;
+    const mask = n => { n = String(n || '').replace(/\s+/g, ''); return n ? n.slice(-4) : '——'; };
+    const stat = x => x || 'Active';
+
+    // Checking (main account)
+    set('accCheckingLast4', realAcc ? realAcc.slice(-4) : '——');
+    set('accTblCheckingNo', realAcc ? '****' + realAcc.slice(-4) : '—');
+    set('accCheckingCurrency', code); set('accTblCheckingCurrency', code);
+    set('accCheckingType', u.clientTier || 'Bronze');
+    set('accCheckingStatus', stat(status)); set('accTblCheckingStatus', stat(status));
+
+    // Savings
+    const sv = byType('savings');
+    set('accSavingsLast4', sv ? mask(sv.accountNumber) : '——');
+    set('accTblSavingsNo', sv ? '****' + mask(sv.accountNumber) : '—');
+    set('accTblSavingsCurrency', sv ? sv.currency : code);
+    set('accSavingsInterest', sv && sv.interestRate !== '' && sv.interestRate != null ? sv.interestRate + '% APY' : '—');
+    set('accSavingsFeature', sv ? sv.feature : '—');
+    set('accSavingsStatus', stat(sv && sv.status)); set('accTblSavingsStatus', stat(sv && sv.status));
+    set('accountSavingsBal', fmtBalance(sv ? Number(sv.balance) || 0 : 0)); set('accTblSavings', fmtBalance(sv ? Number(sv.balance) || 0 : 0));
+
+    // Business
+    const bz = byType('business');
+    set('accBusinessLast4', bz ? mask(bz.accountNumber) : '——');
+    set('accTblBusinessNo', bz ? '****' + mask(bz.accountNumber) : '—');
+    set('accBusinessCurrency', bz ? bz.currency : '—');
+    set('accTblBusinessCurrency', bz ? bz.currency : '—');
+    set('accBusinessFeature', bz ? bz.feature : '—');
+    set('accBusinessStatus', stat(bz && bz.status)); set('accTblBusinessStatus', stat(bz && bz.status));
+    set('accountBusinessBal', fmtBalance(bz ? Number(bz.balance) || 0 : 0)); set('accTblBusiness', fmtBalance(bz ? Number(bz.balance) || 0 : 0));
+
+    // Total across the three accounts
+    set('accountsTotalAssets', fmtBalance(balance + (sv ? Number(sv.balance) || 0 : 0) + (bz ? Number(bz.balance) || 0 : 0)));
+  })();
 
   /* ══════════════════════════════════════════════════════════
      WITHDRAW / TRANSFER pages — live balance + limits
@@ -22357,6 +22499,71 @@ function calcRewardsPoints(transactions) {
   return pts;
 }
 
+
+/* ── Card number / CVV reveal toggles ── */
+document.addEventListener('click', function(e) {
+  const t = e.target.closest && e.target.closest('#cardNumToggle, #cardCvvToggle');
+  if (!t) return;
+  const isNum = t.id === 'cardNumToggle';
+  const el = document.getElementById(isNum ? 'cardFullNumber' : 'cardCvvDisplay');
+  if (!el) return;
+  const on = el.dataset.revealed !== '1';
+  el.dataset.revealed = on ? '1' : '0';
+  t.classList.toggle('fa-eye', !on); t.classList.toggle('fa-eye-slash', on);
+  if (isNum) {
+    const d = el.dataset.digits || '';
+    if (d.length === 16) el.textContent = on ? d.replace(/(\d{4})(?=\d)/g, '$1 ') : '•••• •••• •••• ' + d.slice(-4);
+  } else {
+    el.textContent = on && el.dataset.cvv ? el.dataset.cvv : '•••';
+  }
+});
+
+async function applyForCard() {
+  const u = currentUser; if (!u) return;
+  const btn = document.getElementById('cardApplyBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Applying…'; }
+  const res = await api({ action: 'applyForCard', uid: u.uid });
+  if (res && res.status && res.card) {
+    u.card = res.card;
+    if (typeof showToast === 'function') showToast('Card created. It will be activated once approved.', 'success');
+    applyUserToDOM();
+  } else {
+    if (btn) { btn.disabled = false; btn.textContent = 'Apply for card'; }
+    if (typeof showToast === 'function') showToast((res && res.message) || 'Could not submit your application.', 'error');
+  }
+}
+
+/* ── CLIENT TIER (stored on the account; starts at the lowest of 4 tiers; client applies to upgrade) ── */
+function renderClientTier() {
+  const u = currentUser; if (!u) return;
+  const tiers = (u.tiers && u.tiers.length) ? u.tiers : ['Bronze', 'Silver', 'Gold', 'Platinum Elite'];
+  const cur = tiers.indexOf(u.clientTier) !== -1 ? u.clientTier : tiers[0];
+  const next = tiers[tiers.indexOf(cur) + 1];
+  const el = document.getElementById('meClientTier'); if (el) el.textContent = cur;
+  const txt = document.getElementById('meTierUpgradeText'), btn = document.getElementById('meTierUpgradeBtn'), row = document.getElementById('meTierUpgradeRow');
+  if (!txt || !btn || !row) return;
+  if (!next)              { row.style.display = 'none'; return; }
+  row.style.display = '';
+  if (u.tierRequest)      { txt.textContent = 'Upgrade to ' + u.tierRequest + ' pending review'; btn.textContent = 'Pending'; btn.disabled = true; }
+  else                    { txt.textContent = 'Next tier: ' + next; btn.textContent = 'Apply for upgrade'; btn.disabled = false; }
+  q('#rewardsTierLabel') && (q('#rewardsTierLabel').textContent = cur);
+  q('#rewardsTierStat')  && (q('#rewardsTierStat').textContent  = cur);
+}
+
+async function applyTierUpgrade() {
+  const u = currentUser; if (!u) return;
+  const btn = document.getElementById('meTierUpgradeBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  const res = await api({ action: 'requestTierUpgrade', uid: u.uid });
+  if (res && res.status) {
+    u.tierRequest = res.tierRequest;
+    if (typeof showToast === 'function') showToast('Upgrade request sent. We will review it shortly.', 'success');
+  } else if (typeof showToast === 'function') {
+    showToast((res && res.message) || 'Could not send the request.', 'error');
+  }
+  renderClientTier();
+}
+
 function rewardsTier(pts) {
   if (pts >= 500000) return 'Platinum Elite';
   if (pts >= 100000) return 'Gold';
@@ -22387,7 +22594,7 @@ function renderRewards(filterType, searchStr) {
 
   // ── Points & tier ──
   const totalPts = calcRewardsPoints(allTransactions);
-  const tier     = rewardsTier(totalPts);
+  const tier     = (u.clientTier || 'Bronze');   // stored on the account; upgraded by application, not by points
 
   // ── Cashback = 1% of total deposits ──
   const cashback = totalDep * 0.01;
