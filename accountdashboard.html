@@ -20207,11 +20207,24 @@ let allNotifications = [];
 
 /* ── API helper ───────────────────────────────────────────── */
 async function api(payload) {
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 60000);
   try {
-    const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) });
-    return await res.json();
-  } catch(e) {
-    return { status: false, message: 'Network error' };
+    const res  = await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload), signal: ctl.signal });
+    const text = await res.text();
+    try { return JSON.parse(text); }
+    catch (e) {
+      // the server answered with something that isn't JSON (e.g. a Google error page): say so instead of failing quietly
+      console.error('Unexpected server response for "' + payload.action + '":', text.slice(0, 300));
+      return { status: false, message: 'The server sent an unexpected response. Please try again.' };
+    }
+  } catch (e) {
+    console.error('Request failed for "' + payload.action + '":', e);
+    return { status: false, message: e && e.name === 'AbortError'
+      ? 'The server took too long to respond. Check your recent transactions before trying again.'
+      : 'Network error' };
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -21876,7 +21889,7 @@ async function submitTransfer() {
       openReceiptFromTx({
         txId, type: 'Transfer',
         amount, details: 'Transfer to ' + recipient + ' (' + bank + ')',
-        status: 'Pending', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}),
+        status: res.internal ? 'Completed' : 'Pending', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}),
         method: type, bank, account, routing, note,
         senderName: currentUser ? currentUser.name : '', receiverName: recipient
       });
@@ -21888,11 +21901,13 @@ async function submitTransfer() {
       checkCustodiaToCustodia();
       if (res.internal && res.recipientCurrency && res.rate && res.recipientCurrency !== ((currentUser && currentUser.currencyCode) || '')) {
         showToast('Transfer completed. The recipient received ' + Number(res.recipientAmount).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ' + res.recipientCurrency + ' at today\'s exchange rate.', 'success', 8000);
+      } else if (res.internal) {
+        showToast('Transfer completed. The recipient has been credited instantly.', 'success', 6000);
       } else {
         showToast('Transfer submitted and pending admin approval.', 'success', 6000);
       }
     } else {
-      showToast(res.message || 'Transfer failed. Please try again.', 'error');
+      showToast(res.message || 'Transfer failed. Please try again.', 'error', 9000);
     }
   } catch (err) {
     console.error('submitTransfer error:', err);
@@ -22261,7 +22276,10 @@ window.addEventListener('load', function() {
       tBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing…';
 
       try {
-        if (!(await transferPin.validate())) return;
+        if (!(await transferPin.validate())) {
+          showToast('Transfer not sent. Please check your 4-digit PIN and try again.', 'error');
+          return;
+        }
         await submitTransfer();
         transferPin.reset();
       } finally {
