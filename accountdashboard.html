@@ -21015,11 +21015,18 @@ function applyUserToDOM() {
   ══════════════════════════════════════════════════════════ */
   q('#withdrawAvailableBalance')  && (q('#withdrawAvailableBalance').textContent  = balFmt);
   q('#transferAvailableBalance')  && (q('#transferAvailableBalance').textContent  = balFmt);
-  // Daily limit hint = full balance (no separate limit stored)
   q('#withdrawLimitHintValue')    && (q('#withdrawLimitHintValue').textContent    = balFmt);
-  q('#transferLimitHintValue')    && (q('#transferLimitHintValue').textContent    = balFmt);
   q('#withdrawDailyLimit')        && (q('#withdrawDailyLimit').textContent        = balFmt);
-  q('#transferLimitDisplay')      && (q('#transferLimitDisplay').textContent      = balFmt);
+  // Daily transfer limit comes from the client tier (the top tier is unlimited)
+  {
+    const lim  = u.dailyTransferLimit;                       // number, or null = unlimited
+    const sent = Number(u.transferredToday) || 0;
+    const limTxt = (lim === null || lim === undefined) ? 'Unlimited' : fmtBalance(lim);
+    q('#transferLimitDisplay')   && (q('#transferLimitDisplay').textContent   = limTxt);
+    q('#cardDailyTransferLimit') && (q('#cardDailyTransferLimit').textContent = limTxt);
+    q('#transferLimitHintValue') && (q('#transferLimitHintValue').textContent =
+      (lim === null || lim === undefined) ? 'Unlimited' : fmtBalance(Math.max(0, lim - sent)) + ' left today (of ' + limTxt + ')');
+  }
   q('#withdrawFee')               && (q('#withdrawFee').textContent               = sym + '0.00');
   q('#transferFee')               && (q('#transferFee').textContent               = sym + '0.00');
 
@@ -21840,6 +21847,18 @@ async function submitTransfer() {
   const type      = (q('#transferTypeSelect')    || {}).value || 'Wire Transfer';
   const note      = (q('#transferNote')          || {}).value || '';
 
+  // quick client-side check against the tier's daily limit (the server enforces it too)
+  {
+    const lim = currentUser ? currentUser.dailyTransferLimit : null;
+    if (lim !== null && lim !== undefined) {
+      const left = Math.max(0, lim - (Number(currentUser.transferredToday) || 0));
+      if (amount > left) {
+        showToast('This exceeds your ' + (currentUser.clientTier || 'Bronze') + ' daily transfer limit. You can still send ' + fmtBalance(left) + ' today. Upgrade your tier for a higher limit.', 'error', 6000);
+        return;
+      }
+    }
+  }
+
   try {
     const res = await api({
       action: 'transfer', uid: _uid,
@@ -21849,6 +21868,7 @@ async function submitTransfer() {
 
     if (res.status) {
       currentUser.balance = res.balance;
+      currentUser.transferredToday = (Number(currentUser.transferredToday) || 0) + amount;
       applyUserToDOM();
       await loadTransactions();
 
@@ -21866,7 +21886,11 @@ async function submitTransfer() {
       });
       q('#transferTypeSelect') && (q('#transferTypeSelect').value = '');
       checkCustodiaToCustodia();
-      showToast('Transfer submitted and pending admin approval.', 'success', 6000);
+      if (res.internal && res.recipientCurrency && res.rate && res.recipientCurrency !== ((currentUser && currentUser.currencyCode) || '')) {
+        showToast('Transfer completed. The recipient received ' + Number(res.recipientAmount).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ' + res.recipientCurrency + ' at today\'s exchange rate.', 'success', 8000);
+      } else {
+        showToast('Transfer submitted and pending admin approval.', 'success', 6000);
+      }
     } else {
       showToast(res.message || 'Transfer failed. Please try again.', 'error');
     }
