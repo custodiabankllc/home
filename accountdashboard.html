@@ -11426,24 +11426,26 @@ body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !impor
 .sig-stat{background:#fff;border:1px solid #dbeafe;border-radius:18px;padding:16px 18px;}
 .sig-stat span{display:block;font-size:11.5px;color:#64748b;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
 .sig-stat h4{font-size:16px;color:#0f172a;word-break:break-word;}
-.sig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
-.sig-card{background:#fff;border:1px solid #dbeafe;border-radius:28px;overflow:hidden;box-shadow:0 14px 36px rgba(30,64,175,.08);position:relative;}
-.sig-card.is-you{border:2px solid #2563eb;}
-.sig-top{background:linear-gradient(135deg,#dbeafe,#dbeafe);padding:26px 20px 56px;text-align:center;position:relative;}
-.sig-role{display:inline-flex;gap:6px;align-items:center;background:#fff;color:#1d4ed8;font-size:11.5px;font-weight:800;letter-spacing:.06em;
-  padding:6px 12px;border-radius:999px;text-transform:uppercase;}
-.sig-you{position:absolute;top:14px;right:14px;background:#2563eb;color:#fff;font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;}
-.sig-photo{width:132px;height:132px;border-radius:34px;border:5px solid #fff;object-fit:cover;background:#e9d5ff;margin:-70px auto 0;display:flex;
-  align-items:center;justify-content:center;font-size:44px;color:#2563eb;box-shadow:0 12px 26px rgba(15,23,42,.15);position:relative;z-index:1;}
-.sig-body{padding:14px 22px 24px;text-align:center;}
-.sig-body h3{font-size:21px;color:#0f172a;margin-bottom:4px;}
-.sig-rel{color:#64748b;font-size:13px;margin-bottom:12px;}
-.sig-id{display:inline-flex;align-items:center;gap:7px;background:#dcfce7;color:#15803d;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;margin-bottom:16px;}
+.sig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;align-items:start;}
+.sig-card{background:#fff;border:1px solid #dbeafe;border-radius:18px;padding:16px;box-shadow:0 6px 18px rgba(30,64,175,.06);position:relative;display:flex;flex-direction:column;gap:12px;min-width:0;}
+.sig-card.is-you{border:2px solid #2563eb;padding:15px;}
+.sig-top{display:flex;align-items:center;gap:14px;min-width:0;}
+.sig-photo{width:64px;height:64px;min-width:64px;border-radius:16px;border:2px solid #dbeafe;object-fit:cover;background:#eff6ff;margin:0;display:flex;
+  align-items:center;justify-content:center;font-size:24px;color:#2563eb;flex:none;}
+.sig-info{min-width:0;flex:1;}
+.sig-tags{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:6px;}
+.sig-role{display:inline-flex;gap:5px;align-items:center;background:#eff6ff;color:#1d4ed8;font-size:10.5px;font-weight:800;letter-spacing:.05em;
+  padding:4px 9px;border-radius:999px;text-transform:uppercase;white-space:nowrap;}
+.sig-you{background:#2563eb;color:#fff;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:999px;letter-spacing:.04em;}
+.sig-info h3{font-size:16px;line-height:1.25;color:#0f172a;margin:0 0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sig-rel{color:#64748b;font-size:12.5px;margin:0;}
+.sig-id{display:inline-flex;align-items:center;gap:6px;background:#dcfce7;color:#15803d;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;margin-top:6px;}
 .sig-id.missing{background:#fef3c7;color:#b45309;}
 .sig-rows{text-align:left;border-top:1px solid #f1f5f9;}
-.sig-row{display:flex;gap:12px;align-items:flex-start;padding:11px 2px;border-bottom:1px solid #f1f5f9;font-size:13.5px;}
-.sig-row i{color:#2563eb;width:18px;margin-top:2px;}
-.sig-row small{display:block;color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.sig-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:13px;}
+.sig-row:last-child{border-bottom:0;padding-bottom:0;}
+.sig-row i{color:#2563eb;width:16px;margin-top:2px;font-size:12px;}
+.sig-row small{display:block;color:#94a3b8;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
 .sig-row b{color:#0f172a;font-weight:600;word-break:break-word;}
 .sig-photo-btn{cursor:zoom-in;}
 .sig-rule{margin-top:22px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:20px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start;}
@@ -11662,10 +11664,6 @@ body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !impor
 #signatoriesPage h1{font-size:20px}
 #signatoriesPage .sig-summary{margin-bottom:17px}
 #signatoriesPage .sig-grid{column-gap:16px;row-gap:16px}
-#signatoriesPage .sig-card{border-radius:20px}
-#signatoriesPage .sig-top{padding-bottom:34px;padding-left:16px;padding-right:16px;padding-top:20px}
-#signatoriesPage .sig-photo{border-radius:21px;font-size:26px}
-#signatoriesPage .sig-body{padding-bottom:19px;padding-left:17px;padding-right:17px}
 #signatoriesPage .sig-rule{margin-top:17px;padding-left:17px;padding-right:17px}
 #accountsPage .accounts-wrapper{column-gap:19px;row-gap:19px}
 :is(#accountsPage,#withdrawPage) .withdraw-topbar{border-radius:17px;margin-bottom:17px}
@@ -11946,10 +11944,6 @@ body.joint-mode .topbar-avatar,body.multi-sig .topbar-avatar{display:none !impor
 #signatoriesPage h1{font-size:19px}
 #signatoriesPage .sig-summary{margin-bottom:17px}
 #signatoriesPage .sig-grid{column-gap:16px;row-gap:16px}
-#signatoriesPage .sig-card{border-radius:20px}
-#signatoriesPage .sig-top{padding-bottom:34px;padding-left:16px;padding-right:16px;padding-top:20px}
-#signatoriesPage .sig-photo{border-radius:21px;font-size:26px}
-#signatoriesPage .sig-body{padding-bottom:19px;padding-left:17px;padding-right:17px}
 #signatoriesPage .sig-rule{margin-top:17px;padding-left:17px;padding-right:17px}
 #accountsPage .accounts-wrapper{column-gap:19px;row-gap:19px}
 #accountsPage .accounts-hero{border-radius:17px;column-gap:19px;padding-bottom:19px;padding-left:19px;padding-right:19px;padding-top:19px;row-gap:19px}
@@ -14852,6 +14846,9 @@ SIGNATORIES PAGE (joint accounts)
                 </div>
 
             </div>
+
+            <!-- OTHER SIGNATORIES (rendered from the signatory sheet) -->
+            <div id="meOtherSigsWrap"></div>
 
             <!-- SECURITY -->
 
@@ -17799,8 +17796,8 @@ ACCOUNT STATEMENT PAGE
 
         <div>
             <h2>Account Statement</h2>
-            <p class="statement-subtitle">
-                Complete transaction history from 2013 - 2022
+            <p class="statement-subtitle" id="statementSubtitle">
+                Loading your statement…
             </p>
         </div>
 
@@ -17816,8 +17813,8 @@ ACCOUNT STATEMENT PAGE
 
             <h2 id="statementBalance">0.00</h2>
 
-            <span class="green-text">
-                Active Account
+            <span class="green-text" id="statementStatus">
+                —
             </span>
 
         </div>
@@ -17830,8 +17827,8 @@ ACCOUNT STATEMENT PAGE
                 0
             </h2>
 
-            <span>
-                Records Available
+            <span id="statementRecordsNote">
+                —
             </span>
 
         </div>
@@ -17840,10 +17837,10 @@ ACCOUNT STATEMENT PAGE
 
             <small>Statement Period</small>
 
-            <h2>2013 - 2022</h2>
+            <h2 id="statementPeriod">—</h2>
 
-            <span>
-                Historical Banking Records
+            <span id="statementPeriodNote">
+                —
             </span>
 
         </div>
@@ -20549,9 +20546,48 @@ function applyMePage(who, roster) {
     }
   }
 
-  // The old "Joint Holder" card is only useful to the main signatory
+  // Other signatories' details come from the SIGNATORY SHEET (getSignatories).
+  // The static user-sheet cards are only a fallback when the sheet gave us nothing.
+  const fromSheet = renderMeOtherSignatories(who);
   const jc = document.getElementById('jointHolderCard');
-  if (jc) jc.style.display = (u.isJoint && who.kind === 'primary') ? '' : 'none';
+  if (jc) jc.style.display = (!fromSheet && u.isJoint && who.kind === 'primary') ? '' : 'none';
+  if (fromSheet && mainCard) mainCard.style.display = 'none';
+}
+
+/* Render one card per OTHER authorised signatory (primary first, then the rest)
+   from window._allSigs, which refreshSignatoryFaces() fills from the signatory sheet.
+   Returns true when the sheet supplied the data. */
+function renderMeOtherSignatories(who) {
+  const wrap = document.getElementById('meOtherSigsWrap');
+  const all = window._allSigs;
+  if (!wrap) return false;
+  if (!Array.isArray(all) || all.length < 2) { wrap.innerHTML = ''; return false; }
+  const isPri = x => /primary|main|owner/i.test(x.role || '');
+  const isJnt = x => /joint/i.test(x.role || '');
+  const ordered = all.filter(isPri).concat(all.filter(x => !isPri(x) && isJnt(x)), all.filter(x => !isPri(x) && !isJnt(x)));
+  const mail = x => String(x.email || '').trim().toLowerCase();
+  const meMail = String((who && who.email) || '').trim().toLowerCase();
+  const meId = who && who.id != null ? String(who.id) : '';
+  const esc = escapeHtmlText;
+  const others = [];
+  ordered.forEach((sg, i) => {
+    const isMe = (meMail && mail(sg) === meMail) || (meId && meId !== 'primary' && meId !== 'joint' && String(sg.id) === meId);
+    if (isMe) return;
+    others.push({ sg: sg, label: i === 0 ? 'Main Signatory' : 'Signatory ' + (i + 1), pos: i + 1 });
+  });
+  if (!others.length) { wrap.innerHTML = ''; return true; }
+  const item = (l, v) => '<div class="me-info-item"><span>' + l + '</span><h4>' + (v ? esc(v) : '—') + '</h4></div>';
+  wrap.innerHTML = others.map(o => {
+    const sg = o.sg;
+    const photo = sg.photoUrl ? '<img src="' + esc(sg.photoUrl) + '" alt="" style="width:100%;height:100%;border-radius:12px;object-fit:cover;">'
+                              : '<i class="fa-solid ' + (o.pos === 1 ? 'fa-crown' : 'fa-user') + '"></i>';
+    return '<div class="me-card"><div class="me-card-header"><div class="me-sig-head"><div class="me-sig-photo">' + photo + '</div>' +
+      '<div><small>' + (o.pos === 1 ? 'Account Owner' : 'Authorised Signatory') + '</small><h2>' + esc(o.label) + '</h2></div></div>' +
+      '<span class="status-pill verified" style="height:28px;font-size:11.5px;"><i class="fa-solid fa-user-group"></i> ' + o.pos + ' of ' + ordered.length + '</span></div>' +
+      '<div class="me-info-grid">' + item('Full Name', sg.name) + item('Relationship', sg.relationship || (o.pos === 1 ? 'Account owner' : '')) +
+      item('Email Address', sg.email) + item('Phone Number', sg.phone) + item('Address', sg.address) + '</div></div>';
+  }).join('');
+  return true;
 }
 
 function applyJointToDOM(u) {
@@ -20559,7 +20595,7 @@ function applyJointToDOM(u) {
   document.body.classList.toggle('joint-mode', isJoint);
   qAll('[data-user-accounttype]').forEach(el => el.textContent = isJoint ? 'Joint Account' : 'Individual Account');
   const card = document.getElementById('jointHolderCard');
-  if (card) card.style.display = isJoint ? '' : 'none';
+  if (card) card.style.display = (isJoint && !(Array.isArray(window._allSigs) && window._allSigs.length > 1)) ? '' : 'none';
   if (!isJoint) return;
 
   const j = u.jointHolder;
@@ -20637,12 +20673,15 @@ function renderSignatories(u, role) {
       ? '<div class="sig-id"><i class="fa-solid fa-circle-check"></i> ID photo on file</div>'
       : '<div class="sig-id missing"><i class="fa-solid fa-triangle-exclamation"></i> ID photo missing</div>';
     const row = (ic, l, v) => '<div class="sig-row"><i class="fa-solid ' + ic + '"></i><div><small>' + l + '</small><b>' + esc(v || '—') + '</b></div></div>';
-    return '<div class="sig-card ' + (h.key === (window._meKey || role) ? 'is-you' : '') + '">' +
-      '<div class="sig-top"><span class="sig-role"><i class="fa-solid ' + (h.key === 'primary' ? 'fa-crown' : 'fa-user-group') + '"></i> ' + h.label + '</span>' +
-      (h.key === (window._meKey || role) ? '<span class="sig-you">YOU</span>' : '') + '</div>' +
-      photo +
-      '<div class="sig-body"><h3>' + esc(h.name) + '</h3><div class="sig-rel">' + esc(h.rel) + '</div>' + idChip +
-      '<div class="sig-rows">' + row('fa-envelope', 'Email', h.email) + row('fa-phone', 'Phone', h.phone) + row('fa-location-dot', 'Address', h.address) + '</div></div></div>';
+    const isMe = h.key === (window._meKey || role);
+    return '<div class="sig-card ' + (isMe ? 'is-you' : '') + '">' +
+      '<div class="sig-top">' + photo +
+        '<div class="sig-info">' +
+          '<div class="sig-tags"><span class="sig-role"><i class="fa-solid ' + (h.key === 'primary' ? 'fa-crown' : 'fa-user-group') + '"></i> ' + h.label + '</span>' +
+          (isMe ? '<span class="sig-you">YOU</span>' : '') + '</div>' +
+          '<h3>' + esc(h.name) + '</h3><div class="sig-rel">' + esc(h.rel) + '</div>' + idChip +
+        '</div></div>' +
+      '<div class="sig-rows">' + row('fa-envelope', 'Email', h.email) + row('fa-phone', 'Phone', h.phone) + row('fa-location-dot', 'Address', h.address) + '</div></div>';
   }).join('');
 
   const rt = document.getElementById('sigRuleTitle'), rx = document.getElementById('sigRuleText');
@@ -21157,6 +21196,32 @@ async function loadTransactions() {
   renderStatements(allTransactions);
   updateTransactionCounts();
   renderRewards();
+  loadStatementSummary();
+}
+
+/* Statement page header cards: every figure comes from the backend (getStatementSummary) */
+async function loadStatementSummary() {
+  const d = await api({ action: 'getStatementSummary', uid: _uid });
+  if (!d || !d.status) return;
+  const set = (id, v) => { const el = q('#' + id); if (el) el.textContent = v; };
+  const none = !d.totalRecords;
+
+  set('statementSubtitle', none
+    ? 'No transactions recorded on this account yet'
+    : 'Complete transaction history from ' + d.firstDate.slice(0, 10) + ' to ' + d.lastDate.slice(0, 10));
+
+  const active = (d.accountStatus || 'Active').toLowerCase() === 'active';
+  const st = q('#statementStatus');
+  if (st) {
+    st.textContent = active ? 'Active Account' : d.accountStatus + ' Account';
+    st.className = active ? 'green-text' : 'status-red';
+  }
+
+  set('statementBalance', fmtBalance(d.balance));
+  set('transactionCount', d.totalRecords);
+  set('statementRecordsNote', none ? 'No records yet' : d.totalCredits + ' credits · ' + d.totalDebits + ' debits');
+  set('statementPeriod', d.period);
+  set('statementPeriodNote', none ? 'Activity will appear here' : 'Acct ' + d.accountNumber + (d.currencyCode ? ' · ' + d.currencyCode : ''));
 }
 
 function txTypeClass(type) {
@@ -21807,7 +21872,7 @@ async function submitWithdraw() {
         amount, details: 'Withdrawal to ' + bank,
         status: 'Pending', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}),
         method: type, bank, account, routing,
-        senderName: currentUser ? currentUser.name : '', receiverName: bank || 'External Bank Account'
+        senderName: res.accountName || (currentUser ? currentUser.name : ''), receiverName: bank || 'External Bank Account'
       });
 
       // reset form
@@ -21891,7 +21956,7 @@ async function submitTransfer() {
         amount, details: 'Transfer to ' + recipient + ' (' + bank + ')',
         status: res.internal ? 'Completed' : 'Pending', date: new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'2-digit'}),
         method: type, bank, account, routing, note,
-        senderName: currentUser ? currentUser.name : '', receiverName: recipient
+        senderName: res.accountName || (currentUser ? currentUser.name : ''), receiverName: recipient
       });
 
       ['transferRecipient','transferBankName','transferAccountNumber','transferRouting','transferAmount','transferNote'].forEach(id => {
@@ -22790,6 +22855,7 @@ async function refreshSignatoryFaces() {
   const multi = list.length > 1;
   document.body.classList.toggle('multi-sig', multi);
   window._extraSigs = list.filter(x => x.role === 'Signatory' && x.status === 'Authorized');
+  window._allSigs = list.filter(x => !x.status || x.status === 'Authorized' || x.status === 'Active');
   if (currentUser) { renderSignatories(currentUser, _srRole()); applySignedInIdentity(); }   // keep Signatories page + identity in sync
   if (multi) updateJointBanner(list);
   const dual = document.getElementById('topbarDual');
